@@ -1,0 +1,440 @@
+//
+//  BigInt+unittests.swift
+//  ProjectEuler
+//
+//  Created by John Griffin on 4/1/19.
+//  Copyright © 2019 Fofu Enterprises. All rights reserved.
+//
+
+import Foundation
+
+//===--- Tests ------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
+typealias BigInt = _BigInt<UInt>
+typealias BigInt8 = _BigInt<UInt8>
+
+typealias BigIntBit = _BigInt<Bit>
+
+func testBinaryInit<T: BinaryInteger>(_ x: T) -> BigInt {
+    return BigInt(x)
+}
+
+func randomBitLength() -> Int {
+    return Int.random(in: 2 ... 1000)
+}
+
+var BitTests = TestSuite("Bit")
+
+BitTests.test("Basics") {
+    let x = Bit.max
+    let y = Bit.min
+
+    expectTrue(x == 1 as Int)
+    expectTrue(y == 0 as Int)
+    expectTrue(x < Int.max)
+
+    expectGT(x, y)
+    expectEqual(x, x)
+    expectEqual(x, x ^ 0)
+    expectGT(x, x & 0)
+    expectEqual(x, x | 0)
+    expectLT(y, y | 1)
+    expectEqual(x, ~y)
+    expectEqual(y, ~x)
+
+    expectEqual(x, x + y)
+    expectGT(x, x &+ x)
+
+    expectEqual(1, x.nonzeroBitCount)
+    expectEqual(0, y.nonzeroBitCount)
+
+    expectEqual(0, x.leadingZeroBitCount)
+    expectEqual(1, y.leadingZeroBitCount)
+
+    expectEqual(0, x.trailingZeroBitCount)
+    expectEqual(1, y.trailingZeroBitCount)
+}
+
+var BigIntTests = TestSuite("BigInt")
+
+BigIntTests.test("Initialization") {
+    let x = testBinaryInit(1_000_000 as Int)
+    expectEqual(x._data[0], 1_000_000)
+
+    let y = testBinaryInit(1000 as UInt16)
+    expectEqual(y._data[0], 1000)
+
+    let z = testBinaryInit(-1_000_000 as Int)
+    expectEqual(z._data[0], 1_000_000)
+    expectTrue(z.isNegative)
+
+    let z6 = testBinaryInit(z * z * z * z * z * z)
+    expectEqual(z6._data, [12_919_594_847_110_692_864, 54_210_108_624_275_221])
+    expectFalse(z6.isNegative)
+}
+
+BigIntTests.test("Identity/Fixed point") {
+    let x = BigInt(repeatElement(UInt.max, count: 20))
+    let y = -x
+
+    expectEqual(x / x, 1)
+    expectEqual(x / y, -1)
+    expectEqual(y / x, -1)
+    expectEqual(y / y, 1)
+    expectEqual(x % x, 0)
+    expectEqual(x % y, 0)
+    expectEqual(y % x, 0)
+    expectEqual(y % y, 0)
+
+    expectEqual(x * 1, x)
+    expectEqual(y * 1, y)
+    expectEqual(x * -1, y)
+    expectEqual(y * -1, x)
+    expectEqual(-x, y)
+    expectEqual(-y, x)
+
+    expectEqual(x + 0, x)
+    expectEqual(y + 0, y)
+    expectEqual(x - 0, x)
+    expectEqual(y - 0, y)
+
+    expectEqual(x - x, 0)
+    expectEqual(y - y, 0)
+}
+
+BigIntTests.test("Max arithmetic") {
+    let x = BigInt(repeatElement(UInt.max, count: 50))
+    let y = BigInt(repeatElement(UInt.max, count: 35))
+    let (q, r) = x.quotientAndRemainder(dividingBy: y)
+
+    expectEqual(q * y + r, x)
+    expectEqual(q * y, x - r)
+}
+
+BigIntTests.test("Zero arithmetic") {
+    let zero: BigInt = 0
+    expectTrue(zero.isZero)
+    expectFalse(zero.isNegative)
+
+    let x: BigInt = 1
+    expectTrue((x - x).isZero)
+    expectFalse((x - x).isNegative)
+
+    let y: BigInt = -1
+    expectTrue(y.isNegative)
+    expectTrue((y - y).isZero)
+    expectFalse((y - y).isNegative)
+
+    expectEqual(x * zero, zero)
+    expectCrashLater()
+    _ = x / zero
+}
+
+BigIntTests.test("Conformances") {
+    // Comparable
+    let x = BigInt(Int.max)
+    let y = x * x * x * x * x
+    expectLT(y, y + 1)
+    expectGT(y, y - 1)
+    expectGT(y, 0)
+
+    let z = -y
+    expectLT(z, z + 1)
+    expectGT(z, z - 1)
+    expectLT(z, 0)
+
+    expectEqual(-z, y)
+    expectEqual(y + z, 0)
+
+    // Hashable
+    expectNotEqual(x.hashValue, y.hashValue)
+    expectNotEqual(y.hashValue, z.hashValue)
+
+    let set = Set([x, y, z])
+    expectTrue(set.contains(x))
+    expectTrue(set.contains(y))
+    expectTrue(set.contains(z))
+    expectFalse(set.contains(-x))
+}
+
+BigIntTests.test("BinaryInteger interop") {
+    let x: BigInt = 100
+    let xComp = UInt8(x)
+    expectTrue(x == xComp)
+    expectTrue(x < xComp + 1)
+    expectFalse(xComp + 1 < x)
+
+    let y: BigInt = -100
+    let yComp = Int8(y)
+    expectTrue(y == yComp)
+    expectTrue(y < yComp + (1 as Int8))
+    expectFalse(yComp + (1 as Int8) < y)
+    // should be: expectTrue(y < yComp + 1), but:
+    // warning: '+' is deprecated: Mixed-type addition is deprecated.
+    // Please use explicit type conversion.
+    let zComp = Int.min + 1
+    let z = BigInt(zComp)
+    expectTrue(z == zComp)
+    expectTrue(zComp == z)
+    expectFalse(zComp + 1 < z)
+    expectTrue(z < zComp + 1)
+
+    let w = BigInt(UInt.max)
+    let wComp = UInt(truncatingIfNeeded: w)
+    expectTrue(w == wComp)
+    expectTrue(wComp == w)
+    expectTrue(wComp - (1 as UInt) < w)
+    expectFalse(w < wComp - (1 as UInt))
+    // should be:
+    //  expectTrue(wComp - 1 < w)
+    //  expectTrue(w > wComp - 1)
+    // but crashes at runtime
+}
+
+BigIntTests.test("Huge") {
+    let x = BigInt(randomBits: 1_000_000)
+    expectGT(x, x - 1)
+    let y = -x
+    expectGT(y, y - 1)
+}
+
+BigIntTests.test("Numeric").forEach(in: [
+    ("3GFWFN54YXNBS6K2ST8K9B89Q2AMRWCNYP4JAS5ZOPPZ1WU09MXXTIT27ZPVEG2Y",
+     "9Y1QXS4XYYDSBMU4N3LW7R3R1WKK",
+     "CIFJIVHV0K4MSX44QEX2US0MFFEAWJVQ8PJZ",
+     "26HILZ7GZQN8MB4O17NSPO5XN1JI"),
+    ("7PM82EHP7ZN3ZL7KOPB7B8KYDD1R7EEOYWB6M4SEION47EMS6SMBEA0FNR6U9VAM70HPY4WKXBM8DCF1QOR1LE38NJAVOPOZEBLIU1M05",
+     "-202WEEIRRLRA9FULGA15RYROVW69ZPDHW0FMYSURBNWB93RNMSLRMIFUPDLP5YOO307XUNEFLU49FV12MI22MLCVZ5JH",
+     "-3UNIZHA6PAL30Y",
+     "1Y13W1HYB0QV2Z5RDV9Z7QXEGPLZ6SAA2906T3UKA46E6M4S6O9RMUF5ETYBR2QT15FJZP87JE0W06FA17RYOCZ3AYM3"),
+    ("-ICT39SS0ONER9Z7EAPVXS3BNZDD6WJA791CV5LT8I4POLF6QYXBQGUQG0LVGPVLT0L5Z53BX6WVHWLCI5J9CHCROCKH3B381CCLZ4XAALLMD",
+     "6T1XIVCPIPXODRK8312KVMCDPBMC7J4K0RWB7PM2V4VMBMODQ8STMYSLIXFN9ORRXCTERWS5U4BLUNA4H6NG8O01IM510NJ5STE",
+     "-2P2RVZ11QF",
+     "-3YSI67CCOD8OI1HFF7VF5AWEQ34WK6B8AAFV95U7C04GBXN0R6W5GM5OGOO22HY0KADIUBXSY13435TW4VLHCKLM76VS51W5Z9J"),
+    ("-326JY57SJVC",
+     "-8H98AQ1OY7CGAOOSG",
+     "0",
+     "-326JY57SJVC"),
+    ("-XIYY0P3X9JIDF20ZQG2CN5D2Q5CD9WFDDXRLFZRDKZ8V4TSLE2EHRA31XL3YOHPYLE0I0ZAV2V9RF8AGPCYPVWEIYWWWZ3HVDR64M08VZTBL85PR66Z2F0W5AIDPXIAVLS9VVNLNA6I0PKM87YW4T98P0K",
+     "-BUBZEC4NTOSCO0XHCTETN4ROPSXIJBTEFYMZ7O4Q1REOZO2SFU62KM3L8D45Z2K4NN3EC4BSRNEE",
+     "2TX1KWYGAW9LAXUYRXZQENY5P3DSVXJJXK4Y9DWGNZHOWCL5QD5PLLZCE6D0G7VBNP9YGFC0Z9XIPCB",
+     "-3LNPZ9JK5PUXRZ2Y1EJ4E3QRMAMPKZNI90ZFOBQJM5GZUJ84VMF8EILRGCHZGXJX4AXZF0Z00YA"),
+    ("AZZBGH7AH3S7TVRHDJPJ2DR81H4FY5VJW2JH7O4U7CH0GG2DSDDOSTD06S4UM0HP1HAQ68B2LKKWD73UU0FV5M0H0D0NSXUJI7C2HW3P51H1JM5BHGXK98NNNSHMUB0674VKJ57GVVGY4",
+     "1LYN8LRN3PY24V0YNHGCW47WUWPLKAE4685LP0J74NZYAIMIBZTAF71",
+     "6TXVE5E9DXTPTHLEAG7HGFTT0B3XIXVM8IGVRONGSSH1UC0HUASRTZX8TVM2VOK9N9NATPWG09G7MDL6CE9LBKN",
+     "WY37RSPBTEPQUA23AXB3B5AJRIUL76N3LXLP3KQWKFFSR7PR4E1JWH"),
+    ("1000000000000000000000000000000000000000000000",
+     "1000000000000000000000000000000000000",
+     "1000000000",
+     "0"),
+]) { strings in
+    let x = BigInt(strings.0, radix: 36)!
+    let y = BigInt(strings.1, radix: 36)!
+    let q = BigInt(strings.2, radix: 36)!
+    let r = BigInt(strings.3, radix: 36)!
+
+    let (testQ, testR) = x.quotientAndRemainder(dividingBy: y)
+    expectEqual(testQ, q)
+    expectEqual(testR, r)
+    expectEqual(x, y * q + r)
+}
+
+BigIntTests.test("Strings") {
+    let x = BigInt("-3UNIZHA6PAL30Y", radix: 36)!
+    expectEqual(x.binaryString, "-1000111001110110011101001110000001011001110110011011110011000010010010")
+    expectEqual(x.decimalString, "-656993338084259999890")
+    expectEqual(x.hexString, "-239D9D3816766F3092")
+    expectEqual(x.compactString, "-3UNIZHA6PAL30Y")
+
+    expectTrue(BigInt("12345") == 12345)
+    expectTrue(BigInt("-12345") == -12345)
+
+    expectTrue(BigInt("-3UNIZHA6PAL30Y", radix: 10) == nil)
+    expectTrue(BigInt("---") == nil)
+    expectTrue(BigInt(" 123") == nil)
+}
+
+BigIntTests.test("Randomized arithmetic").forEach(in: Array(1 ... 10)) { _ in
+    // Test x == (x / y) * x + (x % y)
+    let (x, y) = (
+        BigInt(randomBits: randomBitLength()),
+        BigInt(randomBits: randomBitLength())
+    )
+    if !y.isZero {
+        let (q, r) = x.quotientAndRemainder(dividingBy: y)
+        expectEqual(q * y + r, x)
+        expectEqual(q * y, x - r)
+    }
+
+    // Test (x0 + y0)(x1 + y1) == x0x1 + x0y1 + y0x1 + y0y1
+    let (x0, y0, x1, y1) = (
+        BigInt(randomBits: randomBitLength()),
+        BigInt(randomBits: randomBitLength()),
+        BigInt(randomBits: randomBitLength()),
+        BigInt(randomBits: randomBitLength())
+    )
+    let r1 = (x0 + y0) * (x1 + y1)
+    let r2 = ((x0 * x1) + (x0 * y1), (y0 * x1) + (y0 * y1))
+    expectEqual(r1, r2.0 + r2.1)
+}
+
+var BigInt8Tests = TestSuite("BigInt<UInt8>")
+
+BigInt8Tests.test("BinaryInteger interop") {
+    let x: BigInt8 = 100
+    let xComp = UInt8(x)
+    expectTrue(x == xComp)
+    expectTrue(x < xComp + 1)
+    expectFalse(xComp + 1 < x)
+
+    let y: BigInt8 = -100
+    let yComp = Int8(y)
+    expectTrue(y == yComp)
+    expectTrue(y < yComp + (1 as Int8))
+    expectFalse(yComp + (1 as Int8) < y)
+
+    let zComp = Int.min + 1
+    let z = BigInt8(zComp)
+    expectTrue(z == zComp)
+    expectTrue(zComp == z)
+    expectFalse(zComp + 1 < z)
+    expectTrue(z < zComp + 1)
+
+    let w = BigInt8(UInt.max)
+    let wComp = UInt(truncatingIfNeeded: w)
+    expectTrue(w == wComp)
+    expectTrue(wComp == w)
+    expectTrue(wComp - (1 as UInt) < w)
+    expectFalse(w < wComp - (1 as UInt))
+}
+
+BigInt8Tests.test("Randomized arithmetic").forEach(in: Array(1 ... 10)) { _ in
+    // Test x == (x / y) * x + (x % y)
+    let (x, y) = (
+        BigInt8(randomBits: randomBitLength()),
+        BigInt8(randomBits: randomBitLength())
+    )
+    if !y.isZero {
+        let (q, r) = x.quotientAndRemainder(dividingBy: y)
+        expectEqual(q * y + r, x)
+        expectEqual(q * y, x - r)
+    }
+
+    // Test (x0 + y0)(x1 + y1) == x0x1 + x0y1 + y0x1 + y0y1
+    let (x0, y0, x1, y1) = (
+        BigInt8(randomBits: randomBitLength()),
+        BigInt8(randomBits: randomBitLength()),
+        BigInt8(randomBits: randomBitLength()),
+        BigInt8(randomBits: randomBitLength())
+    )
+    let r1 = (x0 + y0) * (x1 + y1)
+    let r2 = ((x0 * x1) + (x0 * y1), (y0 * x1) + (y0 * y1))
+    expectEqual(r1, r2.0 + r2.1)
+}
+
+BigInt8Tests.test("Bitshift") {
+    expectEqual(BigInt8(255) << 1, 510)
+    expectTrue(BigInt(UInt32.max) << 16 == UInt(UInt32.max) << 16)
+    var (x, y) = (1 as BigInt, 1 as UInt)
+    for i in 0 ..< 64 { // don't test 64-bit shift, UInt64 << 64 == 0
+        expectTrue(x << i == y << i)
+    }
+
+    (x, y) = (BigInt(UInt.max), UInt.max)
+    for i in 0 ... 64 { // test 64-bit shift, should both be zero
+        expectTrue(x >> i == y >> i,
+                   "\(x) as \(type(of: x)) >> \(i) => \(x >> i)  !=  \(y) as \(type(of: y)) >> \(i) => \(y >> i)")
+    }
+
+    x = BigInt(-1)
+    let z = -1 as Int
+    for i in 0 ..< 64 {
+        expectTrue(x << i == z << i)
+    }
+}
+
+BigInt8Tests.test("Bitwise").forEach(in: [
+    BigInt8(Int.max - 2),
+    BigInt8(255),
+    BigInt8(256),
+    BigInt8(UInt32.max),
+]) { value in
+    for x in [value, -value] {
+        expectTrue(x | 0 == x)
+        expectTrue(x & 0 == 0)
+        expectTrue(x & ~0 == x)
+        expectTrue(x ^ 0 == x)
+        expectTrue(x ^ ~0 == ~x)
+        expectTrue(x == BigInt8(Int(truncatingIfNeeded: x)))
+        expectTrue(~x == BigInt8(~Int(truncatingIfNeeded: x)))
+    }
+}
+
+var BigIntBitTests = TestSuite("BigInt<Bit>")
+
+BigIntBitTests.test("Randomized arithmetic").forEach(in: Array(1 ... 10)) { _ in
+    // Test x == (x / y) * x + (x % y)
+    let (x, y) = (
+        BigIntBit(randomBits: randomBitLength() % 100),
+        BigIntBit(randomBits: randomBitLength() % 100)
+    )
+    if !y.isZero {
+        let (q, r) = x.quotientAndRemainder(dividingBy: y)
+        expectEqual(q * y + r, x)
+        expectEqual(q * y, x - r)
+    }
+
+    // Test (x0 + y0)(x1 + y1) == x0x1 + x0y1 + y0x1 + y0y1
+    let (x0, y0, x1, y1) = (
+        BigIntBit(randomBits: randomBitLength() % 100),
+        BigIntBit(randomBits: randomBitLength() % 100),
+        BigIntBit(randomBits: randomBitLength() % 100),
+        BigIntBit(randomBits: randomBitLength() % 100)
+    )
+    let r1 = (x0 + y0) * (x1 + y1)
+    let r2 = ((x0 * x1) + (x0 * y1), (y0 * x1) + (y0 * y1))
+    expectEqual(r1, r2.0 + r2.1)
+}
+
+BigIntBitTests.test("Conformances") {
+    // Comparable
+    let x = BigIntBit(Int.max)
+    let y = x * x * x * x * x
+    expectLT(y, y + 1)
+    expectGT(y, y - 1)
+    expectGT(y, 0)
+
+    let z = -y
+    expectLT(z, z + 1)
+    expectGT(z, z - 1)
+    expectLT(z, 0)
+
+    expectEqual(-z, y)
+    expectEqual(y + z, 0)
+
+    // Hashable
+    expectNotEqual(x.hashValue, y.hashValue)
+    expectNotEqual(y.hashValue, z.hashValue)
+
+    let set = Set([x, y, z])
+    expectTrue(set.contains(x))
+    expectTrue(set.contains(y))
+    expectTrue(set.contains(z))
+    expectFalse(set.contains(-x))
+}
+
+BigIntBitTests.test("words") {
+    expectEqualSequence([1], (1 as BigIntBit).words)
+    expectEqualSequence([UInt.max, 0], BigIntBit(UInt.max).words)
+    expectEqualSequence([UInt.max >> 1], BigIntBit(UInt.max >> 1).words)
+    expectEqualSequence([0, 1], (BigIntBit(UInt.max) + 1).words)
+    expectEqualSequence([UInt.max], (-1 as BigIntBit).words)
+}
+
+runAllTests()
+
+BigIntTests.test("isMultiple") {
+    // Test that these do not crash.
+    expectTrue((0 as _BigInt<UInt>).isMultiple(of: 0))
+    expectFalse((1 as _BigInt<UInt>).isMultiple(of: 0))
+}
