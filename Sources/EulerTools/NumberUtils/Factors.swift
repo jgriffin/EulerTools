@@ -25,7 +25,7 @@ public class FixedWidthFactors<I: FixedWidthInteger> {
             guard halfn >= 2 else {
                 return []
             }
-            let factors = (2 ... halfn).filter { n % $0 == 0 }
+            let factors = (2...halfn).filter { n % $0 == 0 }
             return factors
         }
     }
@@ -34,7 +34,7 @@ public class FixedWidthFactors<I: FixedWidthInteger> {
 
     // prime factors excludes the number itself if it is prime
     public func primeFactors<A: RandomAccessCollection>(of n: I, from primes: A) -> [I]
-        where A.Element == I {
+        where A.Element == I, A.Index: Strideable {
         if n == 0 || n == 1 {
             return []
         }
@@ -48,11 +48,12 @@ public class FixedWidthFactors<I: FixedWidthInteger> {
                 return [n]
             }
 
-            let primeSlice = primes[...indexN]
-            let sqrtN = I(sqrt(Float(n)))
-            let iSqrtN = primeSlice.binarySearch(indexFor: sqrtN)!
+            let halfN = I(n / 2)
+            let iHalfN = primes[...indexN].binarySearch(indexFor: halfN)!
 
-            for p in primeSlice[...iSqrtN].reversed() {
+            for i in stride(from: iHalfN, through: primes.startIndex, by: -1) {
+                let p = primes[i]
+
                 guard n % p == 0 else {
                     continue
                 }
@@ -62,7 +63,7 @@ public class FixedWidthFactors<I: FixedWidthInteger> {
                     remain /= p
                 } while remain % p == 0
 
-                return primeFactors(of: remain, from: primeSlice) + [p]
+                return primeFactors(of: remain, from: primes[...indexN]) + [p]
             }
 
             fatalError("Shouldn't get here")

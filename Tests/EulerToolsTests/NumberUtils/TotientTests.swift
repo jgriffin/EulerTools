@@ -23,7 +23,7 @@ class TotientTests: XCTestCase {
 
     func testTotient1000000() {
         let n: UInt = 1_000_000
-        let primes = Primes.primesUpto(n)[...]
+        let primes = Primes.primesPast(n)[...]
         let result = Totient.totient(n, primes: primes)
         XCTAssertEqual(result, result)
     }

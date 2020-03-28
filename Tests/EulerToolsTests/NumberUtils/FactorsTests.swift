@@ -20,8 +20,10 @@ class FactorsTests: XCTestCase {
         ]
 
         let primes = Primes.primesUpto(100)[...]
-        let result = (UInt(0) ... 21).map { Factors.uint.primeFactors(of: $0, from: primes) }
-        XCTAssertEqual(result, check)
+        zip(UInt(0) ... 21, check).forEach { test in
+            let result = Factors.uint.primeFactors(of: test.0, from: primes)
+            XCTAssertEqual(result, test.1, "n: \(test.0)")
+        }
     }
 
     func testDivisors() {
