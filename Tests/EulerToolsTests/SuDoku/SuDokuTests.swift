@@ -15,19 +15,19 @@ class SuDokuTests: XCTestCase {
     func testSuDokuTiles() {
         let zero = DigitMask(number: 0)
         XCTAssertEqual(zero.rawValue, 0b00_0000_0000)
-        XCTAssertNil(zero.singleNumber)
+        XCTAssertNil(zero.singleDigit)
 
         let nine = DigitMask(number: 9)
         XCTAssertEqual(nine.rawValue, 0b1_0000_0000)
-        XCTAssertEqual(nine.singleNumber, 9)
+        XCTAssertEqual(nine.singleDigit, 9)
 
         let seven = DigitMask(number: 7)
         XCTAssertEqual(seven.rawValue, 0b0_0100_0000)
-        XCTAssertEqual(seven.singleNumber, 7)
+        XCTAssertEqual(seven.singleDigit, 7)
 
         let nineAndSeven = nine.union(seven)
         XCTAssertEqual(nineAndSeven.rawValue, 0b1_0100_0000)
-        XCTAssertNil(zero.singleNumber)
+        XCTAssertNil(zero.singleDigit)
     }
 
     func testSuDokuGridUpdate() {
@@ -38,7 +38,7 @@ class SuDokuTests: XCTestCase {
 
         (0 ..< 9 * 9).forEach { index in
             var grid = SuDoku.BoardMasks()
-            grid.updateMasks(index: index, subtracting: 1)
+            grid.updateMasks(index: index, subtracting: DigitMask(number: 1))
 
             let (r, c, sq) = SuDoku.BoardMasks.maskIndices(for: index)
             XCTAssertEqual(grid.availableMask(for: index).rawValue, 0b1_1111_1110)
@@ -46,7 +46,7 @@ class SuDokuTests: XCTestCase {
             XCTAssertEqual(grid.colMasks[c].rawValue, 0b1_1111_1110)
             XCTAssertEqual(grid.squareMasks[sq].rawValue, 0b1_1111_1110)
 
-            grid.updateMasks(index: index, subtracting: 2)
+            grid.updateMasks(index: index, subtracting: DigitMask(number: 2))
             XCTAssertEqual(grid.availableMask(for: index).rawValue, 0b1_1111_1100)
             XCTAssertEqual(grid.rowMasks[r].rawValue, 0b1_1111_1100)
             XCTAssertEqual(grid.colMasks[c].rawValue, 0b1_1111_1100)

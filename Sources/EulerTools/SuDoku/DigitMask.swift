@@ -24,7 +24,7 @@ extension SuDoku {
             }
         }
 
-        public static let zero = DigitMask(rawValue: 0)
+        public static let zero = DigitMask([])
         public static let one = DigitMask(rawValue: 1 << 0)
         public static let two = DigitMask(rawValue: 1 << 1)
         public static let three = DigitMask(rawValue: 1 << 2)
