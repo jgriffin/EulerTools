@@ -1,0 +1,44 @@
+//
+//  CyclicalNumbersTests.swift
+//
+//
+//  Created by John Griffin on 10/28/19.
+//
+
+import EulerTools
+import XCTest
+
+class CyclicalNumbersTests: XCTestCase {
+    lazy var finder = {
+        CyclicFinder(endOf: CyclicFinder.last2Of4,
+                     startOf: CyclicFinder.first2Of4)
+    }()
+
+    func testNoCyclics() {
+        let ranges = [[1234], [5678]]
+
+        let result = finder.findCyclics(ranges)
+        XCTAssertEqual(result, [])
+    }
+
+    func testSimpleCyclics() {
+        let ranges = [[1234], [3412]]
+
+        let result = finder.findCyclics(ranges)
+        XCTAssertEqual(result, [[1234, 3412]])
+    }
+
+    func testExampleCyclics() {
+        let tests: [(ranges: [[Int]], check: [[Int]])] = [
+            (ranges: [[8128], [2882], [8281]],
+             check: [[8128, 2882, 8281]]),
+            (ranges: [[8128, 2882, 8281], [8128, 2882, 8281], [8128, 2882, 8281]],
+             check: [[8128, 2882, 8281], [2882, 8281, 8128], [8281, 8128, 2882]]),
+        ]
+
+        tests.forEach { test in
+            let result = finder.findCyclics(test.ranges)
+            XCTAssertEqual(result, test.check)
+        }
+    }
+}

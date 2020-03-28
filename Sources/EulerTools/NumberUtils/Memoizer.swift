@@ -8,11 +8,13 @@
 
 import Foundation
 
-class Memoizer<N: Hashable, Result> {
-    typealias FN = () -> Result
+public class Memoizer<N: Hashable, Result> {
+    public typealias FN = () -> Result
     private var memos = [N: Result]()
 
-    func memoized(_ n: N, _ fn: FN) -> Result {
+    public init() {}
+
+    public func memoized(_ n: N, _ fn: FN) -> Result {
         if let result = memos[n] {
             return result
         }

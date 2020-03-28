@@ -8,7 +8,7 @@
 import Foundation
 
 extension Primes {
-    enum MillerRabinError: Error {
+    public enum MillerRabinError: Error {
         case primeLowAccuracy
         case primeLowerBorder
         case uIntOverflow
@@ -23,7 +23,7 @@ extension Primes {
      - throws: Can throw an error of type `MillerRabinError`.
      - Returns: composite if n is composite, otherwise probably prime
      */
-    static func checkWithMillerRabin(_ n: UInt) throws -> Bool {
+    public static func checkWithMillerRabin(_ n: UInt) throws -> Bool {
         guard n > 0 else { throw MillerRabinError.primeLowerBorder }
 
         if n == 2 || n == 3 || n == 5 {

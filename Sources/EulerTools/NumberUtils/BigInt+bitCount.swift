@@ -9,12 +9,12 @@
 import Foundation
 
 extension _BigInt {
-    var nonzeroBitCount: Int {
+    public var nonzeroBitCount: Int {
         return _data.reduce(0) { result, w in result + w.nonzeroBitCount }
     }
 
     // return the indicies of set bits from left to right
-    func indiciesForSetBits() -> [Int] {
+    public func indiciesForSetBits() -> [Int] {
         var indices = [Int]()
 
         var index = 0

@@ -8,10 +8,10 @@
 
 import Foundation
 
-class Primes {
-    static let instance = Primes()
+public class Primes {
+    public static let instance = Primes()
 
-    static func isPrime(_ n: UInt) throws -> Bool {
+    public static func isPrime(_ n: UInt) throws -> Bool {
         if n <= 104_729 {
             return binarySearch(tenThousandPrimes, key: n) != nil
         }
@@ -19,13 +19,31 @@ class Primes {
         return try checkWithMillerRabin(n)
     }
 
-    static func primesUpto(_ upto: UInt) -> [UInt] {
+    public static func primesUpto(_ upto: UInt) -> [UInt] {
         var primes: [UInt] = Array(tenThousandPrimes.prefix { $0 <= upto })
 
         var i = (primes.last ?? 0) + 1
         while i <= upto {
             if try! isPrime(i) {
                 primes.append(i)
+            }
+            i += 1
+        }
+
+        return primes
+    }
+
+    public static func primesPast(_ past: UInt) -> [UInt] {
+        var primes: [UInt] = Array(tenThousandPrimes.prefix { $0 <= past })
+
+        var i = (primes.last ?? 0) + 1
+        while true {
+            if try! isPrime(i) {
+                primes.append(i)
+
+                if past <= i {
+                    break
+                }
             }
             i += 1
         }

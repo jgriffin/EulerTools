@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct Bits {
-    static func countBits(_ n: Int) -> Int {
+public struct Bits {
+    public static func countBits<T: FixedWidthInteger>(_ n: T) -> Int {
         var remain = n
         var cBits = 0
         while remain != 0 {
@@ -19,7 +19,7 @@ struct Bits {
         return cBits
     }
 
-    static func indicesOfSetBits(_ n: Int) -> [Int] {
+    public static func indicesOfSetBits<T: FixedWidthInteger>(_ n: T) -> [Int] {
         var indices = [Int]()
         var index = -1
 

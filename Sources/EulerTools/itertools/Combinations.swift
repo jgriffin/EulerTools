@@ -25,14 +25,10 @@ public extension Sequence {
      - repeatingElements: A boolean value determining whether or not elements can repeat in a combination.
      - Returns: An array containing the combinations of the specified length of elements in the sequence.
      */
-    func combinations(length: Int) -> [[Iterator.Element]] {
+    func combinations(length: Int, repeatingElements: Bool = false) -> [[Iterator.Element]] {
         return Array(Combinations(sequence: self,
                                   length: length,
-                                  repeatingElements: false))
-    }
-
-    func combinationsWithRepeatingElements(length: Int) -> [[Iterator.Element]] {
-        return Array(Combinations(sequence: self, length: length, repeatingElements: true))
+                                  repeatingElements: repeatingElements))
     }
 }
 
@@ -50,12 +46,8 @@ public extension LazySequenceProtocol {
      - repeatingElements: A boolean value determining whether or not elements can repeat in a combination.
      - Returns: An an iterator-sequence that returns the combinations of the specified length of elements in the sequence.
      */
-    func combinations(length: Int) -> Combinations<Self> {
-        return Combinations(sequence: self, length: length, repeatingElements: false)
-    }
-
-    func combinationsWithRepeatingElements(length: Int) -> Combinations<Self> {
-        return Combinations(sequence: self, length: length, repeatingElements: true)
+    func combinations(length: Int, repeatingElements: Bool) -> Combinations<Self> {
+        return Combinations(sequence: self, length: length, repeatingElements: repeatingElements)
     }
 }
 
@@ -79,13 +71,13 @@ public struct Combinations<S: Sequence>: IteratorProtocol, Sequence {
     }
 
     public mutating func next() -> [S.Iterator.Element]? {
-        var indices: [Int]
-        repeat {
-            guard let nextIndices = indicesIterator.next() else {
-                return nil
-            }
-            indices = nextIndices
-        } while indices.sorted() == indices
+        guard let indices = indicesIterator.next() else {
+            return nil
+        }
+
+        guard indices.sorted() == indices else {
+            return next()
+        }
 
         let combination = indices.map { values[$0] }
         return combination.isEmpty ? nil : combination

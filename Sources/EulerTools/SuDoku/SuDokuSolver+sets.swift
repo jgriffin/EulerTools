@@ -8,10 +8,10 @@
 
 import Foundation
 
-extension SuDokuSolver {
-    static func groupSets(for board: SuDokuBoard) -> [Set<UInt8>] {
+extension SuDoku.Solver {
+    static func groupSets(for board: SuDoku.Board) -> [Set<UInt8>] {
         return groupIndices.map { indices in
-            Set(indices.map { board.tiles[$0] })
+            Set(indices.map { board.digits[$0] })
         }
     }
 

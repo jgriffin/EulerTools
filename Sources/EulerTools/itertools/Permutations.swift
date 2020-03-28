@@ -25,7 +25,7 @@ public extension Sequence {
      - repeatingElements: A boolean value determining whether or not elements can repeat in a permutation.
      - Returns: An array containing the permutations of elements in the sequence.
      */
-    func permutations(length: Int? = nil, repeatingElements: Bool) -> [[Iterator.Element]] {
+    func permutations(length: Int? = nil, repeatingElements: Bool = false) -> [[Iterator.Element]] {
         return Array(Permutations(sequence: self, length: length, repeatingElements: repeatingElements))
     }
 }
@@ -57,7 +57,7 @@ public struct Permutations<S: Sequence>: IteratorProtocol, Sequence {
     private let repeatingElements: Bool
     private var indicesIterator: CartesianProduct<CountableRange<Int>>
 
-    init(sequence: S, length: Int?, repeatingElements: Bool) {
+    public init(sequence: S, length: Int?, repeatingElements: Bool) {
         values = Array(sequence)
 
         if let length = length {
@@ -71,16 +71,20 @@ public struct Permutations<S: Sequence>: IteratorProtocol, Sequence {
     }
 
     public mutating func next() -> [S.Iterator.Element]? {
-        var indices: [Int]
-
-        repeat {
-            guard let nextIndices = indicesIterator.next() else {
+        // while prevents recursion with repeated elements
+        while true {
+            guard let indices = indicesIterator.next() else {
                 return nil
             }
-            indices = nextIndices
-        } while !repeatingElements && Set(indices).count == permutationLength
 
-        let permutation = indices.map { values[$0] }
-        return permutation.isEmpty ? nil : permutation
+            if !repeatingElements {
+                guard Set(indices).count == permutationLength else {
+                    continue
+                }
+            }
+
+            let permutation = indices.map { values[$0] }
+            return permutation.isEmpty ? nil : permutation
+        }
     }
 }

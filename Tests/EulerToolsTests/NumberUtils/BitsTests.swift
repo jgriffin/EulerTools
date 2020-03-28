@@ -1,0 +1,53 @@
+//
+//  BitsTests.swift
+//  ProjectEulerTests
+//
+//  Created by John Griffin on 4/1/19.
+//  Copyright © 2019 Fofu Enterprises. All rights reserved.
+//
+
+import EulerTools
+import XCTest
+
+class BitsTests: XCTestCase {
+    func testCountBits() {
+        let tests: [(test: Int, check: Int)] = [
+            (0, 0), (1, 1), (2, 1), (3, 2),
+        ]
+        tests.forEach { test, check in
+            let result = Bits.countBits(test)
+            XCTAssertEqual(result, check, "countBits of \(test)")
+        }
+    }
+
+    func testIndicesOfSetBits() {
+        let tests: [(test: Int, check: [Int])] = [
+            (0, []), (1, [0]), (2, [1]), (3, [1, 0]),
+        ]
+        tests.forEach { test, check in
+            let result = Bits.indicesOfSetBits(test)
+            XCTAssertEqual(result, check, "countBits of \(test)")
+        }
+    }
+
+    func testIndicesOfSetBitsBigInt() {
+        let tests: [(test: _BigInt<UInt64>, check: [Int])] = [
+            (0, []), (1, [0]), (2, [1]), (3, [1, 0]),
+        ]
+        tests.forEach { test, check in
+            let result = test.indiciesForSetBits()
+            XCTAssertEqual(result, check, "countBits of \(test)")
+        }
+    }
+
+    func testIndicesOfSetBitsBigIntShifted() {
+        let tests: [(test: _BigInt<UInt64>, check: [Int])] = [
+            (0, []), (1, [64]), (2, [65]), (3, [65, 64]),
+        ]
+        tests.forEach { test, check in
+            let test2 = test * (1 << 64)
+            let result = test2.indiciesForSetBits()
+            XCTAssertEqual(result, check, "countBits of \(test2)")
+        }
+    }
+}

@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct Digits {
-    static func powerOfTenBigger<T: BinaryInteger>(than n: T) -> T {
+public struct Digits {
+    public static func powerOfTenBigger<T: BinaryInteger>(than n: T) -> T {
         var pow: T = 1
         repeat {
             pow *= 10
@@ -17,7 +17,7 @@ struct Digits {
         return pow
     }
 
-    static func digitsOf<T: BinaryInteger, R: BinaryInteger>(_ n: T) -> [R] {
+    public static func digitsOf<T: BinaryInteger, R: BinaryInteger>(_ n: T) -> [R] {
         var digits = [R]()
         var m = n
         while m > 0 {
@@ -27,7 +27,7 @@ struct Digits {
         return digits.reversed()
     }
 
-    static func digitCountOf<T: BinaryInteger, R: BinaryInteger>(_ n: T) -> R {
+    public static func digitCountOf<T: BinaryInteger, R: BinaryInteger>(_ n: T) -> R {
         var digitCount = R(0)
         var m = n
         while m > 0 {
@@ -35,5 +35,16 @@ struct Digits {
             m /= 10
         }
         return digitCount
+    }
+
+    public static func sumOfDigits<T: BinaryInteger>(_ n: T) -> T {
+        assert(n >= 0)
+        var sum: T = 0
+        var remain = n
+        while remain != 0 {
+            sum += remain % 10
+            remain /= 10
+        }
+        return sum
     }
 }
