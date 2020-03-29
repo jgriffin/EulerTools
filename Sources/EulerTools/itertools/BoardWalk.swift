@@ -22,15 +22,36 @@ public class BoardWalk {
 
     public typealias BoardSize = (rows: Int, cols: Int)
     public typealias Step = (dx: Int, dy: Int)
+    public typealias Path = [Square]
+
+    // MARK: index helpers
+
+    // MARK: index helpers
+
+    public func allSquares() -> [Square] {
+        var squares = [Square]()
+        for row in 0..<boardSize.rows {
+            for col in 0..<boardSize.cols {
+                squares.append(Square(row, col))
+            }
+        }
+        return squares
+    }
+
+    public func linearIndexForSquare(_ square: Square) -> Int {
+        return square.y * boardSize.cols + square.x
+    }
+
+    public func linearIndiciesForPath(_ path: Path) -> [Int] {
+        return path.map { linearIndexForSquare($0) }
+    }
 
     public static let squareSteps: [Step] = [(0, -1), (0, 1), (-1, 0), (1, 0)]
-    public static let diagonalSteps: [Step] = [(1, -1), (1, 1), (-1, 1), (-1, 1)]
+    public static let diagonalSteps: [Step] = [(1, -1), (1, 1), (-1, 1), (-1, -1)]
     public static let squareAndDiagonalSteps: [Step] = squareSteps + diagonalSteps
 }
 
 extension BoardWalk {
-    public typealias Path = [Square]
-
     public struct Square: Equatable, CustomStringConvertible {
         public let x, y: Int
 

@@ -70,7 +70,7 @@ public struct Trie {
     
     public func suffixTrie(withPrefix prefix: Substring) -> Trie? {
         guard let firstCh = prefix.first else {
-            return isLeaf ? self : nil
+            return self
         }
         return suffixTriesByCh[firstCh]?.suffixTrie(withPrefix: prefix.dropFirst())
     }

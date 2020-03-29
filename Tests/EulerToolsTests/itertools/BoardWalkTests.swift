@@ -12,9 +12,8 @@ class BoardWalkTests: XCTestCase {
     typealias Sq = BoardWalk.Square
     typealias Path = [Sq]
     
-    
     let boardWalk3x3Square = BoardWalk(boardSize: (rows: 3, cols: 3),
-                                        allowedSteps: BoardWalk.squareSteps)
+                                       allowedSteps: BoardWalk.squareSteps)
     
     func testStepper() {
         let tests: [(start: Sq, check: [Sq])] = [
@@ -39,8 +38,7 @@ class BoardWalkTests: XCTestCase {
                                       onBoard: boardWalk3x3Square,
                                       isDeadEndPath: { path in path.count > 3 })
         let paths = Array(walker)
-        let boogglePaths = paths.map { bogglePath($0) }
-
+        
         let check: [Path] = [
             [Sq(0, 0), Sq(0, 1)],
             [Sq(0, 0), Sq(0, 1), Sq(0, 2)],
@@ -50,21 +48,7 @@ class BoardWalkTests: XCTestCase {
             [Sq(0, 0), Sq(1, 0), Sq(2, 0)],
         ]
         
-        
         XCTAssertEqual(paths, check)
-        XCTAssertEqual(boogglePaths, ["ad", "adg", "ade", "ab", "abe", "abc"])
     }
     
-    
-    func bogglePath(_ path: Path) -> String {
-        String(path.map { boggleLetter($0) })
-    }
-
-    static let boogleLetters = Array("abcdefghi")
-    
-    func boggleLetter(_ square: Sq) -> Character {
-        let boogleIndex = square.y * 3 + square.x
-        return Self.boogleLetters[boogleIndex]
-    }
-
 }
