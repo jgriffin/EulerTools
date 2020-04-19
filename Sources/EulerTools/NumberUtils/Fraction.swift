@@ -7,30 +7,89 @@
 
 import Foundation
 
-public struct Fraction<T: SignedInteger>: Equatable, CustomStringConvertible, CustomDebugStringConvertible {
+public typealias Fraction = Fractional<Int>
+
+public struct Fractional<T: SignedInteger>: Equatable, CustomStringConvertible, CustomDebugStringConvertible {
     public typealias Component = T
     public let num: T
     public let den: T
+
+    public init(num: T, den: T = 1) {
+        if den > 0 {
+            self.num = num
+            self.den = den
+        } else {
+            self.num = -num
+            self.den = -den
+        }
+
+        assert(isValid)
+    }
 
     public var description: String { return "(\(num)/\(den))" }
     public var debugDescription: String { return "(\(num)/\(den))" }
 }
 
-extension Fraction {
-    public init(_ num: Self.Component, _ den: Self.Component = 1) {
+extension Fractional {
+    public init(_ num: T, _ den: T = 1) {
         self.init(num: num, den: den)
     }
 
-    public static func + (_ left: Fraction, _ right: Fraction) -> Fraction {
-        if left.den == right.den {
-            return Fraction(num: left.num + right.num, den: left.den)
+    public var reciprocal: Fractional {
+        return Fractional(num: den, den: num)
+    }
+
+    public var reduced: Fractional {
+        let divisor = GCD(num, den)
+        return Fractional(num / divisor, den / divisor)
+    }
+
+    public var isReduced: Bool {
+        return abs(GCD(num, den)) == 1
+    }
+
+    public var negate: Fractional {
+        return Fractional(num: -num, den: den)
+    }
+}
+
+extension Fractional {
+    public static func + (_ lhs: Fractional, _ rhs: Fractional) -> Fractional {
+        if lhs.num == 0 {
+            return rhs
+        }
+        if rhs.num == 0 {
+            return lhs
         }
 
-        let denGCD = GCD(left.den, right.den)
-        let denLCM = (left.den * right.den) / denGCD
-        let leftNum = left.num * (denLCM / left.den)
-        let rightNum = right.num * (denLCM / right.den)
+        if lhs.den == rhs.den {
+            return Fractional(num: lhs.num + rhs.num, den: lhs.den)
+        }
 
-        return Fraction(num: leftNum + rightNum, den: denLCM)
+        let denGCD = GCD(lhs.den, rhs.den)
+        let denLCM = (lhs.den * rhs.den) / denGCD
+        let leftNum = lhs.num * (denLCM / lhs.den)
+        let rightNum = rhs.num * (denLCM / rhs.den)
+
+        return Fractional(num: leftNum + rightNum, den: denLCM)
+    }
+
+    public static prefix func - (_ f: Fractional) -> Fractional { f.negate }
+
+    public static func - (_ lhs: Fractional, _ rhs: Fractional) -> Fractional {
+        return lhs + rhs.negate
+    }
+
+    public static func * (lhs: Fractional, rhs: Fractional) -> Fractional {
+        return Fractional(num: lhs.num * rhs.num,
+                          den: lhs.den * rhs.den)
+    }
+}
+
+extension Fractional {
+    var isValid: Bool {
+        guard den > 0 else { return false }
+
+        return true
     }
 }
