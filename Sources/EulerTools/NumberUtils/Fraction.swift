@@ -9,8 +9,11 @@ import Foundation
 
 public typealias Fraction = Fractional<Int>
 
-public struct Fractional<T: SignedInteger>: Equatable, CustomStringConvertible, CustomDebugStringConvertible {
+public struct Fractional<T: SignedInteger>:
+Equatable, ExpressibleByIntegerLiteral, CustomStringConvertible, CustomDebugStringConvertible {
     public typealias Component = T
+    public typealias IntegerLiteralType = Int
+
     public let num: T
     public let den: T
 
@@ -26,15 +29,19 @@ public struct Fractional<T: SignedInteger>: Equatable, CustomStringConvertible, 
         assert(isValid)
     }
 
+    public init(_ num: T, _ den: T = 1) {
+        self.init(num: num, den: den)
+    }
+
+    public init(integerLiteral: Self.IntegerLiteralType) {
+        self.init(num: Component(integerLiteral))
+    }
+
     public var description: String { return "(\(num)/\(den))" }
     public var debugDescription: String { return "(\(num)/\(den))" }
 }
 
 extension Fractional {
-    public init(_ num: T, _ den: T = 1) {
-        self.init(num: num, den: den)
-    }
-
     public var reciprocal: Fractional {
         return Fractional(num: den, den: num)
     }
@@ -83,6 +90,10 @@ extension Fractional {
     public static func * (lhs: Fractional, rhs: Fractional) -> Fractional {
         return Fractional(num: lhs.num * rhs.num,
                           den: lhs.den * rhs.den)
+    }
+
+    public static func / (lhs: Fractional, rhs: Fractional) -> Fractional {
+        return lhs * rhs.reciprocal
     }
 }
 
