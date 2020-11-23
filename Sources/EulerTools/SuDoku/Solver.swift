@@ -74,7 +74,7 @@ extension SuDoku {
 
             for (index, digit) in current.digits.enumerated() where digit == 0 {
                 let digits = currentGrid.availableMask(for: index).availableDigits
-                if digits.count < (fewest.flatMap { $0.digits.count } ?? 10) {
+                if digits.count < (fewest.flatMap(\.digits.count) ?? 10) {
                     fewest = (index, digits)
                 }
             }

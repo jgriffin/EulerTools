@@ -37,7 +37,7 @@ extension Primes {
             throw MillerRabinError.primeLowAccuracy
         }
 
-        let s: UInt = UInt((n - 1).trailingZeroBitCount)
+        let s = UInt((n - 1).trailingZeroBitCount)
         let d: UInt = (n - 1) >> s
 
         guard UInt(pow(2.0, Double(s))) * d == n - 1 else { throw MillerRabinError.primeLowerBorder }

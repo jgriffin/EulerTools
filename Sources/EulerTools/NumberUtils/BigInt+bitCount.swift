@@ -10,7 +10,7 @@ import Foundation
 
 extension _BigInt {
     public var nonzeroBitCount: Int {
-        return _data.reduce(0) { result, w in result + w.nonzeroBitCount }
+        _data.reduce(0) { result, w in result + w.nonzeroBitCount }
     }
 
     // return the indicies of set bits from left to right

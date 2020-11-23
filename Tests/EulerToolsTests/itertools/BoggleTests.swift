@@ -42,14 +42,14 @@ import XCTest
 class BoggleTests: XCTestCase {
     func testBoggleExample() {
         let trie = Trie.fromStrings(["GEEKS", "FOR", "QUIZ", "GO"])
-        let boggleBoard = BoggleBoard(boardSize: (3,3),
+        let boggleBoard = BoggleBoard(boardSize: (3, 3),
                                       wordsTrie: trie)
-        
+
         let words = boggleBoard.findWords(in: Array("GIZUEKQSE"))
-        
+
         XCTAssertEqual(words, ["GEEKS", "QUIZ"])
     }
-    
+
 //    let boogglePaths = paths.map { bogglePath($0) }
 //    XCTAssertEqual(boogglePaths, ["ad", "adg", "ade", "ab", "abe", "abc"])
 }

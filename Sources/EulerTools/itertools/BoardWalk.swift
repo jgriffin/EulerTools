@@ -30,8 +30,8 @@ public class BoardWalk {
 
     public func allSquares() -> [Square] {
         var squares = [Square]()
-        for row in 0..<boardSize.rows {
-            for col in 0..<boardSize.cols {
+        for row in 0 ..< boardSize.rows {
+            for col in 0 ..< boardSize.cols {
                 squares.append(Square(row, col))
             }
         }
@@ -39,11 +39,11 @@ public class BoardWalk {
     }
 
     public func linearIndexForSquare(_ square: Square) -> Int {
-        return square.y * boardSize.cols + square.x
+        square.y * boardSize.cols + square.x
     }
 
     public func linearIndiciesForPath(_ path: Path) -> [Int] {
-        return path.map { linearIndexForSquare($0) }
+        path.map { linearIndexForSquare($0) }
     }
 
     public static let squareSteps: [Step] = [(0, -1), (0, 1), (-1, 0), (1, 0)]
@@ -61,12 +61,13 @@ extension BoardWalk {
         }
 
         public func move(_ step: Step) -> Square {
-            return Square(x + step.dx, y + step.dy)
+            Square(x + step.dx, y + step.dy)
         }
 
         public func ifValidOn(_ boardSize: BoardSize) -> Square? {
             guard x.isBetween(lower: 0, upper: boardSize.cols),
-                y.isBetween(lower: 0, upper: boardSize.rows) else {
+                y.isBetween(lower: 0, upper: boardSize.rows)
+            else {
                 return nil
             }
             return self
@@ -82,7 +83,8 @@ extension BoardWalk {
         public let board: BoardWalk
 
         public init(from square: Square,
-                    onBoard board: BoardWalk) {
+                    onBoard board: BoardWalk)
+        {
             self.square = square
             self.board = board
         }
@@ -102,7 +104,8 @@ extension BoardWalk {
                 }
                 guard let nextSquare = square
                     .move(nextStep)
-                    .ifValidOn(board.boardSize) else {
+                    .ifValidOn(board.boardSize)
+                else {
                     continue
                 }
                 return nextSquare
@@ -112,7 +115,7 @@ extension BoardWalk {
         // MARK: sequence
 
         public func makeIterator() -> BoardWalk.Stepper {
-            return Stepper(from: square, onBoard: board)
+            Stepper(from: square, onBoard: board)
         }
     }
 
@@ -127,7 +130,8 @@ extension BoardWalk {
 
         public init(from square: Square,
                     onBoard board: BoardWalk,
-                    isDeadEndPath: IsDeadEndPath?) {
+                    isDeadEndPath: IsDeadEndPath?)
+        {
             staringSquare = square
             self.board = board
             self.isDeadEndPath = isDeadEndPath
@@ -163,7 +167,7 @@ extension BoardWalk {
                 // setup stepper for next iteration
                 squareSteppers.append(Stepper(from: nextSquare, onBoard: board))
 
-                let path = squareSteppers.map { $0.square }
+                let path = squareSteppers.map(\.square)
 
                 if isDeadEndPath?(path) == true {
                     // prune this path
@@ -179,9 +183,9 @@ extension BoardWalk {
         // MARK: sequence
 
         public func makeIterator() -> Walker {
-            return Walker(from: staringSquare,
-                          onBoard: board,
-                          isDeadEndPath: isDeadEndPath)
+            Walker(from: staringSquare,
+                   onBoard: board,
+                   isDeadEndPath: isDeadEndPath)
         }
     }
 }

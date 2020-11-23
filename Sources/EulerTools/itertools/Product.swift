@@ -21,7 +21,7 @@ import Foundation
  - Returns: An iterator-sequence for the Cartesian product of the sequences.
  */
 public func product<S: Sequence>(_ sequences: S...) -> CartesianProduct<S> {
-    return CartesianProduct(sequences)
+    CartesianProduct(sequences)
 }
 
 /**
@@ -53,7 +53,7 @@ public func product<S: Sequence>(_ sequence: S, repeated: Int) -> CartesianProdu
  */
 public func mixedProduct<S1: Sequence, S2: Sequence>(_ firstSequence: S1, _ secondSequence: S2) -> MixedTypeCartesianProduct<S1, S2> {
     // If this function is named `product`, "ambiguous reference to `product`" error can occur
-    return MixedTypeCartesianProduct(firstSequence, secondSequence)
+    MixedTypeCartesianProduct(firstSequence, secondSequence)
 }
 
 /// An iterator-sequence for the Cartesian product of multiple sequences of the same type.

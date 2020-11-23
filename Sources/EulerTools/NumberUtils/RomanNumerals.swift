@@ -21,7 +21,7 @@ public class RomanNumerals {
         }
 
     public static func intValue<T: BidirectionalCollection>(of roman: T) -> Int where T.Element == String.Element {
-        return roman.reduce(0) { result, ch in
+        roman.reduce(0) { result, ch in
             guard let v = romanValues.first(where: { $0.char == ch })?.val else { fatalError() }
             let inc = v - 2 * (result % v)
             return result + inc

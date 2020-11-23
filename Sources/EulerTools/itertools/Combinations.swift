@@ -26,9 +26,9 @@ public extension Sequence {
      - Returns: An array containing the combinations of the specified length of elements in the sequence.
      */
     func combinations(length: Int, repeatingElements: Bool = false) -> [[Iterator.Element]] {
-        return Array(Combinations(sequence: self,
-                                  length: length,
-                                  repeatingElements: repeatingElements))
+        Array(Combinations(sequence: self,
+                           length: length,
+                           repeatingElements: repeatingElements))
     }
 }
 
@@ -47,7 +47,7 @@ public extension LazySequenceProtocol {
      - Returns: An an iterator-sequence that returns the combinations of the specified length of elements in the sequence.
      */
     func combinations(length: Int, repeatingElements: Bool) -> Combinations<Self> {
-        return Combinations(sequence: self, length: length, repeatingElements: repeatingElements)
+        Combinations(sequence: self, length: length, repeatingElements: repeatingElements)
     }
 }
 

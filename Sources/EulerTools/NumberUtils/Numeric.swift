@@ -10,11 +10,11 @@ import Foundation
 
 extension Numeric where Self: Comparable {
     public func isBetween(lower: Self, upper: Self) -> Bool {
-        return lower <= self && self < upper
+        lower <= self && self < upper
     }
 
     public func isBetween(lower: Self, upperIncl: Self) -> Bool {
-        return lower <= self && self <= upperIncl
+        lower <= self && self <= upperIncl
     }
 
     public func makeBetween(lower: Self, upperIncl: Self) -> Self {

@@ -40,7 +40,7 @@ extension SuDoku {
 }
 
 extension SuDoku.DigitMask: CustomStringConvertible {
-    private var isSingleBit: Bool { return rawValue != 0 && ((rawValue - 1) & rawValue) == 0 }
+    private var isSingleBit: Bool { rawValue != 0 && ((rawValue - 1) & rawValue) == 0 }
 
     public var singleDigit: SuDoku.Digit? {
         guard isSingleBit else { return nil }
@@ -48,7 +48,7 @@ extension SuDoku.DigitMask: CustomStringConvertible {
     }
 
     public var availableDigits: [SuDoku.Digit] {
-        return (1 ... 9).filter { self.contains(SuDoku.DigitMask(number: $0)) }
+        (1 ... 9).filter { self.contains(SuDoku.DigitMask(number: $0)) }
     }
 
     public var description: String {

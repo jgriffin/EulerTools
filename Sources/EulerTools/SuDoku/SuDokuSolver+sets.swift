@@ -10,7 +10,7 @@ import Foundation
 
 extension SuDoku.Solver {
     static func groupSets(for board: SuDoku.Board) -> [Set<UInt8>] {
-        return groupIndices.map { indices in
+        groupIndices.map { indices in
             Set(indices.map { board.digits[$0] })
         }
     }

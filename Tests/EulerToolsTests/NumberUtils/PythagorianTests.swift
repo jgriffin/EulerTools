@@ -37,7 +37,7 @@ class PythagorianTests: XCTestCase {
         XCTAssertEqual(outOfOrderCount, 7)
 
         // and c's may not be unique
-        let cs = tripples.map { $0.c }
+        let cs = tripples.map(\.c)
         XCTAssertEqual(cs.count - Set(cs).count, 7)
     }
 

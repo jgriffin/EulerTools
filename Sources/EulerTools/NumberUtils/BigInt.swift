@@ -32,7 +32,8 @@
 extension FixedWidthInteger {
     /// Returns the high and low parts of a potentially overflowing addition.
     func addingFullWidth(_ other: Self) ->
-        (high: Self, low: Self) {
+        (high: Self, low: Self)
+    {
         let sum = addingReportingOverflow(other)
         return (sum.overflow ? 1 : 0, sum.partialValue)
     }
@@ -40,7 +41,8 @@ extension FixedWidthInteger {
     /// Returns the high and low parts of two seqeuential potentially overflowing
     /// additions.
     static func addingFullWidth(_ x: Self, _ y: Self, _ z: Self) ->
-        (high: Self, low: Self) {
+        (high: Self, low: Self)
+    {
         let xy = x.addingReportingOverflow(y)
         let xyz = xy.partialValue.addingReportingOverflow(z)
         let high: Self = (xy.overflow ? 1 : 0) +
@@ -51,7 +53,8 @@ extension FixedWidthInteger {
     /// Returns a tuple containing the value that would be borrowed from a higher
     /// place and the partial difference of this value and `rhs`.
     func subtractingWithBorrow(_ rhs: Self) ->
-        (borrow: Self, partialValue: Self) {
+        (borrow: Self, partialValue: Self)
+    {
         let difference = subtractingReportingOverflow(rhs)
         return (difference.overflow ? 1 : 0, difference.partialValue)
     }
@@ -59,7 +62,8 @@ extension FixedWidthInteger {
     /// Returns a tuple containing the value that would be borrowed from a higher
     /// place and the partial value of `x` and `y` subtracted from this value.
     func subtractingWithBorrow(_ x: Self, _ y: Self) ->
-        (borrow: Self, partialValue: Self) {
+        (borrow: Self, partialValue: Self)
+    {
         let firstDifference = subtractingReportingOverflow(x)
         let secondDifference =
             firstDifference.partialValue.subtractingReportingOverflow(y)
@@ -79,7 +83,8 @@ extension FixedWidthInteger {
 public struct _BigInt<Word: FixedWidthInteger>:
     BinaryInteger, SignedInteger, CustomStringConvertible,
     CustomDebugStringConvertible
-    where Word.Magnitude == Word {
+    where Word.Magnitude == Word
+{
     /// The binary representation of the value's magnitude, with the least
     /// significant word at index `0`.
     ///
@@ -92,7 +97,7 @@ public struct _BigInt<Word: FixedWidthInteger>:
 
     /// A Boolean value indicating whether this instance is equal to zero.
     public var isZero: Bool {
-        return _data.count == 0
+        _data.count == 0
     }
 
     //===--- Numeric initializers -------------------------------------------===//
@@ -173,7 +178,7 @@ public struct _BigInt<Word: FixedWidthInteger>:
             randomBits.quotientAndRemainder(dividingBy: Word.bitWidth)
 
         // Get the bits for any full words.
-        self._data = (0 ..< words).map { _ in _BigInt._randomWord() }
+        _data = (0 ..< words).map { _ in _BigInt._randomWord() }
 
         // Get another random number - the highest bit will determine the sign,
         // while the lower `Word.bitWidth - 1` bits are available for any leftover
@@ -551,7 +556,7 @@ public struct _BigInt<Word: FixedWidthInteger>:
             break
         }
 
-        var tempSelf = self.magnitude
+        var tempSelf = magnitude
         let n = tempSelf.bitWidth - rhs.magnitude.bitWidth
         var quotient: _BigInt = 0
         var tempRHS = rhs.magnitude << n
@@ -567,7 +572,7 @@ public struct _BigInt<Word: FixedWidthInteger>:
         }
 
         // `tempSelf` is the remainder - match sign of original `self`
-        tempSelf.isNegative = self.isNegative
+        tempSelf.isNegative = isNegative
         tempSelf._standardize()
 
         quotient.isNegative = isNegative != rhs.isNegative
@@ -625,7 +630,7 @@ public struct _BigInt<Word: FixedWidthInteger>:
         isNegative = _twosComplementData.last!.leadingZeroBitCount == 0
         if isNegative {
             _data = _twosComplementData.map(~)
-            self._unsignedAdd(1 as Word)
+            _unsignedAdd(1 as Word)
         } else {
             _data = _twosComplementData
         }
@@ -725,7 +730,8 @@ public struct _BigInt<Word: FixedWidthInteger>:
     }
 
     public func quotientAndRemainder(dividingBy rhs: _BigInt) ->
-        (_BigInt, _BigInt) {
+        (_BigInt, _BigInt)
+    {
         var x = self
         let r = x._internalDivide(by: rhs)
         return (x, r)
@@ -829,7 +835,7 @@ public struct _BigInt<Word: FixedWidthInteger>:
     }
 
     public static prefix func ~ (x: _BigInt) -> _BigInt {
-        return -x - 1
+        -x - 1
     }
 
     //===--- SignedNumeric --------------------------------------------------===//
@@ -841,11 +847,11 @@ public struct _BigInt<Word: FixedWidthInteger>:
 
     //===--- Strideable -----------------------------------------------------===//
     public func distance(to other: _BigInt) -> _BigInt {
-        return other - self
+        other - self
     }
 
     public func advanced(by n: _BigInt) -> _BigInt {
-        return self + n
+        self + n
     }
 
     //===--- Other arithmetic -----------------------------------------------===//
@@ -859,7 +865,7 @@ public struct _BigInt<Word: FixedWidthInteger>:
             return other.magnitude
         }
 
-        var (x, y) = (self.magnitude, other.magnitude)
+        var (x, y) = (magnitude, other.magnitude)
         let (xLSB, yLSB) = (x.trailingZeroBitCount, y.trailingZeroBitCount)
 
         // Remove any common factor of two
@@ -941,11 +947,11 @@ public struct _BigInt<Word: FixedWidthInteger>:
             guard let v = v else { return nil }
             guard v < radix else { return nil }
 
-            self.multiply(by: radix)
-            self.add(v)
+            multiply(by: radix)
+            add(v)
         }
 
-        self.isNegative = negative
+        isNegative = negative
     }
 
     /// Returns a string representation of this instance.
@@ -962,7 +968,7 @@ public struct _BigInt<Word: FixedWidthInteger>:
         let digitsStart = ("0" as Unicode.Scalar).value
         let lettersStart = ((lowercase ? "a" : "A") as Unicode.Scalar).value - 10
         func toLetter(_ x: UInt32) -> Unicode.Scalar {
-            return x < 10
+            x < 10
                 ? Unicode.Scalar(digitsStart + x)!
                 : Unicode.Scalar(lettersStart + x)!
         }
@@ -970,7 +976,7 @@ public struct _BigInt<Word: FixedWidthInteger>:
         let radix = _BigInt(radix)
         var result: [Unicode.Scalar] = []
 
-        var x = self.magnitude
+        var x = magnitude
         while !x.isZero {
             let remainder: _BigInt
             (x, remainder) = x.quotientAndRemainder(dividingBy: radix)
@@ -985,31 +991,31 @@ public struct _BigInt<Word: FixedWidthInteger>:
     }
 
     public var description: String {
-        return decimalString
+        decimalString
     }
 
     public var debugDescription: String {
-        return "_BigInt(\(hexString), words: \(_data.count))"
+        "_BigInt(\(hexString), words: \(_data.count))"
     }
 
     /// A string representation of this instance's value in base 2.
     public var binaryString: String {
-        return toString(radix: 2)
+        toString(radix: 2)
     }
 
     /// A string representation of this instance's value in base 10.
     public var decimalString: String {
-        return toString(radix: 10)
+        toString(radix: 10)
     }
 
     /// A string representation of this instance's value in base 16.
     public var hexString: String {
-        return toString(radix: 16, lowercase: false)
+        toString(radix: 16, lowercase: false)
     }
 
     /// A string representation of this instance's value in base 36.
     public var compactString: String {
-        return toString(radix: 36, lowercase: false)
+        toString(radix: 36, lowercase: false)
     }
 
     //===--- Comparable -----------------------------------------------------===//
@@ -1051,11 +1057,11 @@ public struct _BigInt<Word: FixedWidthInteger>:
     }
 
     public static func == (lhs: _BigInt, rhs: _BigInt) -> Bool {
-        return lhs._compare(to: rhs) == .equal
+        lhs._compare(to: rhs) == .equal
     }
 
     public static func < (lhs: _BigInt, rhs: _BigInt) -> Bool {
-        return lhs._compare(to: rhs) == .lessThan
+        lhs._compare(to: rhs) == .lessThan
     }
 
     //===--- Hashable -------------------------------------------------------===//
@@ -1216,51 +1222,51 @@ struct Bit: FixedWidthInteger, UnsignedInteger {
 
     // FixedWidthInteger, BinaryInteger
     static var bitWidth: Int {
-        return 1
+        1
     }
 
     var bitWidth: Int {
-        return 1
+        1
     }
 
     var trailingZeroBitCount: Int {
-        return Int(~value & 1)
+        Int(~value & 1)
     }
 
     static var max: Bit {
-        return 1
+        1
     }
 
     static var min: Bit {
-        return 0
+        0
     }
 
     static var isSigned: Bool {
-        return false
+        false
     }
 
     var nonzeroBitCount: Int {
-        return value.nonzeroBitCount
+        value.nonzeroBitCount
     }
 
     var leadingZeroBitCount: Int {
-        return Int(~value & 1)
+        Int(~value & 1)
     }
 
     var bigEndian: Bit {
-        return self
+        self
     }
 
     var littleEndian: Bit {
-        return self
+        self
     }
 
     var byteSwapped: Bit {
-        return self
+        self
     }
 
     var words: UInt.Words {
-        return UInt(value).words
+        UInt(value).words
     }
 
     // Hashable, CustomStringConvertible
@@ -1269,7 +1275,7 @@ struct Bit: FixedWidthInteger, UnsignedInteger {
     }
 
     var description: String {
-        return "\(value)"
+        "\(value)"
     }
 
     // Arithmetic Operations / Operators
@@ -1279,30 +1285,35 @@ struct Bit: FixedWidthInteger, UnsignedInteger {
     }
 
     func addingReportingOverflow(_ rhs: Bit) ->
-        (partialValue: Bit, overflow: Bool) {
+        (partialValue: Bit, overflow: Bool)
+    {
         let result = value &+ rhs.value
         return (Bit(result & 1), _checkOverflow(result))
     }
 
     func subtractingReportingOverflow(_ rhs: Bit) ->
-        (partialValue: Bit, overflow: Bool) {
+        (partialValue: Bit, overflow: Bool)
+    {
         let result = value &- rhs.value
         return (Bit(result & 1), _checkOverflow(result))
     }
 
     func multipliedReportingOverflow(by rhs: Bit) ->
-        (partialValue: Bit, overflow: Bool) {
+        (partialValue: Bit, overflow: Bool)
+    {
         let result = value &* rhs.value
         return (Bit(result), false)
     }
 
     func dividedReportingOverflow(by rhs: Bit) ->
-        (partialValue: Bit, overflow: Bool) {
+        (partialValue: Bit, overflow: Bool)
+    {
         return (self, rhs != 0)
     }
 
     func remainderReportingOverflow(dividingBy _: Bit) ->
-        (partialValue: Bit, overflow: Bool) {
+        (partialValue: Bit, overflow: Bool)
+    {
         fatalError()
     }
 
@@ -1340,7 +1351,8 @@ struct Bit: FixedWidthInteger, UnsignedInteger {
     }
 
     func dividingFullWidth(_ dividend: (high: Bit, low: Bit)) ->
-        (quotient: Bit, remainder: Bit) {
+        (quotient: Bit, remainder: Bit)
+    {
         assert(self != 0, "Division overflow")
         assert(dividend.high == 0, "Quotient overflow")
         return (dividend.low, 0)
@@ -1379,7 +1391,7 @@ struct Bit: FixedWidthInteger, UnsignedInteger {
 
     // Bitwise operators
     static prefix func ~ (x: Bit) -> Bit {
-        return Bit(~x.value & 1)
+        Bit(~x.value & 1)
     }
 
     // Why doesn't the type checker complain about these being missing?
@@ -1396,19 +1408,19 @@ struct Bit: FixedWidthInteger, UnsignedInteger {
     }
 
     static func == (lhs: Bit, rhs: Bit) -> Bool {
-        return lhs.value == rhs.value
+        lhs.value == rhs.value
     }
 
     static func < (lhs: Bit, rhs: Bit) -> Bool {
-        return lhs.value < rhs.value
+        lhs.value < rhs.value
     }
 
     static func << (lhs: Bit, rhs: Bit) -> Bit {
-        return rhs == 0 ? lhs : 0
+        rhs == 0 ? lhs : 0
     }
 
     static func >> (lhs: Bit, rhs: Bit) -> Bit {
-        return rhs == 0 ? lhs : 0
+        rhs == 0 ? lhs : 0
     }
 
     static func <<= (lhs: inout Bit, rhs: Bit) {

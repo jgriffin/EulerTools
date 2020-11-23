@@ -25,7 +25,7 @@ public class FixedWidthFactors<I: FixedWidthInteger> {
             guard halfn >= 2 else {
                 return []
             }
-            let factors = (2...halfn).filter { n % $0 == 0 }
+            let factors = (2 ... halfn).filter { n % $0 == 0 }
             return factors
         }
     }
@@ -34,7 +34,8 @@ public class FixedWidthFactors<I: FixedWidthInteger> {
 
     // prime factors excludes the number itself if it is prime
     public func primeFactors<A: RandomAccessCollection>(of n: I, from primes: A) -> [I]
-        where A.Element == I, A.Index: Strideable {
+        where A.Element == I, A.Index: Strideable
+    {
         if n == 0 || n == 1 {
             return []
         }

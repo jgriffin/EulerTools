@@ -53,7 +53,8 @@ public struct Pythagorian {
                 let c = (m * m + n * n) / 2
 
                 guard sideMax.flatMap({ a <= $0 }) ?? true,
-                    cMax.flatMap({ c <= $0 }) ?? true else {
+                    cMax.flatMap({ c <= $0 }) ?? true
+                else {
                     break
                 }
 
@@ -79,7 +80,8 @@ public struct Pythagorian {
             var k = 2
             while true {
                 guard sideMax.flatMap({ k * primitive.b <= $0 }) ?? true,
-                    cMax.flatMap({ k * primitive.c <= $0 }) ?? true else {
+                    cMax.flatMap({ k * primitive.c <= $0 }) ?? true
+                else {
                     break
                 }
                 tripples.append(Tripple(a: k * primitive.a,

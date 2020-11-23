@@ -11,13 +11,14 @@ import Foundation
 extension RandomAccessCollection {
     /// Finds index where e exists or would be inserted
     public func binarySearch<E: Comparable>(indexFor e: E) -> Index? where E == Element {
-        return binarySearch(predicate: { $0 < e })
+        binarySearch(predicate: { $0 < e })
     }
 
     /// Finds index where e exists or nil
     public func binarySearch<E: Comparable>(equal e: E) -> Index? where E == Element {
         guard let index = binarySearch(predicate: { $0 < e }),
-            self[index] == e else {
+            self[index] == e
+        else {
             return nil
         }
         return index

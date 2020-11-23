@@ -10,7 +10,8 @@ import Foundation
 public typealias Fraction = Fractional<Int>
 
 public struct Fractional<T: SignedInteger>:
-Equatable, ExpressibleByIntegerLiteral, CustomStringConvertible, CustomDebugStringConvertible {
+    Equatable, ExpressibleByIntegerLiteral, CustomStringConvertible, CustomDebugStringConvertible
+{
     public typealias Component = T
     public typealias IntegerLiteralType = Int
 
@@ -37,13 +38,13 @@ Equatable, ExpressibleByIntegerLiteral, CustomStringConvertible, CustomDebugStri
         self.init(num: Component(integerLiteral))
     }
 
-    public var description: String { return "(\(num)/\(den))" }
-    public var debugDescription: String { return "(\(num)/\(den))" }
+    public var description: String { "(\(num)/\(den))" }
+    public var debugDescription: String { "(\(num)/\(den))" }
 }
 
 extension Fractional {
     public var reciprocal: Fractional {
-        return Fractional(num: den, den: num)
+        Fractional(num: den, den: num)
     }
 
     public var reduced: Fractional {
@@ -52,11 +53,11 @@ extension Fractional {
     }
 
     public var isReduced: Bool {
-        return abs(GCD(num, den)) == 1
+        abs(GCD(num, den)) == 1
     }
 
     public var negate: Fractional {
-        return Fractional(num: -num, den: den)
+        Fractional(num: -num, den: den)
     }
 }
 
@@ -84,16 +85,16 @@ extension Fractional {
     public static prefix func - (_ f: Fractional) -> Fractional { f.negate }
 
     public static func - (_ lhs: Fractional, _ rhs: Fractional) -> Fractional {
-        return lhs + rhs.negate
+        lhs + rhs.negate
     }
 
     public static func * (lhs: Fractional, rhs: Fractional) -> Fractional {
-        return Fractional(num: lhs.num * rhs.num,
-                          den: lhs.den * rhs.den)
+        Fractional(num: lhs.num * rhs.num,
+                   den: lhs.den * rhs.den)
     }
 
     public static func / (lhs: Fractional, rhs: Fractional) -> Fractional {
-        return lhs * rhs.reciprocal
+        lhs * rhs.reciprocal
     }
 }
 

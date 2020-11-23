@@ -17,7 +17,8 @@ public class CyclicalNumbers {
     private var iterators: [AnyIterator<Int>]!
 
     public init(endOf: @escaping (Int) -> Int,
-                startOf: @escaping (Int) -> Int) {
+                startOf: @escaping (Int) -> Int)
+    {
         self.endOf = endOf
         self.startOf = startOf
     }
@@ -46,7 +47,8 @@ public class CyclicalNumbers {
 
         while !current.isEmpty {
             if current.count == cyclicLength,
-                endOf(current.last!) == startOf(current.first!) {
+                endOf(current.last!) == startOf(current.first!)
+            {
                 result.append(current)
             }
 

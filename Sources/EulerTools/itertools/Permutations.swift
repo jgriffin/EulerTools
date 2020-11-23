@@ -26,7 +26,7 @@ public extension Sequence {
      - Returns: An array containing the permutations of elements in the sequence.
      */
     func permutations(length: Int? = nil, repeatingElements: Bool = false) -> [[Iterator.Element]] {
-        return Array(Permutations(sequence: self, length: length, repeatingElements: repeatingElements))
+        Array(Permutations(sequence: self, length: length, repeatingElements: repeatingElements))
     }
 }
 
@@ -45,7 +45,7 @@ public extension LazySequenceProtocol {
      - Returns: An an iterator-sequence that returns the permutations of elements in the sequence.
      */
     func permutations(length: Int? = nil, repeatingElements: Bool) -> Permutations<Self> {
-        return Permutations(sequence: self, length: length, repeatingElements: repeatingElements)
+        Permutations(sequence: self, length: length, repeatingElements: repeatingElements)
     }
 }
 

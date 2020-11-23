@@ -17,10 +17,10 @@ extension SuDoku {
         public let name: String
         public var digits: [Digit]
 
-        public var isSolved: Bool { return !digits.contains(0) }
+        public var isSolved: Bool { !digits.contains(0) }
 
         public static func == (lhs: Board, rhs: Board) -> Bool {
-            return lhs.digits == rhs.digits
+            lhs.digits == rhs.digits
         }
 
         public static func from(string: String) -> Board {

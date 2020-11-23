@@ -132,9 +132,9 @@ class FractionTests: XCTestCase {
             XCTAssertEqual(result, test.check)
         }
     }
-    
+
     // MARK: math
-    
+
     func testFractionMath() {
         let tests: [(expression: Frac, check: Frac)] = [
             (1 + Frac(1, 2), check: Frac(3, 2)),

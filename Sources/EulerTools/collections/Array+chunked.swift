@@ -9,7 +9,7 @@ import Foundation
 
 extension Array {
     public func chunked(by chunkSize: Int) -> [[Element]] {
-        return stride(from: 0, to: count, by: chunkSize)
+        stride(from: 0, to: count, by: chunkSize)
             .map {
                 let last = Swift.min($0 + chunkSize, self.count)
                 return Array(self[$0 ..< last])

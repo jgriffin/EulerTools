@@ -14,7 +14,7 @@ public class Factorial {
     public let memoiser = Memoizer<UInt, UInt>()
 
     public func factorial(_ n: UInt) -> UInt {
-        return memoiser.memoized(n) {
+        memoiser.memoized(n) {
             if n <= 1 {
                 return 1
             }
