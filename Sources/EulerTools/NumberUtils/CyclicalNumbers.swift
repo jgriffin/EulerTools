@@ -47,7 +47,7 @@ public class CyclicalNumbers {
 
         while !current.isEmpty {
             if current.count == cyclicLength,
-                endOf(current.last!) == startOf(current.first!)
+               endOf(current.last!) == startOf(current.first!)
             {
                 result.append(current)
             }
@@ -105,7 +105,7 @@ public class CyclicalNumbers {
     }
 }
 
-extension CyclicalNumbers {
-    public static func first2Of4(_ n: Int) -> Int { n / 100 }
-    public static func last2Of4(_ n: Int) -> Int { n % 100 }
+public extension CyclicalNumbers {
+    static func first2Of4(_ n: Int) -> Int { n / 100 }
+    static func last2Of4(_ n: Int) -> Int { n % 100 }
 }

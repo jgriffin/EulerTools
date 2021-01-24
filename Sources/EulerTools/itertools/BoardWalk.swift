@@ -51,8 +51,8 @@ public class BoardWalk {
     public static let squareAndDiagonalSteps: [Step] = squareSteps + diagonalSteps
 }
 
-extension BoardWalk {
-    public struct Square: Equatable, CustomStringConvertible {
+public extension BoardWalk {
+    struct Square: Equatable, CustomStringConvertible {
         public let x, y: Int
 
         public init(_ x: Int, _ y: Int) {
@@ -66,7 +66,7 @@ extension BoardWalk {
 
         public func ifValidOn(_ boardSize: BoardSize) -> Square? {
             guard x.isBetween(lower: 0, upper: boardSize.cols),
-                y.isBetween(lower: 0, upper: boardSize.rows)
+                  y.isBetween(lower: 0, upper: boardSize.rows)
             else {
                 return nil
             }
@@ -77,8 +77,8 @@ extension BoardWalk {
     }
 }
 
-extension BoardWalk {
-    public class Stepper: IteratorProtocol, Sequence {
+public extension BoardWalk {
+    class Stepper: IteratorProtocol, Sequence {
         public let square: Square
         public let board: BoardWalk
 
@@ -119,7 +119,7 @@ extension BoardWalk {
         }
     }
 
-    public class Walker: IteratorProtocol, Sequence {
+    class Walker: IteratorProtocol, Sequence {
         let staringSquare: Square
         let board: BoardWalk
         public let isDeadEndPath: IsDeadEndPath?

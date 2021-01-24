@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Factors {
+public enum Factors {
     public static var int = FixedWidthFactors<Int>()
     public static var uint = FixedWidthFactors<UInt>()
 }

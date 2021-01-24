@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Bits {
+public enum Bits {
     public static func countBits<T: FixedWidthInteger>(_ n: T) -> Int {
         var remain = n
         var cBits = 0

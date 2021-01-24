@@ -8,8 +8,8 @@
 
 import Foundation
 
-extension SuDoku {
-    public struct BoardMasks: Equatable, CustomStringConvertible {
+public extension SuDoku {
+    struct BoardMasks: Equatable, CustomStringConvertible {
         public var rowMasks: [DigitMask]
         public var colMasks: [DigitMask]
         public var squareMasks: [DigitMask]

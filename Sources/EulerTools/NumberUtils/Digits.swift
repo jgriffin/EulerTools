@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Digits {
+public enum Digits {
     public static func powerOfTenBigger<T: BinaryInteger>(than n: T) -> T {
         var pow: T = 1
         repeat {

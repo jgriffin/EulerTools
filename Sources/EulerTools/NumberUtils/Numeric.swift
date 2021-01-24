@@ -8,16 +8,16 @@
 
 import Foundation
 
-extension Numeric where Self: Comparable {
-    public func isBetween(lower: Self, upper: Self) -> Bool {
+public extension Numeric where Self: Comparable {
+    func isBetween(lower: Self, upper: Self) -> Bool {
         lower <= self && self < upper
     }
 
-    public func isBetween(lower: Self, upperIncl: Self) -> Bool {
+    func isBetween(lower: Self, upperIncl: Self) -> Bool {
         lower <= self && self <= upperIncl
     }
 
-    public func makeBetween(lower: Self, upperIncl: Self) -> Self {
+    func makeBetween(lower: Self, upperIncl: Self) -> Self {
         guard lower < upperIncl else {
             fatalError()
         }

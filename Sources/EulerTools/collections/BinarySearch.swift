@@ -8,16 +8,16 @@
 
 import Foundation
 
-extension RandomAccessCollection {
+public extension RandomAccessCollection {
     /// Finds index where e exists or would be inserted
-    public func binarySearch<E: Comparable>(indexFor e: E) -> Index? where E == Element {
+    func binarySearch<E: Comparable>(indexFor e: E) -> Index? where E == Element {
         binarySearch(predicate: { $0 < e })
     }
 
     /// Finds index where e exists or nil
-    public func binarySearch<E: Comparable>(equal e: E) -> Index? where E == Element {
+    func binarySearch<E: Comparable>(equal e: E) -> Index? where E == Element {
         guard let index = binarySearch(predicate: { $0 < e }),
-            self[index] == e
+              self[index] == e
         else {
             return nil
         }
@@ -27,7 +27,7 @@ extension RandomAccessCollection {
     /// Finds index that predicate is true for all elements up to but not including the index N,
     /// and is false for all elements starting with index N.
     /// returns nil if insertion point would be at endIndex, which isn't usable index
-    public func binarySearch(predicate: (Element) -> Bool) -> Index? {
+    func binarySearch(predicate: (Element) -> Bool) -> Index? {
         var low = startIndex
         var high = endIndex
         while low != high {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Totient {
+public enum Totient {
     public static func totient(_ n: UInt, primes: ArraySlice<UInt>) -> UInt {
         let primeFactors = Factors.uint.primeFactors(of: n, from: primes)
         let result = primeFactors

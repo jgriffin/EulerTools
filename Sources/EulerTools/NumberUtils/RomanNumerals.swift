@@ -6,7 +6,7 @@
 //  Copyright © 2019 Fofu Enterprises. All rights reserved.
 //
 
-public class RomanNumerals {
+public enum RomanNumerals {
     public static let romanValues: [(char: Character, val: Int)] =
         zip("MDCLXVI",
             [1000, 500, 100, 50, 10, 5, 1])

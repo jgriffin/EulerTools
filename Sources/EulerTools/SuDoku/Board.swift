@@ -10,10 +10,10 @@ import Foundation
 
 public struct SuDoku {}
 
-extension SuDoku {
-    public typealias Digit = UInt8
+public extension SuDoku {
+    typealias Digit = UInt8
 
-    public struct Board: Equatable, CustomStringConvertible {
+    struct Board: Equatable, CustomStringConvertible {
         public let name: String
         public var digits: [Digit]
 

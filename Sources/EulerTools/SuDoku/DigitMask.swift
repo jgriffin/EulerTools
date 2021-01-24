@@ -8,8 +8,8 @@
 
 import Foundation
 
-extension SuDoku {
-    public struct DigitMask: OptionSet {
+public extension SuDoku {
+    struct DigitMask: OptionSet {
         public var rawValue: UInt16
 
         public init(rawValue: UInt16) { self.rawValue = rawValue }

@@ -8,8 +8,8 @@
 
 import Foundation
 
-extension SuDoku {
-    public class Solver {
+public extension SuDoku {
+    class Solver {
         public let original: Board
         public var current: Board
         var currentGrid: BoardMasks

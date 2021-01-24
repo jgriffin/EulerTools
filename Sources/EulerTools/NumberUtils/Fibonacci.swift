@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Fibonacci {
+public enum Fibonacci {
     public static var uint = FibonacciMemoized<UInt>()
     public static var uint64 = FibonacciMemoized<UInt64>()
 }

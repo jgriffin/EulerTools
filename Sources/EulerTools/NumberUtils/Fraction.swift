@@ -42,27 +42,27 @@ public struct Fractional<T: SignedInteger>:
     public var debugDescription: String { "(\(num)/\(den))" }
 }
 
-extension Fractional {
-    public var reciprocal: Fractional {
+public extension Fractional {
+    var reciprocal: Fractional {
         Fractional(num: den, den: num)
     }
 
-    public var reduced: Fractional {
+    var reduced: Fractional {
         let divisor = GCD(num, den)
         return Fractional(num / divisor, den / divisor)
     }
 
-    public var isReduced: Bool {
+    var isReduced: Bool {
         abs(GCD(num, den)) == 1
     }
 
-    public var negate: Fractional {
+    var negate: Fractional {
         Fractional(num: -num, den: den)
     }
 }
 
-extension Fractional {
-    public static func + (_ lhs: Fractional, _ rhs: Fractional) -> Fractional {
+public extension Fractional {
+    static func + (_ lhs: Fractional, _ rhs: Fractional) -> Fractional {
         if lhs.num == 0 {
             return rhs
         }
@@ -82,18 +82,18 @@ extension Fractional {
         return Fractional(num: leftNum + rightNum, den: denLCM)
     }
 
-    public static prefix func - (_ f: Fractional) -> Fractional { f.negate }
+    static prefix func - (_ f: Fractional) -> Fractional { f.negate }
 
-    public static func - (_ lhs: Fractional, _ rhs: Fractional) -> Fractional {
+    static func - (_ lhs: Fractional, _ rhs: Fractional) -> Fractional {
         lhs + rhs.negate
     }
 
-    public static func * (lhs: Fractional, rhs: Fractional) -> Fractional {
+    static func * (lhs: Fractional, rhs: Fractional) -> Fractional {
         Fractional(num: lhs.num * rhs.num,
                    den: lhs.den * rhs.den)
     }
 
-    public static func / (lhs: Fractional, rhs: Fractional) -> Fractional {
+    static func / (lhs: Fractional, rhs: Fractional) -> Fractional {
         lhs * rhs.reciprocal
     }
 }

@@ -29,16 +29,16 @@ public struct ContinuedFractional<T: SignedInteger> {
     }
 }
 
-extension ContinuedFractional {
-    public init(_ sequence: [T]) {
+public extension ContinuedFractional {
+    init(_ sequence: [T]) {
         self.init(sequence.any())
     }
 
-    public init(whole: T, _ fractional: AnySequence<T>) {
+    init(whole: T, _ fractional: AnySequence<T>) {
         self.init(.join([whole].any(), fractional))
     }
 
-    public init(whole: T, _ fractional: [T]) {
+    init(whole: T, _ fractional: [T]) {
         self.init(([whole] + fractional).any())
     }
 }

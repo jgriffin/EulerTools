@@ -7,14 +7,20 @@
 
 import Foundation
 
-extension Sequence {
-    public func any() -> AnySequence<Self.Element> {
+public extension Sequence {
+    func any() -> AnySequence<Self.Element> {
         AnySequence<Self.Element>(self)
+    }
+
+    func sorted<T: Comparable>(by keyPath: KeyPath<Element, T>) -> [Element] {
+        sorted { a, b in
+            a[keyPath: keyPath] < b[keyPath: keyPath]
+        }
     }
 }
 
-extension AnySequence {
-    public static func join(_ seqs: AnySequence...) -> Self {
+public extension AnySequence {
+    static func join(_ seqs: AnySequence...) -> Self {
         seqs.joined().any()
     }
 }
