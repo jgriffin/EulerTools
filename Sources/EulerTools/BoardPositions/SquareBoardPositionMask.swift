@@ -20,8 +20,8 @@ public protocol SquareBoardPositionMask: SquareBoardPosition {
 public extension SquareBoardPositionMask {
     static var rowMask: PosMask { (1 << rowShift) - 1 }
 
-    static func maskFrom(r: Int, c: Int) -> PosMask {
-        (PosMask(1) << c) << (rowShift * r)
+    static func maskFrom(_ rc: RC) -> PosMask {
+        (PosMask(1) << rc.c) << (rowShift * rc.r)
     }
 
     var r: Int {
@@ -35,7 +35,8 @@ public extension SquareBoardPositionMask {
     }
 
     var c: Int {
-        let col = mask >> (r * Self.rowShift)
-        return Self.colMask2Int[col]!
+        Int(mask >> (r * Self.rowShift))
     }
+
+    var rc: RC { RC(r, c) }
 }

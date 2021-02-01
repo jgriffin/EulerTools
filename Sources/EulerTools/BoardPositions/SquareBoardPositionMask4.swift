@@ -16,9 +16,9 @@ public extension SquareBoard {
             .init(mask: mask)
         }
 
-        public static func make(r: Int, c: Int) -> PositionMask4 {
-            assert(r >= 0 && r < 4 && c >= 0 && c < 4)
-            return .init(mask: Self.maskFrom(r: r, c: c))
+        public static func make(_ rc: RC) -> PositionMask4 {
+            assert(rc.isValid(maxRC: RC(4, 4)))
+            return .init(mask: Self.maskFrom(rc))
         }
 
         // MARK: r,c math

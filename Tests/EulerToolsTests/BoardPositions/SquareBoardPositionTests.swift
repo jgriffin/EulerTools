@@ -8,6 +8,7 @@ import EulerTools
 import XCTest
 
 final class SquareBoardPositionsTests: XCTestCase {
+    typealias RC = SquareBoard.RC
     typealias PositionRC = SquareBoard.PositionRC
     typealias PositionMask8 = SquareBoard.PositionMask8
     typealias PositionMask4 = SquareBoard.PositionMask4
@@ -15,7 +16,7 @@ final class SquareBoardPositionsTests: XCTestCase {
     func testPositionRC() {
         product(0 ..< 8, 0 ..< 8)
             .forEach { r, c in
-                let p = PositionRC.make(r: r, c: c)
+                let p = PositionRC.make(.init(r, c))
                 XCTAssertEqual(p.r, r)
                 XCTAssertEqual(p.c, c)
             }
@@ -24,7 +25,7 @@ final class SquareBoardPositionsTests: XCTestCase {
     func testPositionMask8RC() {
         product(0 ..< 8, 0 ..< 8)
             .forEach { r, c in
-                let p = PositionMask8.make(r: r, c: c)
+                let p = PositionMask8.make(.init(r, c))
                 XCTAssertEqual(p.r, r)
                 XCTAssertEqual(p.c, c)
             }
@@ -33,7 +34,7 @@ final class SquareBoardPositionsTests: XCTestCase {
     func testPositionMask4RC() {
         product(0 ..< 4, 0 ..< 4)
             .forEach { r, c in
-                let p = PositionMask4.make(r: r, c: c)
+                let p = PositionMask4.make(.init(r, c))
                 XCTAssertEqual(p.r, r)
                 XCTAssertEqual(p.c, c)
             }
@@ -44,8 +45,8 @@ final class SquareBoardPositionsTests: XCTestCase {
 
         let counts = product(0 ..< n, 0 ..< n)
             .map { r, c -> Int in
-                let p = PositionMask4.make(r: r, c: c)
-                let fDiags = p.forwardDiagonals(maxR: n, maxC: n).sorted()
+                let p = PositionMask4.make(.init(r, c))
+                let fDiags = p.forwardDiagonals(maxRC: RC(4, 4)).sorted()
                 // print(p, fDiags)
                 return fDiags.count
             }
@@ -58,9 +59,9 @@ final class SquareBoardPositionsTests: XCTestCase {
 
         let counts = product(0 ..< n, 0 ..< n)
             .map { r, c -> Int in
-                let p = PositionMask4.make(r: r, c: c)
+                let p = PositionMask4.make(.init(r, c))
 
-                let bDiags = p.backwardDiagonals(maxR: n, maxC: n).sorted()
+                let bDiags = p.backwardDiagonals(maxRC: RC(n, n)).sorted()
                 // print(p, bDiags)
                 return bDiags.count
             }
@@ -73,9 +74,9 @@ final class SquareBoardPositionsTests: XCTestCase {
 
         let counts = product(0 ..< n, 0 ..< n)
             .map { r, c -> Int in
-                let p = PositionMask4.make(r: r, c: c)
+                let p = PositionMask4.make(.init(r, c))
 
-                let diags = p.diagonals(maxR: n, maxC: n).sorted()
+                let diags = p.diagonals(maxRC: RC(n, n)).sorted()
                 // print(p, diags)
                 return diags.count
             }
