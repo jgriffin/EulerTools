@@ -38,4 +38,48 @@ final class SquareBoardPositionsTests: XCTestCase {
                 XCTAssertEqual(p.c, c)
             }
     }
+
+    func testForwardDiagonals() {
+        let n = 4
+
+        let counts = product(0 ..< n, 0 ..< n)
+            .map { r, c -> Int in
+                let p = PositionMask4.make(r: r, c: c)
+                let fDiags = p.forwardDiagonals(maxR: n, maxC: n).sorted()
+                // print(p, fDiags)
+                return fDiags.count
+            }
+
+        XCTAssertEqual(counts, [4, 3, 2, 1, 3, 4, 3, 2, 2, 3, 4, 3, 1, 2, 3, 4])
+    }
+
+    func testBackwardDiagonals() {
+        let n = 4
+
+        let counts = product(0 ..< n, 0 ..< n)
+            .map { r, c -> Int in
+                let p = PositionMask4.make(r: r, c: c)
+
+                let bDiags = p.backwardDiagonals(maxR: n, maxC: n).sorted()
+                // print(p, bDiags)
+                return bDiags.count
+            }
+
+        XCTAssertEqual(counts, [1, 2, 3, 4, 2, 3, 4, 3, 3, 4, 3, 2, 4, 3, 2, 1])
+    }
+
+    func testDiagonals() {
+        let n = 4
+
+        let counts = product(0 ..< n, 0 ..< n)
+            .map { r, c -> Int in
+                let p = PositionMask4.make(r: r, c: c)
+
+                let diags = p.diagonals(maxR: n, maxC: n).sorted()
+                // print(p, diags)
+                return diags.count
+            }
+
+        XCTAssertEqual(counts, [4, 4, 4, 4, 4, 6, 6, 4, 4, 6, 6, 4, 4, 4, 4, 4])
+    }
 }

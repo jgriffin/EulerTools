@@ -5,22 +5,37 @@
 
 import Foundation
 
-public protocol SquareBoardPosition: Hashable {
-    var r: Int { get }
-    var c: Int { get }
+public protocol SquareBoardPositionMask: SquareBoardPosition {
+    associatedtype PosMask: BinaryInteger
 
-    static func make(r: Int, c: Int) -> Self
+    var mask: PosMask { get }
+
+    static func make(_ mask: PosMask) -> Self
+
+    static var colMask2Int: [PosMask: Int] { get }
+    static var rowShift: Int { get }
+    static var rowMask: PosMask { get }
 }
 
-public extension SquareBoardPosition {
-    // intesection with y-axis
-    var forwardDiag: Int { c - r }
+public extension SquareBoardPositionMask {
+    static var rowMask: PosMask { (1 << rowShift) - 1 }
 
-    // intesection with y-axis
-    var backwardDiag: Int { c + r }
+    static func maskFrom(r: Int, c: Int) -> PosMask {
+        (PosMask(1) << c) << (rowShift * r)
+    }
 
-    func nextCol(maxCol: Int) -> Self? {
-        guard c < maxCol - 1 else { return nil }
-        return .make(r: r, c: c + 1)
+    var r: Int {
+        var remain = mask
+        var row = 0
+        while remain > Self.rowMask {
+            remain >>= Self.rowShift
+            row += 1
+        }
+        return row
+    }
+
+    var c: Int {
+        let col = mask >> (r * Self.rowShift)
+        return Self.colMask2Int[col]!
     }
 }

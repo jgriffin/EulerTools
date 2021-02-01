@@ -6,7 +6,7 @@
 import Foundation
 
 public extension SquareBoard {
-    struct PositionRC: SquareBoardPosition {
+    struct PositionRC: SquareBoardPosition, CustomStringConvertible {
         public let r, c: Int
 
         // MARK: init
