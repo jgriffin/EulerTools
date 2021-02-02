@@ -30,3 +30,9 @@ public extension SquareBoard {
         public static let rowMask: PosMask = (1 << rowShift) - 1
     }
 }
+
+public extension SquareBoard.PositionMask8.PosMask {
+    func bitString(_ rc: SquareBoard.RC) -> String {
+        bitString(rowShift: 8, rowMax: rc.r, colMax: rc.c)
+    }
+}

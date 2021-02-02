@@ -50,4 +50,17 @@ class BitsTests: XCTestCase {
             XCTAssertEqual(result, check, "countBits of \(test2)")
         }
     }
+
+    func testIndividualBits() {
+        let tests: [(test: Int, check: [Int])] = [
+            (3, [1, 2]),
+            (8, [8]),
+            (13, [1, 4, 8]),
+            (0, []),
+        ]
+        tests.forEach { test in
+            let result = test.test.individualBits
+            XCTAssertEqual(result, test.check)
+        }
+    }
 }

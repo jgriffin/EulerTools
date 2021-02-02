@@ -17,10 +17,26 @@ public extension Sequence {
             a[keyPath: keyPath] < b[keyPath: keyPath]
         }
     }
+
+    var asArray: [Element] { Array(self) }
 }
 
 public extension AnySequence {
     static func join(_ seqs: AnySequence...) -> Self {
         seqs.joined().any()
+    }
+}
+
+public extension Sequence where Element: Hashable {
+    var asSet: Set<Element> { Set(self) }
+}
+
+public extension Sequence where Element == Character {
+    var asString: String { String(self) }
+}
+
+public extension Sequence where Element: CustomStringConvertible {
+    var asString: String {
+        map(String.init).joined(separator: "n")
     }
 }

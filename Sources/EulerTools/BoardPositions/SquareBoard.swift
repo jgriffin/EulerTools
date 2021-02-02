@@ -8,7 +8,7 @@ public enum SquareBoard {}
 
 public extension SquareBoard {
     struct RC: Hashable {
-        let r, c: Int
+        public let r, c: Int
 
         public init(r: Int, c: Int) {
             self.r = r

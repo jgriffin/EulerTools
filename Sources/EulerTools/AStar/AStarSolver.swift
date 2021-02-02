@@ -42,10 +42,10 @@ public struct AStarSolver<State: Hashable,
     public func solve(from start: State,
                       goal: State) -> [State]?
     {
-        var cameFrom = [State: State]()
-
-        var closedSet = Set<State>()
         var openSet = Set<State>([start])
+        var closedSet = Set<State>()
+
+        var cameFrom = [State: State]()
 
         // cheapest path known from start so far
         var gScore: [State: Int] = [start: 0]
@@ -69,16 +69,15 @@ public struct AStarSolver<State: Hashable,
             }
 
             openSet.remove(current)
-            closedSet.insert(current)
 
-            for neighbor in neighborGenerator(current) {
-                guard !closedSet.contains(neighbor) else {
-                    continue
-                }
+            let neighbors = neighborGenerator(current)
 
+            for neighbor in neighbors {
                 let cost = stepCoster.map { $0(current, neighbor) } ?? 1
                 let neighborGScore = gScore[current]! + cost
-                guard neighborGScore < gScore[neighbor, default: .max] else {
+
+                guard neighborGScore < gScore[neighbor, default: .max]
+                else {
                     continue
                 }
 
@@ -86,8 +85,11 @@ public struct AStarSolver<State: Hashable,
                 gScore[neighbor] = neighborGScore
                 fScore[neighbor] = neighborGScore + hScorer(neighbor)
 
+                // Might already be in the open set
                 openSet.insert(neighbor)
             }
+
+            closedSet.insert(current)
         }
 
         print("solutions not found")

@@ -35,7 +35,8 @@ public extension SquareBoardPositionMask {
     }
 
     var c: Int {
-        Int(mask >> (r * Self.rowShift))
+        let colMask = mask >> (r * Self.rowShift)
+        return Self.colMask2Int[colMask]!
     }
 
     var rc: RC { RC(r, c) }

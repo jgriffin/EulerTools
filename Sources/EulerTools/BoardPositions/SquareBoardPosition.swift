@@ -17,6 +17,10 @@ public extension SquareBoardPosition {
     var r: Int { rc.r }
     var c: Int { rc.c }
 
+    static func make(_ r: Int, c: Int) -> Self {
+        make(RC(r, c))
+    }
+
     var description: String {
         "(\(r),\(c))"
     }
@@ -46,14 +50,23 @@ public extension SquareBoardPosition {
 
     // intesection with y-axis
     var backwardDiag: Int { c + r }
+
+    static var diagonalSteps: [RC] {
+        [.init(1, 1), .init(1, -1), .init(-1, -1), .init(-1, 1)]
+    }
 }
 
 public extension SquareBoardPosition {
-    func walk(stepRC: RC, maxRC: RC) -> Set<Self> {
+    func walk(stepRC: RC,
+              maxRC: RC,
+              while shouldContinue: (Self) -> Bool) -> Set<Self>
+    {
         var cur = self
-        var path = Set([cur])
+        var path = Set<Self>([])
 
-        while let next = cur.move(drc: stepRC, maxRC: maxRC) {
+        while let next = cur.move(drc: stepRC, maxRC: maxRC),
+              shouldContinue(next)
+        {
             path.insert(next)
             cur = next
         }
@@ -68,7 +81,8 @@ public extension SquareBoardPosition {
             Self.make(RC(-fDiag, 0))
 
         return start.walk(stepRC: RC(1, 1),
-                          maxRC: maxRC)
+                          maxRC: maxRC,
+                          while: { _ in true })
     }
 
     func backwardDiagonals(maxRC: RC) -> Set<Self> {
@@ -79,7 +93,8 @@ public extension SquareBoardPosition {
             Self.make(RC(bDiag - (maxRC.c - 1), maxRC.c - 1))
 
         return start.walk(stepRC: RC(1, -1),
-                          maxRC: maxRC)
+                          maxRC: maxRC,
+                          while: { _ in true })
     }
 
     func diagonals(maxRC: RC) -> Set<Self> {
