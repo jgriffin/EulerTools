@@ -57,21 +57,14 @@ public extension SignedInteger {
         let ais = amis.map(\.ai)
         let mis = amis.map(\.mi)
         let M = mis.reduce(1, *)
+
         let bis = mis.map { M / $0 }
-        let bips = zip(bis, mis)
-            .map { bi, mi in modularMultiplicativeInverse(bi, mi)! }
+        let biinvs = zip(bis, mis).map { bi, mi in modularMultiplicativeInverse(bi, mi)! }
 
-        let bibips = zip(bis, bips)
-            .map { bi, bip in (bi * bip) % M }
-
-        let xis = zip(ais, bibips)
-            .map { $0 * $1 }
-
-        // x = xModM (mod m)
-        let xModM = xis.reduce(0, +)
-        let x = xModM % M == 0
-            ? xModM / (xModM / M)
-            : xModM
+        let aibibiinvs = zip(ais, zip(bis, biinvs)).map { ($0, $1.0, $1.1) }
+        let xis = aibibiinvs
+            .map { $0 * $1 * $2 }
+        let x = xis.reduce(0, +) % M
 
         return x
     }

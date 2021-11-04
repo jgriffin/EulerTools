@@ -21,7 +21,7 @@ public struct ContinuedFractional<T: SignedInteger> {
     public func expansion(maxTerms: Int = 100) -> Frac {
         let expansion = sequence.prefix(maxTerms)
             .reversed()
-            .reduce(nil as Frac?) { (result, term) -> Frac in
+            .reduce(nil as Frac?) { result, term -> Frac in
                 Frac(term) + (result?.reciprocal ?? 0)
             }
 

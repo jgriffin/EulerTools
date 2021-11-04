@@ -37,16 +37,4 @@ final class GCDTests: XCTestCase {
             XCTAssertEqual(result, test.check)
         }
     }
-
-    func testChineseRemainderTheorem() {
-        let amis: [(ai: Int, mi: Int)] = [
-            (6, 11),
-            (13, 16),
-            (9, 21),
-            (19, 25),
-        ]
-
-        let result = Int.chineseRemainderTheorem(amis)
-        XCTAssertEqual(result, 92400)
-    }
 }

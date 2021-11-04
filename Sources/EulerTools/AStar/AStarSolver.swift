@@ -55,10 +55,19 @@ public struct AStarSolver<State: Hashable,
         // how short a path from start to finish can be if it goes through n.
         var fScore: [State: Int] = [start: hScorer(start)]
 
-        let bestOpenFScore = {
-            openSet.map { ($0, fScore[$0]!) }
-                .min(by: { lhs, rhs in lhs.1 < rhs.1 })
-                .map(\.0)
+        // fScoreQueue
+        // updating value priorities is a little expensive,
+        // so we'll just allow extra (higher) priorities that are no longer open
+        let fScoreQueue = PriorityQueue<State, Int>()
+        fScoreQueue.enqueue(start, priority: fScore[start]!)
+
+        func bestOpenFScore() -> State? {
+            while let nextState = fScoreQueue.popMax() {
+                if openSet.contains(nextState) {
+                    return nextState
+                }
+            }
+            return nil
         }
 
         // take lowest fScore
@@ -83,7 +92,10 @@ public struct AStarSolver<State: Hashable,
 
                 cameFrom[neighbor] = current
                 gScore[neighbor] = neighborGScore
-                fScore[neighbor] = neighborGScore + hScorer(neighbor)
+
+                let neighborFScore = neighborGScore + hScorer(neighbor)
+                fScore[neighbor] = neighborFScore
+                fScoreQueue.enqueue(neighbor, priority: neighborFScore)
 
                 // Might already be in the open set
                 openSet.insert(neighbor)

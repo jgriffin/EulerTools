@@ -40,4 +40,8 @@ public extension SquareBoardPositionMask {
     }
 
     var rc: RC { RC(r, c) }
+
+    static func allPosMask(_ rc: RC) -> PosMask {
+        (maskFrom(rc) << 1) - 1
+    }
 }

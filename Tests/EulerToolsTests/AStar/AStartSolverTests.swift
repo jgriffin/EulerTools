@@ -8,7 +8,7 @@ import XCTest
 
 final class AStartSolverTests: XCTestCase {
     typealias RC = SquareBoard.RC
-    typealias Pos4 = SquareBoard.PositionMask4
+    typealias Pos4 = SquareBoard.PositionMask8
 
     func testAStarSolverTrival() {
         let start = 0

@@ -54,6 +54,13 @@ public extension SquareBoardPosition {
     static var diagonalSteps: [RC] {
         [.init(1, 1), .init(1, -1), .init(-1, -1), .init(-1, 1)]
     }
+
+    static var knightSteps: [RC] {
+        [.init(2, 1), .init(2, -1),
+         .init(-2, -1), .init(-2, 1),
+         .init(1, 2), .init(-1, 2),
+         .init(-1, -2), .init(1, -2)]
+    }
 }
 
 public extension SquareBoardPosition {

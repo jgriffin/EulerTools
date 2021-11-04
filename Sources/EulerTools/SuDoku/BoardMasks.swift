@@ -41,7 +41,7 @@ public extension SuDoku {
         }
 
         func countAllMasksForAllIndices(matching: (DigitMask) -> Bool) -> Int {
-            (0 ..< 9 * 9).reduce(0) { (result, index) -> Int in
+            (0 ..< 9 * 9).reduce(0) { result, index -> Int in
                 let (r, c, sq) = BoardMasks.maskIndices(for: index)
                 return result +
                     (matching(rowMasks[r]) ? 1 : 0) +
