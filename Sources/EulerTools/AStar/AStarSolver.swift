@@ -62,7 +62,7 @@ public struct AStarSolver<State: Hashable,
         fScoreQueue.enqueue(start, priority: fScore[start]!)
 
         func bestOpenFScore() -> State? {
-            while let nextState = fScoreQueue.popMax() {
+            while let nextState = fScoreQueue.popNext() {
                 if openSet.contains(nextState) {
                     return nextState
                 }

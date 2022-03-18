@@ -28,12 +28,12 @@ public class PriorityQueue<Value, Priority: Comparable> {
         binaryHeap.insert(node)
     }
 
-    public func peekMax() -> Value? {
+    public func peekNext() -> Value? {
         guard !binaryHeap.isEmpty else { return nil }
         return binaryHeap.heap[0].value
     }
 
-    public func popMax() -> Value? {
+    public func popNext() -> Value? {
         guard !binaryHeap.isEmpty else { return nil }
         return binaryHeap.remove(at: 0).value
     }
