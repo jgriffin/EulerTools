@@ -137,9 +137,9 @@ class FractionTests: XCTestCase {
 
     func testFractionMath() {
         let tests: [(expression: Frac, check: Frac)] = [
-            (1 + Frac(1, 2), check: Frac(3, 2)),
-            (1 + 1 / (2 + Frac(1, 2)), check: Frac(7, 5)),
-            (1 + 1 / (2 + 1 / (2 + Frac(1, 2))), check: Frac(17, 12)),
+            (Frac(1) + Frac(1, 2), check: Frac(3, 2)),
+            (Frac(1) + 1 / (2 + Frac(1, 2)), check: Frac(7, 5)),
+            (Frac(1) + 1 / (2 + 1 / (2 + Frac(1, 2))), check: Frac(17, 12)),
         ]
         tests.forEach { test in
             XCTAssertEqual(test.expression, test.check)
