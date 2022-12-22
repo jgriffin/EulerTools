@@ -42,6 +42,13 @@ public struct AStarSolver<State: Hashable,
     public func solve(from start: State,
                       goal: State) -> [State]?
     {
+        solve(from: start, minimizeScore: true, isAtGoal: { $0 == goal })
+    }
+
+    public func solve(from start: State,
+                      minimizeScore: Bool,
+                      isAtGoal: (State) -> Bool) -> [State]?
+    {
         var openSet = Set<State>([start])
         var closedSet = Set<State>()
 
@@ -58,12 +65,15 @@ public struct AStarSolver<State: Hashable,
         // fScoreQueue
         // updating value priorities is a little expensive,
         // so we'll just allow extra (higher) priorities that are no longer open
-        let fScoreQueue = PriorityQueue<State, Int>()
+        let fScoreQueue = PriorityQueue<State, Int>(minQueue: minimizeScore)
         fScoreQueue.enqueue(start, priority: fScore[start]!)
 
-        func bestOpenFScore() -> State? {
-            while let nextState = fScoreQueue.popNext() {
-                if openSet.contains(nextState) {
+        func bestOpenFScore() -> State?
+        {
+            while let nextState = fScoreQueue.popNext()
+            {
+                if openSet.contains(nextState)
+                {
                     return nextState
                 }
             }
@@ -71,8 +81,10 @@ public struct AStarSolver<State: Hashable,
         }
 
         // take lowest fScore
-        while let current = bestOpenFScore() {
-            if current == goal {
+        while let current = bestOpenFScore()
+        {
+            if isAtGoal(current)
+            {
                 return reconstuctPath(to: current,
                                       cameFrom: cameFrom)
             }
@@ -81,12 +93,16 @@ public struct AStarSolver<State: Hashable,
 
             let neighbors = neighborGenerator(current)
 
-            for neighbor in neighbors {
+            for neighbor in neighbors
+            {
                 let cost = stepCoster.map { $0(current, neighbor) } ?? 1
                 let neighborGScore = gScore[current]! + cost
 
-                guard neighborGScore < gScore[neighbor, default: .max]
-                else {
+                guard minimizeScore ?
+                    neighborGScore < gScore[neighbor, default : .max]:
+                    neighborGScore > gScore[neighbor, default: .min]
+                else
+                {
                     continue
                 }
 
@@ -108,10 +124,12 @@ public struct AStarSolver<State: Hashable,
         return nil
     }
 
-    func reconstuctPath(to: State, cameFrom: [State: State]) -> [State] {
+    func reconstuctPath(to: State, cameFrom: [State: State]) -> [State]
+    {
         var path = [to]
         var current = to
-        while let from = cameFrom[current] {
+        while let from = cameFrom[current]
+        {
             path.append(from)
             current = from
         }

@@ -6,6 +6,12 @@
 import Foundation
 
 public class PriorityQueue<Value, Priority: Comparable> {
+    public init(minQueue: Bool = true) {
+        binaryHeap = BinaryHeap<PriorityNode>(minHeap: minQueue)
+    }
+
+    private var binaryHeap: BinaryHeap<PriorityNode>
+
     struct PriorityNode: Comparable {
         let value: Value
         let priority: Priority
@@ -19,7 +25,6 @@ public class PriorityQueue<Value, Priority: Comparable> {
         }
     }
 
-    private var binaryHeap = BinaryHeap<PriorityNode>(invariant: <)
 
     // MARK: - public API
 
