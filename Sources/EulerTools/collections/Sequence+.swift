@@ -12,12 +12,6 @@ public extension Sequence {
         AnySequence<Self.Element>(self)
     }
 
-    func sorted<T: Comparable>(by keyPath: KeyPath<Element, T>) -> [Element] {
-        sorted { a, b in
-            a[keyPath: keyPath] < b[keyPath: keyPath]
-        }
-    }
-
     var asArray: [Element] { Array(self) }
 }
 
@@ -35,8 +29,15 @@ public extension Sequence where Element == Character {
     var asString: String { String(self) }
 }
 
-public extension Sequence where Element: CustomStringConvertible {
-    var asString: String {
-        map(String.init).joined(separator: "n")
+public extension Sequence where Element == String {
+    var joinedByNewlines: String {
+        self.joined(separator: "\n")
     }
 }
+
+public extension Sequence where Element: CustomStringConvertible {
+    var asString: String {
+        map(String.init).joinedByNewlines
+    }
+}
+
