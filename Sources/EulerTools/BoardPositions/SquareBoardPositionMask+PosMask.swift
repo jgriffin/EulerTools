@@ -8,15 +8,11 @@ public extension SquareBoardPositionMask {
         mask.individualBits.map(Self.make)
     }
 
-    static func maskFromPositions<S: Sequence>(_ positions: S) -> PosMask
-        where S.Element == Self
-    {
+    static func maskFromPositions(_ positions: some Sequence<Self>) -> PosMask {
         positions.map(\.mask).reduce(PosMask(0), |)
     }
 
-    static func maskFromRCs<S: Sequence>(_ rcs: S) -> PosMask
-        where S.Element == RC
-    {
+    static func maskFromRCs(_ rcs: some Sequence<RC>) -> PosMask {
         rcs.map(Self.maskFrom).reduce(PosMask(0), |)
     }
 }

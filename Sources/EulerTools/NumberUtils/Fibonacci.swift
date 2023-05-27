@@ -26,7 +26,7 @@ public class FibonacciMemoized<I: FixedWidthInteger> {
         }
 
         return fibMemoizer.memoized(n) {
-            return fib(of: n - 2) + fib(of: n - 1)
+            fib(of: n - 2) + fib(of: n - 1)
         }
     }
 }

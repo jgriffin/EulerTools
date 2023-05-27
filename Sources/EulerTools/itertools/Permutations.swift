@@ -60,7 +60,7 @@ public struct Permutations<S: Sequence>: IteratorProtocol, Sequence {
     public init(sequence: S, length: Int?, repeatingElements: Bool) {
         values = Array(sequence)
 
-        if let length = length {
+        if let length {
             permutationLength = length
         } else {
             permutationLength = values.count

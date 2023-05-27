@@ -4,7 +4,7 @@
 //
 
 public extension Collection where Element: Equatable {
-    func firstIndex<C: Collection>(of collection: C) -> Index? where C.Element == Element {
+    func firstIndex(of collection: some Collection<Element>) -> Index? {
         guard !collection.isEmpty else { return nil }
         let size = collection.count
 
@@ -13,7 +13,7 @@ public extension Collection where Element: Equatable {
         }
     }
 
-    func indices<C: Collection>(of collection: C) -> [Index] where C.Element == Element {
+    func indices(of collection: some Collection<Element>) -> [Index] {
         guard !collection.isEmpty else { return [] }
         let size = collection.count
 
@@ -22,7 +22,7 @@ public extension Collection where Element: Equatable {
         }
     }
 
-    func range<C: Collection>(of collection: C) -> Range<Index>? where C.Element == Element {
+    func range(of collection: some Collection<Element>) -> Range<Index>? {
         guard !collection.isEmpty else { return nil }
         let size = collection.count
 
@@ -38,7 +38,7 @@ public extension Collection where Element: Equatable {
         return range
     }
 
-    func ranges<C: Collection>(of collection: C) -> [Range<Index>] where C.Element == Element {
+    func ranges(of collection: some Collection<Element>) -> [Range<Index>] {
         guard !collection.isEmpty else { return [] }
         let size = collection.count
 

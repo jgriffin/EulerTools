@@ -29,7 +29,7 @@ public enum RomanNumerals {
     }
 
     public static func romanValue(of n: Int) -> String {
-        var result: String = ""
+        var result = ""
         var remain = n
         while remain > 0 {
             guard let rsv = romanSubtractiveValues.first(where: { $0.val <= remain }) else {

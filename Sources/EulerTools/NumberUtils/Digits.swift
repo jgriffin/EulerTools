@@ -17,7 +17,7 @@ public enum Digits {
         return pow
     }
 
-    public static func digitsOf<T: BinaryInteger, R: BinaryInteger>(_ n: T) -> [R] {
+    public static func digitsOf<R: BinaryInteger>(_ n: some BinaryInteger) -> [R] {
         var digits = [R]()
         var m = n
         while m > 0 {
@@ -27,7 +27,7 @@ public enum Digits {
         return digits.reversed()
     }
 
-    public static func digitCountOf<T: BinaryInteger, R: BinaryInteger>(_ n: T) -> R {
+    public static func digitCountOf<R: BinaryInteger>(_ n: some BinaryInteger) -> R {
         var digitCount = R(0)
         var m = n
         while m > 0 {

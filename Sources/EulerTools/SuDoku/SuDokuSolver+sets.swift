@@ -28,17 +28,13 @@ extension SuDoku.Solver {
         return indexGroups
     }()
 
-    static let rowIndices: [[Int]] = {
-        (0 ... 8).map { row in
-            (0 ... 8).map { col in 9 * row + col }
-        }
-    }()
+    static let rowIndices: [[Int]] = (0 ... 8).map { row in
+        (0 ... 8).map { col in 9 * row + col }
+    }
 
-    static let colIndices: [[Int]] = {
-        (0 ... 8).map { col in
-            (0 ... 8).map { row in 9 * row + col }
-        }
-    }()
+    static let colIndices: [[Int]] = (0 ... 8).map { col in
+        (0 ... 8).map { row in 9 * row + col }
+    }
 
     static let squareIndices: [[Int]] = {
         let squareStart = [0, 3, 6, 0 + 27, 3 + 27, 6 + 27, 0 + 54, 3 + 54, 6 + 54]

@@ -25,13 +25,13 @@ public extension Sequence where Element: Hashable {
     var asSet: Set<Element> { Set(self) }
 }
 
-public extension Sequence where Element == Character {
+public extension Sequence<Character> {
     var asString: String { String(self) }
 }
 
-public extension Sequence where Element == String {
+public extension Sequence<String> {
     var joinedByNewlines: String {
-        self.joined(separator: "\n")
+        joined(separator: "\n")
     }
 }
 
@@ -40,4 +40,3 @@ public extension Sequence where Element: CustomStringConvertible {
         map(String.init).joinedByNewlines
     }
 }
-

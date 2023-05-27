@@ -141,23 +141,23 @@ public struct _BigInt<Word: FixedWidthInteger>:
         _standardize()
     }
 
-    public init?<T: BinaryInteger>(exactly source: T) {
+    public init?(exactly source: some BinaryInteger) {
         self.init(source)
     }
 
-    public init<T: BinaryInteger>(truncatingIfNeeded source: T) {
+    public init(truncatingIfNeeded source: some BinaryInteger) {
         self.init(source)
     }
 
-    public init<T: BinaryInteger>(clamping source: T) {
+    public init(clamping source: some BinaryInteger) {
         self.init(source)
     }
 
-    public init<T: BinaryFloatingPoint>(_: T) {
+    public init(_: some BinaryFloatingPoint) {
         fatalError("Not implemented")
     }
 
-    public init?<T: BinaryFloatingPoint>(exactly _: T) {
+    public init?(exactly _: some BinaryFloatingPoint) {
         fatalError("Not implemented")
     }
 
@@ -944,7 +944,7 @@ public struct _BigInt<Word: FixedWidthInteger>:
         // Loop through characters, multiplying
         for v in source.utf16.map(valueForCodeUnit) {
             // Character must be valid and less than radix
-            guard let v = v else { return nil }
+            guard let v else { return nil }
             guard v < radix else { return nil }
 
             multiply(by: radix)
@@ -1195,11 +1195,11 @@ struct Bit: FixedWidthInteger, UnsignedInteger {
         }
     }
 
-    init<T: BinaryFloatingPoint>(_ source: T) {
+    init(_ source: some BinaryFloatingPoint) {
         self = Bit(exactly: source.rounded(.down))!
     }
 
-    init<T: BinaryInteger>(_ source: T) {
+    init(_ source: some BinaryInteger) {
         switch source {
         case 0: value = 0
         case 1: value = 1
@@ -1208,7 +1208,7 @@ struct Bit: FixedWidthInteger, UnsignedInteger {
         }
     }
 
-    init<T: BinaryInteger>(truncatingIfNeeded source: T) {
+    init(truncatingIfNeeded source: some BinaryInteger) {
         value = UInt8(source & 1)
     }
 
@@ -1216,7 +1216,7 @@ struct Bit: FixedWidthInteger, UnsignedInteger {
         value = UInt8(bits & 1)
     }
 
-    init<T: BinaryInteger>(clamping source: T) {
+    init(clamping source: some BinaryInteger) {
         value = source >= 1 ? 1 : 0
     }
 
@@ -1308,7 +1308,7 @@ struct Bit: FixedWidthInteger, UnsignedInteger {
     func dividedReportingOverflow(by rhs: Bit) ->
         (partialValue: Bit, overflow: Bool)
     {
-        return (self, rhs != 0)
+        (self, rhs != 0)
     }
 
     func remainderReportingOverflow(dividingBy _: Bit) ->
@@ -1347,7 +1347,7 @@ struct Bit: FixedWidthInteger, UnsignedInteger {
     }
 
     func multipliedFullWidth(by other: Bit) -> (high: Bit, low: Bit) {
-        return (0, self * other)
+        (0, self * other)
     }
 
     func dividingFullWidth(_ dividend: (high: Bit, low: Bit)) ->

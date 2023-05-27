@@ -25,7 +25,6 @@ public class PriorityQueue<Value, Priority: Comparable> {
         }
     }
 
-
     // MARK: - public API
 
     public func enqueue(_ value: Value, priority: Priority) {

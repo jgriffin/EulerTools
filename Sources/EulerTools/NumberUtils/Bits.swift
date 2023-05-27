@@ -71,11 +71,11 @@ public extension BinaryInteger {
 
 public enum Bits {
     // FUTURE: remove, here for backward compatability
-    public static func countBits<T: BinaryInteger>(_ n: T) -> Int {
+    public static func countBits(_ n: some BinaryInteger) -> Int {
         n.bitCount
     }
 
-    public static func indicesOfSetBits<T: BinaryInteger>(_ n: T) -> [Int] {
+    public static func indicesOfSetBits(_ n: some BinaryInteger) -> [Int] {
         n.bitIndices
     }
 }

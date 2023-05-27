@@ -68,12 +68,9 @@ public struct AStarSolver<State: Hashable,
         let fScoreQueue = PriorityQueue<State, Int>(minQueue: minimizeScore)
         fScoreQueue.enqueue(start, priority: fScore[start]!)
 
-        func bestOpenFScore() -> State?
-        {
-            while let nextState = fScoreQueue.popNext()
-            {
-                if openSet.contains(nextState)
-                {
+        func bestOpenFScore() -> State? {
+            while let nextState = fScoreQueue.popNext() {
+                if openSet.contains(nextState) {
                     return nextState
                 }
             }
@@ -81,10 +78,8 @@ public struct AStarSolver<State: Hashable,
         }
 
         // take lowest fScore
-        while let current = bestOpenFScore()
-        {
-            if isAtGoal(current)
-            {
+        while let current = bestOpenFScore() {
+            if isAtGoal(current) {
                 return reconstuctPath(to: current,
                                       cameFrom: cameFrom)
             }
@@ -93,16 +88,14 @@ public struct AStarSolver<State: Hashable,
 
             let neighbors = neighborGenerator(current)
 
-            for neighbor in neighbors
-            {
+            for neighbor in neighbors {
                 let cost = stepCoster.map { $0(current, neighbor) } ?? 1
                 let neighborGScore = gScore[current]! + cost
 
                 guard minimizeScore ?
-                    neighborGScore < gScore[neighbor, default : .max]:
+                    neighborGScore < gScore[neighbor, default: .max] :
                     neighborGScore > gScore[neighbor, default: .min]
-                else
-                {
+                else {
                     continue
                 }
 
@@ -124,12 +117,10 @@ public struct AStarSolver<State: Hashable,
         return nil
     }
 
-    func reconstuctPath(to: State, cameFrom: [State: State]) -> [State]
-    {
+    func reconstuctPath(to: State, cameFrom: [State: State]) -> [State] {
         var path = [to]
         var current = to
-        while let from = cameFrom[current]
-        {
+        while let from = cameFrom[current] {
             path.append(from)
             current = from
         }

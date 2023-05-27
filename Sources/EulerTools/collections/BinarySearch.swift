@@ -10,12 +10,12 @@ import Foundation
 
 public extension RandomAccessCollection {
     /// Finds index where e exists or would be inserted
-    func binarySearch<E: Comparable>(indexFor e: E) -> Index? where E == Element {
+    func binarySearch(indexFor e: Element) -> Index? where Element: Comparable {
         binarySearch(predicate: { $0 < e })
     }
 
     /// Finds index where e exists or nil
-    func binarySearch<E: Comparable>(equal e: E) -> Index? where E == Element {
+    func binarySearch(equal e: Element) -> Index? where Element: Comparable {
         guard let index = binarySearch(predicate: { $0 < e }),
               self[index] == e
         else {
@@ -46,13 +46,6 @@ public extension RandomAccessCollection {
         return low
     }
 }
-
-// extension Array where Element: Comparable {
-//    // find index where value <= a
-//    public func binarySearch(_ key: Element) -> Int?  {
-//        return EulerTools.binarySearch(self, key: key)
-//    }
-// }
 
 // find index where value <= a
 public func binarySearch<T: Comparable>(_ a: [T], key: T) -> Int? {
