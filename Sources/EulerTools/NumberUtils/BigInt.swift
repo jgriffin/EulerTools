@@ -165,9 +165,9 @@ public struct _BigInt<Word: FixedWidthInteger>:
     static func _randomWord() -> Word {
         // This handles up to a 64-bit word
         if Word.bitWidth > UInt32.bitWidth {
-            return Word(UInt32.random(in: 0 ... UInt32.max)) << 32 | Word(UInt32.random(in: 0 ... UInt32.max))
+            Word(UInt32.random(in: 0 ... UInt32.max)) << 32 | Word(UInt32.random(in: 0 ... UInt32.max))
         } else {
-            return Word(truncatingIfNeeded: UInt32.random(in: 0 ... UInt32.max))
+            Word(truncatingIfNeeded: UInt32.random(in: 0 ... UInt32.max))
         }
     }
 

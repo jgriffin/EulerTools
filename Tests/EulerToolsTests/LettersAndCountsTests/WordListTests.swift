@@ -27,7 +27,7 @@ final class WordListTests: XCTestCase {
     }
 
     func testLetterCounts() throws {
-        let words = try Wordlist.english_words_alpha.data.asAscii
+        let words = try Wordlist.english_words_alpha.data.asAscii(.newlinesToSpace)
         let counts = ElementCounts(words)
 
         print(counts)
@@ -38,9 +38,9 @@ extension WordListTests {
     func isValidatedAscii(_ wordlist: Wordlist) throws -> Bool {
         var isValidAscii = true
         let bytes = try wordlist.data.asArray
-        try bytes.enumerated().forEach { i, ch in
+        bytes.enumerated().forEach { i, ch in
             if !ch.isValidAscii {
-                try print(wordlist.rawValue, i, ch, bytes.dropFirst(max(0, i - 10)).prefix(10).asString)
+                print(wordlist.rawValue, i, ch, bytes.dropFirst(max(0, i - 10)).prefix(10).asPrintableString)
                 isValidAscii = false
             }
         }

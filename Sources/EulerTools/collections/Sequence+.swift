@@ -40,9 +40,3 @@ public extension Sequence where Element: CustomStringConvertible {
         map(String.init).joinedByNewlines
     }
 }
-
-public extension Sequence {
-    var joinedByNewlines: String {
-        map { "\($0)" }.joinedByNewlines
-    }
-}

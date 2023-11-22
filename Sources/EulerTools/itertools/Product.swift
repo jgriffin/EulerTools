@@ -63,7 +63,7 @@ public struct CartesianProduct<S: Sequence>: IteratorProtocol, Sequence {
     private var iterators: [S.Iterator]
     private var currentValues: [S.Iterator.Element] = []
 
-    fileprivate init(_ sequences: [S]) {
+    public init(_ sequences: [S]) {
         self.sequences = sequences
         iterators = sequences.map { $0.makeIterator() }
     }

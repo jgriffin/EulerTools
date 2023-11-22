@@ -21,15 +21,9 @@ public extension String.StringInterpolation {
 
     mutating func appendInterpolation(letter: some Letter) {
         if letter == .newline {
-            appendLiteral("\u{2424}")
+            appendLiteral("\(Character.newline)")
         } else {
             appendLiteral("\(letter.asCharacter)")
-        }
-    }
-
-    mutating func appendInterpolation(letters: some Sequence<some Letter>) {
-        for letter in letters {
-            appendLiteral("\(letter: letter)")
         }
     }
 }
@@ -75,7 +69,7 @@ public extension String.StringInterpolation {
 
         let elements = counts.elementsSortedByCount().prefix(prefix)
         for element in elements {
-            appendLiteral("\(letters: element)\t\(counts.countOf[element, default: 0])\n")
+            appendLiteral("\(element)\t\(counts.countOf[element, default: 0])\n")
         }
     }
 
@@ -87,7 +81,7 @@ public extension String.StringInterpolation {
 
         let elements = counts.elementsSortedByCount().prefix(prefix)
         for element in elements {
-            appendLiteral("\(letters: element)\t\(dotTwo: counts.probabilityOf(element) * 100)\n")
+            appendLiteral("\(element.asPrintableString)\t\(dotTwo: counts.probabilityOf(element) * 100)\n")
         }
     }
 }

@@ -6,7 +6,7 @@ import EulerTools
 import XCTest
 
 final class LikelihoodTests: XCTestCase {
-    let wordlist = try! Wordlist.mit_wordlist_10000.data.asAscii
+    let wordlist = try! Wordlist.mit_wordlist_10000.data.asAscii(.newlinesToSpace)
 
     func testBayesian() throws {
         let counts = ElementCounts(wordlist)

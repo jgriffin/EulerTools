@@ -29,10 +29,11 @@ public protocol Letter: Hashable, Comparable {
 
     static var newline: Self { get }
     static var space: Self { get }
-    static var tilde: Self { get }
     static var underscore: Self { get }
 
     var asCharacter: Character { get }
+    var asPrintableCharacter: Character { get }
+
     var asAsciiCharacter: Character? { get }
     var asDigitValue: UInt8? { get }
     var asHexDigitValue: UInt8? { get }
@@ -73,8 +74,10 @@ public extension Character {
     static let asciiValues: [Character] = Ascii.asciiValues.map(\.asCharacter)
     static let newline: Character = "\n"
     static let space: Character = " "
-    static let tilde: Character = "~"
     static let underscore: Character = "_"
+
+    static let lf: Character = "\u{2424}"
+    static let printableInvalid: Character = "·"
 
     static let uppercaseLetters: [Character] = asciiValues.filter(\.isUppercase)
     static let lowercaseLetters: [Character] = asciiValues.filter(\.isLowercase)
@@ -88,6 +91,16 @@ public extension Character {
     static let textualLetters: [Character] = [space] + alphaNumericLetters + "!'"
 
     var asCharacter: Character { self }
+    var asPrintableCharacter: Character {
+        switch self {
+        case .newline:
+            return .lf
+        case _ where !Set<Character>.isAsciiValue.contains(self):
+            return .printableInvalid
+        default:
+            return self
+        }
+    }
 
     var asDigitValue: UInt8? { wholeNumberValue.flatMap(UInt8.init) }
     var asHexDigitValue: UInt8? { hexDigitValue.flatMap(UInt8.init) }
@@ -108,7 +121,6 @@ public extension Ascii {
     static let asciiValues: [Ascii] = [10] + (32 ... 126).asArray
     static let newline: Ascii = Character.newline.asciiValue!
     static let space: Ascii = Character.space.asciiValue!
-    static let tilde: Ascii = Character.tilde.asciiValue!
     static let underscore: Ascii = Character.underscore.asciiValue!
 
     static let uppercaseLetters: [Ascii] = try! Character.uppercaseLetters.asAscii
@@ -123,6 +135,8 @@ public extension Ascii {
     static let textualLetters: [Ascii] = try! Character.textualLetters.asAscii
 
     var asCharacter: Character { Character(UnicodeScalar(self)) }
+    var asPrintableCharacter: Character { asCharacter.asPrintableCharacter }
+
     var asDigitValue: UInt8? {
         switch self {
         case 48 ... 57: self - 48
@@ -140,35 +154,4 @@ public extension Ascii {
     }
 
     var isValidAscii: Bool { (32 ... 126).contains(self) || self == 10 }
-}
-
-public extension Sequence<Ascii> {
-    var asString: String {
-        get throws {
-            guard let string = String(bytes: self, encoding: .ascii) else { throw AsciiError.stringConversionFailed }
-            return string
-        }
-    }
-}
-
-public extension Sequence<Character> {
-    var asCharacters: [Character] { Array(self) }
-
-    var asAscii: [Ascii] {
-        get throws {
-            try map {
-                guard let ascii = $0.asciiValue else { throw AsciiError.notAscii }
-                return ascii
-            }
-        }
-    }
-}
-
-public extension Data {
-    var asAscii: [Ascii] { Array(self) }
-}
-
-enum AsciiError: Error {
-    case notAscii
-    case stringConversionFailed
 }

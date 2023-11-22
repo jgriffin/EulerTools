@@ -6,7 +6,7 @@ import EulerTools
 import XCTest
 
 final class LetterCountBigramTests: XCTestCase {
-    let text = try! Wordlist.mit_wordlist_10000.data.asAscii
+    let text = try! Wordlist.mit_wordlist_10000.data.asAscii(.newlinesToSpace)
 
     func testBigramModel() throws {
         let counts = ElementCounts(text.windows(ofCount: 2))
