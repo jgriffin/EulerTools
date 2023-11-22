@@ -19,7 +19,7 @@ public protocol Letter: Hashable, Comparable {
     static var punctuationLetters: [Self] { get }
     static var symbolLetters: [Self] { get }
     static var hexLetters: [Self] { get }
-    
+
     // alpha, numeric, punctuation, space
     static var textualLetters: [Self] { get }
 
@@ -84,7 +84,7 @@ public extension Character {
     static let punctuationLetters: [Character] = asciiValues.filter(\.isPunctuation)
     static let symbolLetters: [Character] = asciiValues.filter(\.isSymbol)
     static let hexLetters: [Character] = "0123456789abcdef".asCharacters
-    
+
     static let textualLetters: [Character] = [space] + alphaNumericLetters + "!'"
 
     var asCharacter: Character { self }
@@ -119,7 +119,7 @@ public extension Ascii {
     static let punctuationLetters: [Ascii] = try! Character.punctuationLetters.asAscii
     static let symbolLetters: [Ascii] = try! Character.symbolLetters.asAscii
     static let hexLetters: [Ascii] = try! Character.hexLetters.asAscii
-    
+
     static let textualLetters: [Ascii] = try! Character.textualLetters.asAscii
 
     var asCharacter: Character { Character(UnicodeScalar(self)) }
@@ -129,6 +129,7 @@ public extension Ascii {
         default: nil
         }
     }
+
     var asHexDigitValue: UInt8? {
         switch self {
         case 48 ... 57: self - 48
