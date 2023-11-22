@@ -1,11 +1,12 @@
-// swift-tools-version:5.1
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version:5.9
 
 import PackageDescription
 
 let package = Package(
     name: "EulerTools",
-//    platforms: [.iOS(.v11)],
+    platforms: [
+        .macOS(.v13), .iOS(.v17),
+    ],
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library(
@@ -26,6 +27,9 @@ let package = Package(
             dependencies: [
                 "BigInt",
                 .product(name: "Algorithms", package: "swift-algorithms"),
+            ],
+            resources: [
+                .process("WordLists/resources/"),
             ]
         ),
         .testTarget(

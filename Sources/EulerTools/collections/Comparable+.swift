@@ -1,60 +1,55 @@
 //
-// Created by John Griffin on 5/27/23
+// Created by John Griffin on 11/18/23
 //
-
-import Foundation
 
 public extension Sequence {
     func sorted(
         by keyPath: KeyPath<Element, some Comparable>
     ) -> [Element] {
-        sorted(by: areInIncreasingOrder(by: keyPath))
-    }
-
-    func sorted(
-        by: @escaping (Element, Element) -> Bool,
-        then: @escaping (Element, Element) -> Bool
-    ) -> [Element] where Element: Comparable {
-        sorted(by: areInIncreasingOrder(by: by, then: then))
+        sorted(by: keyPath.areInOrder)
     }
 
     func sorted(
         by keyPath: KeyPath<Element, some Comparable>,
         then keyPath2: KeyPath<Element, some Comparable>
-    ) -> [Element] where Element: Comparable {
-        sorted(by: areInIncreasingOrder(by: keyPath, then: keyPath2))
+    ) -> [Element] {
+        sorted(by: areInOrder(by: keyPath.areInOrder, keyPath2.areInOrder))
+    }
+
+    func sorted(
+        by keyPath: KeyPath<Element, some Comparable>,
+        thenDesc keyPath2: KeyPath<Element, some Comparable>
+    ) -> [Element] {
+        sorted(by: areInOrder(by: keyPath.areInOrder, keyPath2.areInDescOrder))
     }
 }
 
-public func areInIncreasingOrder<Element>(
-    by keyPath: KeyPath<Element, some Comparable>
+public extension KeyPath where Value: Comparable {
+    var areInOrder: (Root, Root) -> Bool {
+        { lhs, rhs in
+            lhs[keyPath: self] < rhs[keyPath: self]
+        }
+    }
+
+    var areInDescOrder: (Root, Root) -> Bool {
+        { lhs, rhs in
+            lhs[keyPath: self] > rhs[keyPath: self]
+        }
+    }
+}
+
+public func areInOrder<Element>(
+    by subsorts: ((Element, Element) -> Bool)...
 ) -> (Element, Element) -> Bool {
     { lhs, rhs in
-        lhs[keyPath: keyPath] < rhs[keyPath: keyPath]
-    }
-}
-
-public func areInIncreasingOrder<Element>(
-    by: @escaping (Element, Element) -> Bool,
-    then: @escaping (Element, Element) -> Bool
-) -> (Element, Element) -> Bool {
-    { lhs, rhs in
-        if by(lhs, rhs) {
-            return true
+        for subsort in subsorts {
+            if subsort(lhs, rhs) {
+                return true
+            }
+            if subsort(rhs, lhs) {
+                return false
+            }
         }
-        if by(rhs, lhs) {
-            return false
-        }
-        return then(lhs, rhs)
+        return true
     }
-}
-
-public func areInIncreasingOrder<Element>(
-    by byKeyPath: KeyPath<Element, some Comparable>,
-    then thenKeyPath: KeyPath<Element, some Comparable>
-) -> (Element, Element) -> Bool {
-    areInIncreasingOrder(
-        by: areInIncreasingOrder(by: byKeyPath),
-        then: areInIncreasingOrder(by: thenKeyPath)
-    )
 }
