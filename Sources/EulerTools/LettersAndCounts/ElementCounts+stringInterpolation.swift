@@ -15,7 +15,7 @@ public extension String.StringInterpolation {
         appendLiteral(String(format: "%.2f", value))
     }
 
-    mutating func appendInterpolation(dotTwo value: Double) {
+    mutating func appendInterpolation(twoDotTwo value: Float) {
         appendLiteral(String(format: "%.2f", value))
     }
 

@@ -53,3 +53,17 @@ public func areInOrder<Element>(
         return true
     }
 }
+
+/**
+ simple way to sort between two array with the first element that doesn't match
+ */
+public func isSequenceOrderedBefore<Element: Comparable>(
+    _ lhs: some Sequence<Element>,
+    _ rhs: some Sequence<Element>
+) -> Bool {
+    for (l, r) in zip(lhs, rhs) {
+        guard l != r else { continue }
+        return l < r
+    }
+    return true
+}
