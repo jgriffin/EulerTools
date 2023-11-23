@@ -25,6 +25,10 @@ public struct ElementCounts<Element: Hashable>: CustomStringConvertible {
         )
     }
 
+    public subscript(_ element: Element) -> Int? {
+        countOf[element]
+    }
+
     public var description: String {
         "\(counts: self, prefix: 5)"
     }

@@ -13,10 +13,6 @@ public struct ElementMapper<Element: Hashable> {
 }
 
 public extension ElementMapper {
-//    static func map(_ mapping: @escaping (Element) -> Element?) -> Self {
-//        .init(mapping)
-//    }
-
     static func mapOrPass(_ mapping: @escaping (Element) -> Element?) -> Self {
         .init { mapping($0) ?? $0 }
     }

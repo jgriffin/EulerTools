@@ -22,6 +22,7 @@ public protocol Letter: Hashable, Comparable {
 
     // alpha, numeric, punctuation, space
     static var textualLetters: [Self] { get }
+    var isTextual: Bool { get }
 
     // fairly inclusive set, including .newline, but excluding other
     // control characters like backspace and tab
@@ -53,12 +54,12 @@ public extension Set where Element: Letter {
 
 public extension Dictionary where Key: Letter, Key == Value {
     static var toUppercase: Self { Dictionary(uniqueKeysWithValues: zip(Key.lowercaseLetters, Key.uppercaseLetters)) }
-    static var toLowercase: Self { Dictionary(uniqueKeysWithValues: zip(Key.lowercaseLetters, Key.uppercaseLetters)) }
+    static var toLowercase: Self { Dictionary(uniqueKeysWithValues: zip(Key.uppercaseLetters, Key.lowercaseLetters)) }
 }
 
 public extension Letter {
-    static var toUppercaseMap: [Self: Self] { .toLowercase }
-    static var toLowercaseMap: [Self: Self] { .toUppercase }
+    static var toUppercaseMap: [Self: Self] { .toUppercase }
+    static var toLowercaseMap: [Self: Self] { .toLowercase }
 
     var asAsciiCharacter: Character? {
         Set<Self>.isAsciiValue.contains(self) ? asCharacter : nil
@@ -89,6 +90,8 @@ public extension Character {
     static let hexLetters: [Character] = "0123456789abcdef".asCharacters
 
     static let textualLetters: [Character] = [space] + alphaNumericLetters + "!'"
+    static let isTextualSet: Set<Character> = .isTextual
+    var isTextual: Bool { Self.isTextualSet.contains(self) }
 
     var asCharacter: Character { self }
     var asPrintableCharacter: Character {
@@ -133,6 +136,8 @@ public extension Ascii {
     static let hexLetters: [Ascii] = try! Character.hexLetters.asAscii
 
     static let textualLetters: [Ascii] = try! Character.textualLetters.asAscii
+    static let isTextualSet: Set<Ascii> = .isTextual
+    var isTextual: Bool { Self.isTextualSet.contains(self) }
 
     var asCharacter: Character { Character(UnicodeScalar(self)) }
     var asPrintableCharacter: Character { asCharacter.asPrintableCharacter }

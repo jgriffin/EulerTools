@@ -24,7 +24,7 @@ public extension Sequence where Element: Letter {
     var asPrintableString: String {
         lazy.map(\.asPrintableCharacter).asString
     }
-    
+
     var asCharacters: [Character] { map(\.asCharacter) }
 }
 
