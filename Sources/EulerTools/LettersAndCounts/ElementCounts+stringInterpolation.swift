@@ -81,7 +81,7 @@ public extension String.StringInterpolation {
 
         let elements = counts.elementsSortedByCount().prefix(prefix)
         for element in elements {
-            appendLiteral("\(element.asPrintableString)\t\(dotTwo: counts.probabilityOf(element) * 100)\n")
+            appendLiteral("\(element.asPrintable)\t\(dotTwo: counts.probabilityOf(element) * 100)\n")
         }
     }
 }

@@ -128,6 +128,9 @@ public extension Ascii {
 
     init(_ ch: Character) { self = ch.asciiValue! }
     static let A: Ascii = Self("A")
+    static let dot: Ascii = Self(".")
+    static let singleQuote: Ascii = Self("'")
+    static let quote: Ascii = Self("\"")
 
     static let uppercaseLetters: [Ascii] = try! Character.uppercaseLetters.asAscii
     static let lowercaseLetters: [Ascii] = try! Character.lowercaseLetters.asAscii

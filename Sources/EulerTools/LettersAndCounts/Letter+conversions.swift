@@ -21,9 +21,7 @@ public extension Sequence<Character> {
 }
 
 public extension Sequence where Element: Letter {
-    var asPrintableString: String {
-        lazy.map(\.asPrintableCharacter).asString
-    }
+    var asPrintable: String { map(\.asPrintableCharacter).asString }
 
     var asCharacters: [Character] { map(\.asCharacter) }
 }
@@ -44,6 +42,8 @@ public extension Sequence<Ascii> {
         guard allSatisfy(\.isValidAscii) else { throw AsciiError.notValidAscii }
         return split(separator: .newline).map(\.asArray)
     }
+
+    var asString: String { asCharacters.asString }
 }
 
 public enum NewlineOptions {
