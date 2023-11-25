@@ -98,3 +98,9 @@ public extension ElementCounts where Element: Comparable {
     static var increasingPrecentageByLetter: SortsBeforePercentage { { $0.value < $1.value } }
     static var decreasingPercentageByLetter: SortsBeforePercentage { { $0.value > $1.value } }
 }
+
+public extension Array where Element: Hashable {
+    var elementCounts: ElementCounts<Element> {
+        ElementCounts(self)
+    }
+}

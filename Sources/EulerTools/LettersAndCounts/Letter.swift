@@ -126,6 +126,9 @@ public extension Ascii {
     static let space: Ascii = Character.space.asciiValue!
     static let underscore: Ascii = Character.underscore.asciiValue!
 
+    init(_ ch: Character) { self = ch.asciiValue! }
+    static let A: Ascii = Self("A")
+
     static let uppercaseLetters: [Ascii] = try! Character.uppercaseLetters.asAscii
     static let lowercaseLetters: [Ascii] = try! Character.lowercaseLetters.asAscii
     static let alphaLetters: [Ascii] = try! Character.alphaLetters.asAscii
