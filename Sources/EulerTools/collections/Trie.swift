@@ -13,80 +13,92 @@ import Foundation
 
  Each level of the tree may or may itself be a leaf node, as indicated by the isLeaf property
  */
-public struct Trie {
+public struct Trie<Element: Hashable> {
     private(set) var isLeaf: Bool = false
+    private var subTries = [Element: Trie]()
 
-    private var suffixTriesByCh = [Character: Trie]()
-    private static let emptyCharacters = Array("")
-
-    // MARK: init
+    // MARK: - init
 
     public init() {}
 
-    public init(substring: Substring) {
-        addSubstring(substring)
+    public init(_ seqs: some Sequence<some Collection<Element>>) {
+        seqs.forEach { addBranches($0) }
     }
 
-    public static func fromStrings(_ strings: [String]) -> Trie {
-        var trie = Trie()
-        strings.forEach { string in
-            trie.addSubstring(string[...])
-        }
-        return trie
-    }
+    // MARK: - contains
 
-    // MARK: contains
-
-    public func contains(_ substring: Substring) -> Bool {
-        guard let firstChar = substring.first else {
+    public func contains(_ seq: some Collection<Element>) -> Bool {
+        guard let firstChar = seq.first else {
             return isLeaf
         }
-
-        guard let suffixTrie = suffixTriesByCh[firstChar] else {
+        guard let suffixTrie = subTries[firstChar] else {
             return false
         }
-
-        return suffixTrie.contains(substring.dropFirst())
+        return suffixTrie.contains(seq.dropFirst())
     }
 
-    public func nextChars() -> [Character] {
-        Array(suffixTriesByCh.keys)
-    }
+    public func containedPrefixes<C: Collection<Element>>(of seq: C) -> [C.SubSequence] {
+        var results: [C.SubSequence] = []
 
-    public func suffixes() -> [[Character]] {
-        let suffs = suffixTriesByCh
-            .reduce(into: [[Character]]()) { result, chAndTrie in
-                result.append(contentsOf: chAndTrie.value.suffixes().map { suffix in
-                    [chAndTrie.key] + suffix
-                })
+        var curTrie: Trie = self
+        var curEndIndex = seq.startIndex
+        
+        while curEndIndex <= seq.endIndex {
+            if curTrie.isLeaf {
+                results.append(seq[seq.startIndex ..< curEndIndex])
             }
+            guard curEndIndex < seq.endIndex,
+                  let nextTrie = curTrie.subTries[seq[curEndIndex]]
+            else {
+                break
+            }
+            
+            curTrie = nextTrie
+            curEndIndex = seq.index(after: curEndIndex)
+        }
+
+        return results
+    }
+
+    public func suffixTrie(withPrefix prefix: some Collection<Element>) -> Trie? {
+        guard let firstCh = prefix.first else {
+            return self
+        }
+        return subTries[firstCh]?.suffixTrie(withPrefix: prefix.dropFirst())
+    }
+
+    // MARK: - walk
+
+    public func nextElements() -> [Element] {
+        Array(subTries.keys)
+    }
+
+    public func allSuffixes() -> [[Element]] {
+        let suffs = subTries.reduce(into: [[Element]]()) { result, elementSubtrie in
+            result.append(contentsOf:
+                elementSubtrie.value.allSuffixes()
+                    .map { suffix in [elementSubtrie.key] + suffix }
+            )
+        }
 
         if isLeaf {
-            return [Self.emptyCharacters] + suffs
+            return [[]] + suffs
         } else {
             return suffs
         }
     }
 
-    public func suffixTrie(withPrefix prefix: Substring) -> Trie? {
-        guard let firstCh = prefix.first else {
-            return self
-        }
-        return suffixTriesByCh[firstCh]?.suffixTrie(withPrefix: prefix.dropFirst())
-    }
+    // MARK: - updating trie
 
-    // MARK: updating trie
-
-    public mutating func addSubstring(_ substring: Substring) {
-        guard let firstChar = substring.first else {
+    public mutating func addBranches(_ seq: some Collection<Element>) {
+        guard let firstChar = seq.first else {
             isLeaf = true
             return
         }
 
-        if suffixTriesByCh[firstChar] == nil {
-            suffixTriesByCh[firstChar] = Trie()
+        if subTries[firstChar] == nil {
+            subTries[firstChar] = Trie()
         }
-
-        suffixTriesByCh[firstChar]?.addSubstring(substring.dropFirst())
+        subTries[firstChar]!.addBranches(seq.dropFirst())
     }
 }

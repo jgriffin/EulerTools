@@ -128,6 +128,7 @@ public extension Ascii {
 
     init(_ ch: Character) { self = ch.asciiValue! }
     static let A: Ascii = Self("A")
+    static let digit0: Ascii = Self("0")
     static let dot: Ascii = Self(".")
     static let singleQuote: Ascii = Self("'")
     static let quote: Ascii = Self("\"")

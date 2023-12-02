@@ -8,10 +8,10 @@
 import Foundation
 
 public class BoggleBoard: BoardWalk {
-    let wordsTrie: Trie
+    let wordsTrie: Trie<Character>
 
     public init(boardSize: BoardWalk.BoardSize,
-                wordsTrie: Trie)
+                wordsTrie: Trie<Character>)
     {
         self.wordsTrie = wordsTrie
 
@@ -50,8 +50,7 @@ public class BoggleBoard: BoardWalk {
     func isDeadEndPathForLetters(_ path: Path, letters: [Character]) -> Bool {
         let boggleWord = boggleWordFromPath(path, letters)
 
-        return wordsTrie
-            .suffixTrie(withPrefix: boggleWord[...]) == nil
+        return wordsTrie.suffixTrie(withPrefix: boggleWord[...]) == nil
     }
 
     func boggleWordFromPath(_ path: BoardWalk.Path, _ letters: [Character]) -> String {

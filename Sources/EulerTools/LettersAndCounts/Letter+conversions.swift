@@ -20,6 +20,16 @@ public extension Sequence<Character> {
     }
 }
 
+public extension String {
+    var asBytes: [Ascii] {
+        guard let bytes = try? asAscii else {
+            assertionFailure("not ascii string")
+            return []
+        }
+        return bytes
+    }
+}
+
 public extension Sequence where Element: Letter {
     var asPrintable: String { map(\.asPrintableCharacter).asString }
 

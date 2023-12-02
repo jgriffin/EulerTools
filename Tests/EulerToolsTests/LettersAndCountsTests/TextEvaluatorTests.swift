@@ -31,8 +31,7 @@ final class LikelihoodTests: XCTestCase {
         let elements = sampleCounts.elements
         let errors = zip(elements.map(counts.probabilityOf), elements.map(sampleCounts.probabilityOf))
             .map { $0.0 - $0.1 }
-        let meanSquaredError = errors.meanSquaredError
-        print("count meanSquaredError", meanSquaredError)
+        print("count meanSquaredError", errors.meanSquared)
     }
 
     func testBigramCountsMeanSquaredError() throws {
@@ -43,7 +42,6 @@ final class LikelihoodTests: XCTestCase {
         let elements = sampleCounts.elements
         let errors = zip(elements.map(counts.probabilityOf), elements.map(sampleCounts.probabilityOf))
             .map { $0.0 - $0.1 }
-        let meanSquaredError = errors.meanSquaredError
-        print("bigram meanSquaredError", meanSquaredError)
+        print("bigram meanSquaredError", errors.meanSquared)
     }
 }

@@ -19,6 +19,18 @@ public extension String.StringInterpolation {
         appendLiteral(String(format: "%.2f", value))
     }
 
+    mutating func appendInterpolation(dotOne value: Double) {
+        appendLiteral(String(format: "%.1f", value))
+    }
+
+    mutating func appendInterpolation(dotTwo value: Double) {
+        appendLiteral(String(format: "%.2f", value))
+    }
+
+    mutating func appendInterpolation(twoDotTwo value: Double) {
+        appendLiteral(String(format: "%.2f", value))
+    }
+
     mutating func appendInterpolation(letter: some Letter) {
         if letter == .newline {
             appendLiteral("\(Character.newline)")

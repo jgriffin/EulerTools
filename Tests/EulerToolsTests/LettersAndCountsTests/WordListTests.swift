@@ -40,7 +40,7 @@ extension WordListTests {
         let bytes = try wordlist.data.asArray
         bytes.enumerated().forEach { i, ch in
             if !ch.isValidAscii {
-                print(wordlist.rawValue, i, ch, bytes.dropFirst(max(0, i - 10)).prefix(10).asPrintableString)
+                print(wordlist.rawValue, i, ch, bytes.dropFirst(max(0, i - 10)).prefix(10).asPrintable)
                 isValidAscii = false
             }
         }
