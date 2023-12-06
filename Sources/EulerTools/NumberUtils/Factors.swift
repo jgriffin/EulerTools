@@ -41,7 +41,9 @@ public class FixedWidthFactors<I: FixedWidthInteger> {
         }
 
         return primeFactorMemoizer.memoized(n) {
-            guard let indexN = primes.binarySearch(indexFor: n) else {
+            guard case let indexN = primes.partitioningIndex(where: { $0 >= n }),
+                  primes.indices.contains(indexN)
+            else {
                 fatalError()
             }
             if primes[indexN] == n {
@@ -50,7 +52,11 @@ public class FixedWidthFactors<I: FixedWidthInteger> {
             }
 
             let halfN = I(n / 2)
-            let iHalfN = primes[...indexN].binarySearch(indexFor: halfN)!
+            guard case let iHalfN = primes[...indexN].partitioningIndex(where: { $0 >= halfN }),
+                  primes.indices.contains(iHalfN)
+            else {
+                fatalError()
+            }
 
             for i in stride(from: iHalfN, through: primes.startIndex, by: -1) {
                 let p = primes[i]

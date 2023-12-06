@@ -13,8 +13,9 @@ class BinarySearchTests: XCTestCase {
         let primes = Primes.primesUpto(30)
 
         (UInt(0) ... 30).forEach { n in
-            guard let index = primes.binarySearch(indexFor: n) else {
-                XCTAssert(primes.last! < n, "n: \(n)")
+            let index = primes.binarySearchIndex(for: n)
+            guard primes.indices.contains(index) else {
+                XCTAssert(primes.last! < n)
                 return
             }
 
@@ -22,6 +23,18 @@ class BinarySearchTests: XCTestCase {
                 XCTAssert(primes[index - 1] < n)
             }
             XCTAssert(n <= primes[index])
+        }
+    }
+
+    func testBinarySearchElement() {
+        let evens = stride(from: 0, through: 30, by: 2).asArray
+
+        (0 ... 31).forEach { n in
+            guard let index = evens.binarySearchValidIndex(forOrBefore: n) else {
+                XCTAssert(evens.last! < n)
+                return
+            }
+            XCTAssertEqual(evens[index], (n / 2) * 2)
         }
     }
 }

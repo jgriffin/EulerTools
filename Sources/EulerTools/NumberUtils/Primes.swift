@@ -13,7 +13,7 @@ public class Primes {
 
     public static func isPrime(_ n: UInt) throws -> Bool {
         if n <= 104_729 {
-            return binarySearch(tenThousandPrimes, key: n) != nil
+            return tenThousandPrimes.binarySearchIndex(ifExists: n) != nil
         }
 
         return try checkWithMillerRabin(n)
