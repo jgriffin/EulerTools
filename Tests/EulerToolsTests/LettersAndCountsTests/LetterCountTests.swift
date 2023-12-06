@@ -41,13 +41,13 @@ final class LetterCountTests: XCTestCase {
         print("\(counts: freq.map(.uppercasedOrDrop), prefix: 5)")
 
         print("\(heading: "non-alphanumeric to ~")")
-        print("\(counts: freq.map(.replaceNotIn(.isAlphaNumeric, with: "~")), prefix: 5)")
+        print("\(counts: freq.map(.replaceNotIn(.isAlphaDigit, with: "~")), prefix: 5)")
 
         print("\(heading: "uppercased alphanumeric")")
-        print("\(asPercentages: freq.map(.uppercasedOrPass.then(.include(.isAlphaNumeric))), prefix: 10)")
+        print("\(asPercentages: freq.map(.uppercasedOrPass.then(.include(.isAlphaDigit))), prefix: 10)")
 
         print("\(heading: "non-alphanumeric to ~ percenatage")")
-        print("\(asPercentages: freq.map(.replaceNotIn(.isAlphaNumeric, with: "~")), prefix: 4)")
+        print("\(asPercentages: freq.map(.replaceNotIn(.isAlphaDigit, with: "~")), prefix: 4)")
     }
 
     func testMapNonAlphaNum() throws {
@@ -59,6 +59,6 @@ final class LetterCountTests: XCTestCase {
 
         print()
         print("non-alphanumeric to ~")
-        print("\(counts: freq.map(.uppercasedOrPass.then(.replaceNotIn(.isAlphaNumeric, with: "~"))), prefix: 5)")
+        print("\(counts: freq.map(.uppercasedOrPass.then(.replaceNotIn(.isAlphaDigit, with: "~"))), prefix: 5)")
     }
 }

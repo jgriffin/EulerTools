@@ -34,7 +34,7 @@ final class LetterMapTests: XCTestCase {
     func testKeeping() {
         let source = "ab1 !"
 
-        let result = source.compactMap(.include(.isAlphaNumeric))
+        let result = source.compactMap(.include(.isAlphaDigit))
         XCTAssertEqual(result, "ab1".asCharacters)
     }
 }

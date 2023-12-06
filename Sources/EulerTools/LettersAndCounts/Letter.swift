@@ -14,8 +14,8 @@ public protocol Letter: Hashable, Comparable {
     static var uppercaseLetters: [Self] { get }
     static var lowercaseLetters: [Self] { get }
     static var alphaLetters: [Self] { get }
-    static var numericLetters: [Self] { get }
-    static var alphaNumericLetters: [Self] { get }
+    static var digitLetters: [Self] { get }
+    static var alphaDigitLetters: [Self] { get }
     static var punctuationLetters: [Self] { get }
     static var symbolLetters: [Self] { get }
     static var hexLetters: [Self] { get }
@@ -47,8 +47,8 @@ public extension Set where Element: Letter {
     static var isUppercase: Self { Element.uppercaseLetters.asSet }
     static var isLowercase: Self { Element.lowercaseLetters.asSet }
     static var isAlpha: Self { Element.alphaLetters.asSet }
-    static var isNumeric: Self { Element.numericLetters.asSet }
-    static var isAlphaNumeric: Self { Element.alphaNumericLetters.asSet }
+    static var isDigit: Self { Element.digitLetters.asSet }
+    static var isAlphaDigit: Self { Element.alphaDigitLetters.asSet }
     static var isTextual: Self { Element.textualLetters.asSet }
 }
 
@@ -83,13 +83,13 @@ public extension Character {
     static let uppercaseLetters: [Character] = asciiValues.filter(\.isUppercase)
     static let lowercaseLetters: [Character] = asciiValues.filter(\.isLowercase)
     static let alphaLetters: [Character] = asciiValues.filter(\.isLetter)
-    static let numericLetters: [Character] = asciiValues.filter(\.isNumber)
-    static let alphaNumericLetters: [Character] = alphaLetters + numericLetters
+    static let digitLetters: [Character] = asciiValues.filter(\.isNumber)
+    static let alphaDigitLetters: [Character] = alphaLetters + digitLetters
     static let punctuationLetters: [Character] = asciiValues.filter(\.isPunctuation)
     static let symbolLetters: [Character] = asciiValues.filter(\.isSymbol)
     static let hexLetters: [Character] = "0123456789abcdef".asCharacters
 
-    static let textualLetters: [Character] = [space] + alphaNumericLetters + "!'"
+    static let textualLetters: [Character] = [space] + alphaDigitLetters + "!'"
     static let isTextualSet: Set<Character> = .isTextual
     var isTextual: Bool { Self.isTextualSet.contains(self) }
 
@@ -126,18 +126,18 @@ public extension Ascii {
     static let space: Ascii = Character.space.asciiValue!
     static let underscore: Ascii = Character.underscore.asciiValue!
 
-    init(_ ch: Character) { self = ch.asciiValue! }
-    static let A: Ascii = Self("A")
-    static let digit0: Ascii = Self("0")
-    static let dot: Ascii = Self(".")
-    static let singleQuote: Ascii = Self("'")
-    static let quote: Ascii = Self("\"")
+    init(ch: Character) { self = ch.asciiValue! }
+    static let A: Ascii = Self(ch: "A")
+    static let digit0: Ascii = Self(ch: "0")
+    static let dot: Ascii = Self(ch: ".")
+    static let singleQuote: Ascii = Self(ch: "'")
+    static let quote: Ascii = Self(ch: "\"")
 
     static let uppercaseLetters: [Ascii] = try! Character.uppercaseLetters.asAscii
     static let lowercaseLetters: [Ascii] = try! Character.lowercaseLetters.asAscii
     static let alphaLetters: [Ascii] = try! Character.alphaLetters.asAscii
-    static let numericLetters: [Ascii] = try! Character.numericLetters.asAscii
-    static let alphaNumericLetters: [Ascii] = try! Character.alphaNumericLetters.asAscii
+    static let digitLetters: [Ascii] = try! Character.digitLetters.asAscii
+    static let alphaDigitLetters: [Ascii] = try! Character.alphaDigitLetters.asAscii
     static let punctuationLetters: [Ascii] = try! Character.punctuationLetters.asAscii
     static let symbolLetters: [Ascii] = try! Character.symbolLetters.asAscii
     static let hexLetters: [Ascii] = try! Character.hexLetters.asAscii

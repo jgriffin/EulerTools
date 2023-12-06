@@ -14,7 +14,7 @@ public extension Index3 {
     init(_ x: Int, _ y: Int, _ z: Int) {
         self.init(x: x, y: y, z: z)
     }
-    
+
     init(_ xyz: (Int, Int, Int)) {
         self.init(xyz.0, xyz.1, xyz.2)
     }

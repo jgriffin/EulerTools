@@ -56,7 +56,7 @@ class TrieTests: XCTestCase {
         XCTAssertEqual(Set(aSuffixTrie!.allSuffixes()),
                        Set(chArrays(["", "pple", "ardvark", "nvil"])))
     }
-    
+
     // MARK: - contained prefixes
 
     func testContainedPrefixesNone() {

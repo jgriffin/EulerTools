@@ -42,7 +42,7 @@ public struct Trie<Element: Hashable> {
 
         var curTrie: Trie = self
         var curEndIndex = seq.startIndex
-        
+
         while curEndIndex <= seq.endIndex {
             if curTrie.isLeaf {
                 results.append(seq[seq.startIndex ..< curEndIndex])
@@ -52,7 +52,7 @@ public struct Trie<Element: Hashable> {
             else {
                 break
             }
-            
+
             curTrie = nextTrie
             curEndIndex = seq.index(after: curEndIndex)
         }
