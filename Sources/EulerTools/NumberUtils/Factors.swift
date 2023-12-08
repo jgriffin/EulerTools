@@ -13,14 +13,13 @@ public enum Factors {
 }
 
 public class FixedWidthFactors<I: FixedWidthInteger> {
-    private let divisorsMemoizer = Memoizer<I, [I]>()
-
     // non-trivial divisors of n
     public func divisors(of n: I) -> [I] {
-        if n == 0 || n == 1 {
-            return []
-        }
-        return divisorsMemoizer.memoized(n) {
+        divisorsMemoizer.memoized(n) { n in
+            if n == 0 || n == 1 {
+                return []
+            }
+
             let halfn = n / 2
             guard halfn >= 2 else {
                 return []
@@ -30,7 +29,7 @@ public class FixedWidthFactors<I: FixedWidthInteger> {
         }
     }
 
-    private let primeFactorMemoizer = Memoizer<I, [I]>()
+    private let divisorsMemoizer = Memoizer<I, [I]>()
 
     // prime factors excludes the number itself if it is prime
     public func primeFactors<A: RandomAccessCollection>(of n: I, from primes: A) -> [I]
@@ -40,7 +39,7 @@ public class FixedWidthFactors<I: FixedWidthInteger> {
             return []
         }
 
-        return primeFactorMemoizer.memoized(n) {
+        return primeFactorMemoizer.memoized(n) { n in
             guard case let indexN = primes.partitioningIndex(where: { $0 >= n }),
                   primes.indices.contains(indexN)
             else {
@@ -76,4 +75,6 @@ public class FixedWidthFactors<I: FixedWidthInteger> {
             fatalError("Shouldn't get here")
         }
     }
+    
+    private let primeFactorMemoizer = Memoizer<I,[I]>()
 }

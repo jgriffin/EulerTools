@@ -11,14 +11,10 @@ import Foundation
 public class Factorial {
     public static let instance = Factorial()
 
-    public let memoiser = Memoizer<UInt, UInt>()
+    public func factorial(_ n: UInt) -> UInt { factorialMemoized(n) }
 
-    public func factorial(_ n: UInt) -> UInt {
-        memoiser.memoized(n) {
-            if n <= 1 {
-                return 1
-            }
-            return n * factorial(n - 1)
-        }
+    private let factorialMemoized = Memoizer<UInt, UInt>.memoizedFnRecursive { n, fact in
+        if n <= 1 { return 1 }
+        return n * fact(n - 1)
     }
 }

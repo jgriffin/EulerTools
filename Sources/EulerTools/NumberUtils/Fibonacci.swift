@@ -13,20 +13,12 @@ public enum Fibonacci {
 }
 
 public class FibonacciMemoized<I: FixedWidthInteger> {
-    private let fibMemoizer = Memoizer<I, I>()
+    public func fib(of n: I) -> I { fibMemoized(n) }
 
-    public func fib(of n: I) -> I {
+    private let fibMemoized = Memoizer<I, I>.memoizedFnRecursive { n, fib in
         assert(n >= 0)
-
-        if n == 0 {
-            return 0
-        }
-        if n == 1 {
-            return 1
-        }
-
-        return fibMemoizer.memoized(n) {
-            fib(of: n - 2) + fib(of: n - 1)
-        }
+        if n == 0 { return 0 }
+        if n == 1 { return 1 }
+        return fib(n - 2) + fib(n - 1)
     }
 }
