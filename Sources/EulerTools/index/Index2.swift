@@ -5,70 +5,15 @@
 
 import Algorithms
 
+// MARK: - Indexable2
+
 // sometimes we think in terms of XY
 // sometimes we think in terms of rows and columns
 // but there's a lot in common between IndexXY and IndexRC, so we have Indexable2
 
-public struct IndexXY: Indexable2 {
-    public let x, y: Int
+public protocol Indexable2: Hashable, Comparable, Neighborly, CustomStringConvertible {
+    associatedtype IndexRanges: Indexable2Ranges
 
-    public init(_ x: Int, _ y: Int) {
-        self.x = x
-        self.y = y
-    }
-
-    public init(x: Int, y: Int) { self.init(x, y) }
-
-    public var first: Int { x }
-    public var second: Int { y }
-
-    public typealias IndexRanges = (x: Range<Int>, y: Range<Int>)
-    public typealias IsValidIndex = (IndexXY) -> Bool
-
-    public static func isValidIndexFunc(_ ranges: IndexXY.IndexRanges) -> IndexXY.IsValidIndex {
-        { index in
-            ranges.x.contains(index.x) && ranges.y.contains(index.y)
-        }
-    }
-
-    public static func allIndexXY(_ xyRanges: IndexXY.IndexRanges) -> [IndexXY] {
-        product(xyRanges.y, xyRanges.x).map { y, x in IndexXY(x: x, y: y) }
-    }
-
-    public func ensureIn(_ ranges: IndexRanges) -> IndexXY {
-        IndexXY(x: max(ranges.x.lowerBound, min(x, ranges.x.upperBound - 1)),
-                y: max(ranges.y.lowerBound, min(y, ranges.y.upperBound - 1)))
-    }
-}
-
-public struct IndexRC: Indexable2 {
-    public let r, c: Int
-
-    public init(_ r: Int, _ y: Int) {
-        self.r = r
-        c = y
-    }
-
-    public init(r: Int, c: Int) { self.init(r, c) }
-
-    public var first: Int { r }
-    public var second: Int { c }
-
-    public typealias IndexRanges = (r: Range<Int>, c: Range<Int>)
-    public typealias IsValidIndex = (IndexRC) -> Bool
-
-    public static func isValidIndexFunc(_ ranges: IndexRC.IndexRanges) -> IndexRC.IsValidIndex {
-        { index in
-            ranges.r.contains(index.r) && ranges.c.contains(index.c)
-        }
-    }
-
-    public static func allIndexRC(_ ranges: IndexRC.IndexRanges) -> [IndexRC] {
-        product(ranges.r, ranges.c).map { r, c in IndexRC(r: r, c: c) }
-    }
-}
-
-public protocol Indexable2: Hashable, Neighborly, CustomStringConvertible {
     init(_ first: Int, _ second: Int)
     var first: Int { get }
     var second: Int { get }
@@ -104,32 +49,88 @@ public extension Indexable2 {
     static func += (lhs: inout Self, offset: (Int, Int)) { lhs = lhs + offset }
     static func -= (lhs: inout Self, rhs: Self) { lhs = lhs - rhs }
     static func -= (lhs: inout Self, offset: (Int, Int)) { lhs = lhs - offset }
-}
 
-public extension Indexable2 {
+    /**
+     Comparison of indexes (points) is a little weird anyway, but it's useful for a bunch of things, like sorting.
+     And comparing points with two different components, is even stranger.
+
+     So, define something that feels kinda natural - sort by the first component, then the second
+     In particular, for RC that's rows, then columns, giving us printing order.
+     For XY, it ends up left-right
+     */
+    static func < (lhs: Self, rhs: Self) -> Bool {
+        guard lhs.first == rhs.first else { return lhs.first < rhs.first }
+        return lhs.second < rhs.second
+    }
+
+    var lengthSquared: Int { first * first + second * second }
+
     static func manhattanDistance(_ i1: Self, _ i2: Self) -> Int {
         abs(i2.first - i1.first) + abs(i2.second - i1.second)
     }
 }
 
-public struct Ranger<Index: Indexable2> {
-    public init() {}
+// MARK: - IndexXY
 
-    public var minIndex = Index(.max, .max)
-    public var maxIndex = Index(.min, .min)
+public struct IndexXY: Indexable2 {
+    public typealias IndexRanges = IndexXYRanges
 
-    public var ranges: (x: Range<Int>, y: Range<Int>) {
-        (x: minIndex.first ..< maxIndex.first + 1,
-         y: minIndex.second ..< maxIndex.second + 1)
+    public let x, y: Int
+
+    public init(_ x: Int, _ y: Int) {
+        self.x = x
+        self.y = y
     }
 
-    public mutating func expand(toInclude i: Index) {
-        minIndex = Index(min(minIndex.first, i.first), min(minIndex.second, i.second))
-        maxIndex = Index(max(maxIndex.first, i.first), max(maxIndex.second, i.second))
+    public init(x: Int, y: Int) { self.init(x, y) }
+
+    public var first: Int { x }
+    public var second: Int { y }
+
+    public typealias IsValidIndex = (IndexXY) -> Bool
+
+    @available(*, deprecated, renamed: "IndexXYRanges.isValidIndex")
+    public static func isValidIndexFunc(_ ranges: IndexXYRanges) -> IndexXY.IsValidIndex {
+        ranges.isValidIndex
     }
 
-    public mutating func addPadding(_ padding: Int) {
-        expand(toInclude: minIndex - (padding, padding))
-        expand(toInclude: maxIndex + (padding, padding))
+    @available(*, deprecated, renamed: "IndexXYRanges.allIndexXY")
+    public static func allIndexXY(_ ranges: IndexXYRanges) -> [IndexXY] {
+        ranges.allIndicesFlat()
+    }
+
+    public func ensureIn(_ ranges: IndexXYRanges) -> IndexXY {
+        IndexXY(x: max(ranges.x.lowerBound, min(x, ranges.x.upperBound - 1)),
+                y: max(ranges.y.lowerBound, min(y, ranges.y.upperBound - 1)))
+    }
+}
+
+// MARK: - IndexRC
+
+public struct IndexRC: Indexable2 {
+    public typealias IndexRanges = IndexRCRanges
+
+    public let r, c: Int
+
+    public init(_ r: Int, _ y: Int) {
+        self.r = r
+        c = y
+    }
+
+    public init(r: Int, c: Int) { self.init(r, c) }
+
+    public var first: Int { r }
+    public var second: Int { c }
+
+    public typealias IsValidIndex = (IndexRC) -> Bool
+
+    @available(*, deprecated, renamed: "IndexRanges.isValidIndex")
+    public static func isValidIndexFunc(_ ranges: IndexRCRanges) -> IndexRC.IsValidIndex {
+        ranges.isValidIndex
+    }
+
+    @available(*, deprecated, renamed: "IndexRanges.allIndexRC")
+    public static func allIndexRC(_ ranges: IndexRCRanges) -> [IndexRC] {
+        ranges.allIndicesFlat()
     }
 }

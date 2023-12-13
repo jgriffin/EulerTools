@@ -7,7 +7,7 @@
 
 import Foundation
 
-// return Greatest common devisor using the  Euclidean Algorithm
+// return Greatest common divisor using the  Euclidean Algorithm
 public func GCD<T: SignedInteger>(_ a: T, _ b: T) -> T {
     if a == 0 { return b }
     if b == 0 { return a }
@@ -20,6 +20,18 @@ public func GCD<T: SignedInteger>(_ a: T, _ b: T) -> T {
     let r = a % b
     return GCD(b, r)
 }
+
+public func GCD<T: SignedInteger>(_ a: [T]) -> T { a.reduce(1, GCD) }
+public func GCD<T: SignedInteger>(_ a: T...) -> T { GCD(a) }
+
+/// Least common multiple
+/// lcm (a,b)=  |ab| / gcd(a,b)
+public func LCM<T: SignedInteger>(_ a: T, _ b: T) -> T {
+    abs(a * b) / GCD(a, b)
+}
+
+public func LCM<T: SignedInteger>(_ a: [T]) -> T { a.reduce(1, LCM) }
+public func LCM<T: SignedInteger>(_ a: T...) -> T { LCM(a) }
 
 public extension SignedInteger {
     // extendedGCD

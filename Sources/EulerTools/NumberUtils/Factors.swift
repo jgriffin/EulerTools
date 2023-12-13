@@ -75,6 +75,6 @@ public class FixedWidthFactors<I: FixedWidthInteger> {
             fatalError("Shouldn't get here")
         }
     }
-    
-    private let primeFactorMemoizer = Memoizer<I,[I]>()
+
+    private let primeFactorMemoizer = Memoizer<I, [I]>()
 }

@@ -10,7 +10,7 @@ import Foundation
 
 /**
  Can be used two ways (at least)
- 
+
  1. As just a cache around a function
     e.g. memoizer.memoize(n, fn)
 
@@ -48,7 +48,7 @@ public class Memoizer<Input: Hashable, Result> {
 
         func wrap(x: Input) -> Result {
             memoizer.memoized(x) { x in
-                fnRecurse(x,wrap)
+                fnRecurse(x, wrap)
             }
         }
 

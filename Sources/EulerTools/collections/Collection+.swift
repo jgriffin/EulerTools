@@ -5,8 +5,8 @@
 import Foundation
 
 public extension Collection {
-    var only: Element? {
-        guard count == 1 else { return nil }
+    var assertOnly: Element? {
+        assert(count <= 1)
         return first
     }
 }

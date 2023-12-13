@@ -14,4 +14,8 @@ public extension Int {
             block()
         }
     }
+
+    func times() -> Range<Int> {
+        0 ..< self
+    }
 }
