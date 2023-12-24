@@ -13,10 +13,13 @@ import Algorithms
 
 public protocol Indexable2: Hashable, Comparable, Neighborly, CustomStringConvertible {
     associatedtype IndexRanges: Indexable2Ranges
+    typealias Direction = Direction2
 
     init(_ first: Int, _ second: Int)
     var first: Int { get }
     var second: Int { get }
+
+    static func offsetOf(_ direction: Direction2) -> Self
 }
 
 public extension Indexable2 {
@@ -45,10 +48,32 @@ public extension Indexable2 {
         .init(lhs.first - offset.0, lhs.second - offset.1)
     }
 
+    static func * (lhs: Self, multiple: Int) -> Self {
+        (0 ..< multiple).reduce(Self.zero) { result, _ in
+            result + lhs
+        }
+    }
+
+    static func * (multiple: Int, rhs: Self) -> Self {
+        rhs * multiple
+    }
+
     static func += (lhs: inout Self, rhs: Self) { lhs = lhs + rhs }
     static func += (lhs: inout Self, offset: (Int, Int)) { lhs = lhs + offset }
     static func -= (lhs: inout Self, rhs: Self) { lhs = lhs - rhs }
     static func -= (lhs: inout Self, offset: (Int, Int)) { lhs = lhs - offset }
+
+    static func + (dir: Direction2, rhs: Self) -> Self {
+        offsetOf(dir) + rhs
+    }
+
+    static func + (lhs: Self, dir: Direction2) -> Self {
+        offsetOf(dir) + lhs
+    }
+
+    static func += (lhs: inout Self, dir: Direction2) {
+        lhs = lhs + dir
+    }
 
     /**
      Comparison of indexes (points) is a little weird anyway, but it's useful for a bunch of things, like sorting.
@@ -87,6 +112,15 @@ public struct IndexXY: Indexable2 {
     public var first: Int { x }
     public var second: Int { y }
 
+    public static func offsetOf(_ direction: Direction2) -> IndexXY {
+        switch direction {
+        case .up: IndexXY(0, -1)
+        case .right: IndexXY(1, 0)
+        case .down: IndexXY(0, 1)
+        case .left: IndexXY(-1, 0)
+        }
+    }
+
     public typealias IsValidIndex = (IndexXY) -> Bool
 
     @available(*, deprecated, renamed: "IndexXYRanges.isValidIndex")
@@ -122,6 +156,15 @@ public struct IndexRC: Indexable2 {
     public var first: Int { r }
     public var second: Int { c }
 
+    public static func offsetOf(_ direction: Direction2) -> IndexRC {
+        switch direction {
+        case .up: IndexRC(-1, 0)
+        case .right: IndexRC(0, 1)
+        case .down: IndexRC(1, 0)
+        case .left: IndexRC(0, -1)
+        }
+    }
+
     public typealias IsValidIndex = (IndexRC) -> Bool
 
     @available(*, deprecated, renamed: "IndexRanges.isValidIndex")
@@ -132,5 +175,27 @@ public struct IndexRC: Indexable2 {
     @available(*, deprecated, renamed: "IndexRanges.allIndexRC")
     public static func allIndexRC(_ ranges: IndexRCRanges) -> [IndexRC] {
         ranges.allIndicesFlat()
+    }
+}
+
+public enum Direction2: Hashable, CaseIterable {
+    case up, down, left, right
+
+    public var clockwise: Self {
+        switch self {
+        case .up: .right
+        case .right: .down
+        case .down: .left
+        case .left: .up
+        }
+    }
+
+    public var counterClockwise: Self {
+        switch self {
+        case .up: .left
+        case .right: .up
+        case .down: .right
+        case .left: .down
+        }
     }
 }

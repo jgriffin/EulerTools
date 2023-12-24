@@ -38,8 +38,8 @@ public extension Indexable2Ranges {
     }
 
     func dump<Value>(
-        _ valueAtIndex: (Index) -> Value,
-        _ stringForValue: (Value) -> String
+        valueAtIndex: (Index) -> Value,
+        stringForValue: (Value) -> String
     ) -> String {
         dump { index in stringForValue(valueAtIndex(index)) }
     }
@@ -49,7 +49,7 @@ public extension Indexable2Ranges {
         trueString: String = "X",
         falseString: String = "."
     ) -> String {
-        dump(isTrueAt) { $0 ? trueString : falseString }
+        dump(valueAtIndex: isTrueAt) { $0 ? trueString : falseString }
     }
 
     func dumpNS(

@@ -28,10 +28,11 @@ public struct AStarSolver<State: Hashable,
     let neighborGenerator: NeighborStatesGenerator
     let stepCoster: StepCoster?
 
-    public init(hScorer: @escaping HScorer,
-                neighborGenerator: @escaping NeighborStatesGenerator,
-                stepCoster: StepCoster? = nil)
-    {
+    public init(
+        hScorer: @escaping HScorer,
+        neighborGenerator: @escaping NeighborStatesGenerator,
+        stepCoster: StepCoster? = nil
+    ) {
         self.hScorer = hScorer
         self.neighborGenerator = neighborGenerator
         self.stepCoster = stepCoster
@@ -39,16 +40,18 @@ public struct AStarSolver<State: Hashable,
 
     // MARK: Solve
 
-    public func solve(from start: State,
-                      goal: State) -> [State]?
-    {
+    public func solve(
+        from start: State,
+        goal: State
+    ) -> [State]? {
         solve(from: start, minimizeScore: true, isAtGoal: { $0 == goal })
     }
 
-    public func solve(from start: State,
-                      minimizeScore: Bool,
-                      isAtGoal: (State) -> Bool) -> [State]?
-    {
+    public func solve(
+        from start: State,
+        minimizeScore: Bool,
+        isAtGoal: (State) -> Bool
+    ) -> [State]? {
         var openSet = Set<State>([start])
         var closedSet = Set<State>()
 
