@@ -1,5 +1,5 @@
 //
-//  ChineseReminderTests.swift
+//  ChineseRemainderTests.swift
 //
 //
 //  Created by Griff on 1/3/21.

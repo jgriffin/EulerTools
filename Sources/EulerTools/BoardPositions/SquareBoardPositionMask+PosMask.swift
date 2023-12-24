@@ -5,7 +5,7 @@
 
 public extension SquareBoardPositionMask {
     static func positionsFromMask(_ mask: PosMask) -> [Self] {
-        mask.individualBits.map(Self.make)
+        mask.individualBits.map(make)
     }
 
     static func maskFromPositions(_ positions: some Sequence<Self>) -> PosMask {
@@ -13,6 +13,6 @@ public extension SquareBoardPositionMask {
     }
 
     static func maskFromRCs(_ rcs: some Sequence<RC>) -> PosMask {
-        rcs.map(Self.maskFrom).reduce(PosMask(0), |)
+        rcs.map(maskFrom).reduce(PosMask(0), |)
     }
 }

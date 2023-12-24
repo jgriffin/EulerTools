@@ -1,5 +1,5 @@
 //
-//  StringProtocol+sortLetters.swift
+//  WordAndSorted+.swift
 //
 //
 //  Created by Griff on 11/25/20.

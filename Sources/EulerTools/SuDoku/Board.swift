@@ -1,5 +1,5 @@
 //
-//  SuDokuBoard.swift
+//  Board.swift
 //  ProjectEuler
 //
 //  Created by John Griffin on 5/11/19.

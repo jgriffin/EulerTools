@@ -1,5 +1,5 @@
 //
-//  BigFraction.swift
+//  Fraction.swift
 //
 //
 //  Created by John Griffin on 10/26/19.

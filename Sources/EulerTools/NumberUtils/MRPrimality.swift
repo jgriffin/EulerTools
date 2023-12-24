@@ -104,27 +104,27 @@ extension Primes {
         // values from https://en.wikipedia.org/wiki/Miller–Rabin_primality_test
         switch n {
         case _ where n < 2047:
-            return [2]
+            [2]
         case _ where n < 1_373_653:
-            return [2, 3]
+            [2, 3]
         case _ where n < 9_080_191:
-            return [31, 73]
+            [31, 73]
         case _ where n < 25_326_001:
-            return [2, 3, 5]
+            [2, 3, 5]
         case _ where n < 3_215_031_751:
-            return [2, 3, 5, 7]
+            [2, 3, 5, 7]
         case _ where n < 4_759_123_141:
-            return [2, 7, 61]
+            [2, 7, 61]
         case _ where n < 1_122_004_669_633:
-            return [2, 13, 23, 1_662_803]
+            [2, 13, 23, 1_662_803]
         case _ where n < 2_152_302_898_747:
-            return [2, 3, 5, 7, 11]
+            [2, 3, 5, 7, 11]
         case _ where n < 3_474_749_660_383:
-            return [2, 3, 5, 7, 11, 13]
+            [2, 3, 5, 7, 11, 13]
         case _ where n < 341_550_071_728_321:
-            return [2, 3, 5, 7, 11, 13, 17]
+            [2, 3, 5, 7, 11, 13, 17]
         default:
-            return nil
+            nil
         }
     }
 }

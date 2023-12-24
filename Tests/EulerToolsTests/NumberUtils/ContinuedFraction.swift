@@ -1,5 +1,5 @@
 //
-//  ContinuedFractionTests.swift
+//  ContinuedFraction.swift
 //
 //
 //  Created by John Griffin on 4/19/20.

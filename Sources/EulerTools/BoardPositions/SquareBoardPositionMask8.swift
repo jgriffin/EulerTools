@@ -17,8 +17,8 @@ public extension SquareBoard {
         }
 
         public static func make(_ rc: RC) -> PositionMask8 {
-            assert(rc.r < Self.rowShift && rc.c < Self.rowShift)
-            return .init(mask: Self.maskFrom(rc))
+            assert(rc.r < rowShift && rc.c < rowShift)
+            return .init(mask: maskFrom(rc))
         }
 
         // MARK: r,c math

@@ -1,5 +1,5 @@
 //
-//  PythagorianTripplesTests.swift
+//  PythagorianTests.swift
 //
 //
 //  Created by John Griffin on 2/28/20.

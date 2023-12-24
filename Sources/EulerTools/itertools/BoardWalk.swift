@@ -1,5 +1,5 @@
 //
-//  BoggleWalk.swift
+//  BoardWalk.swift
 //
 //
 //  Created by John Griffin on 3/28/20.

@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Index2+coloring.swift
 //
 //
 //  Created by Griff on 12/23/23.
@@ -12,17 +12,17 @@ public extension IndexRCRanges {
         isEdge: (IndexRC) -> Bool
     ) -> [IndexRC: Int] {
         let nonEdgeIndices = allIndicesFlat().filter { !isEdge($0) }
-        
+
         typealias Color = Int
         var currentColor: Color = 0
         func nextColor() -> Color {
             currentColor += 1
             return currentColor
         }
-        
+
         var colorOfIndex = [IndexRC: Color]()
         var mapColorToLower: [Int: Int] = [:]
-        
+
         func neighborColors(of index: IndexRC) -> [Color] {
             [Direction2.up, .right, .down, .left]
                 .compactMap {
@@ -31,7 +31,7 @@ public extension IndexRCRanges {
                 .asSet
                 .sorted()
         }
-        
+
         nonEdgeIndices.forEach { g in
             let colors = neighborColors(of: g)
             switch colors.count {
@@ -47,19 +47,19 @@ public extension IndexRCRanges {
                 }
             }
         }
-        
+
         var wasColorOf = colorOfIndex
         repeat {
             wasColorOf = colorOfIndex
             colorOfIndex = colorOfIndex.mapValues { color in
                 mapColorToLower[color] ?? color
             }
-            
+
         } while wasColorOf != colorOfIndex
-        
+
         return colorOfIndex
     }
-    
+
     func connectedGroupsByColor(isEdge: (IndexRC) -> Bool) -> [Int: [IndexRC]] {
         let colorByIndex = connectedGroupsByIndex(isEdge: isEdge)
         let groupedByColor = colorByIndex.reduce(into: [Int: [IndexRC]]()) { result, indexColor in
@@ -67,15 +67,15 @@ public extension IndexRCRanges {
         }
         return groupedByColor
     }
-    
+
     func isIndex(
         _ index: IndexRC,
         inside loopEdges: Set<IndexRC>,
-        direction: Direction2 = .left
+        direction _: Direction2 = .left
     ) -> Bool? {
         do {
             var edgeCount = 0
-            
+
             var wasEdge = false
             var cur = index
             while isValidIndex(cur) {

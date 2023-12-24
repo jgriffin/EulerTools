@@ -97,11 +97,11 @@ public extension Character {
     var asPrintableCharacter: Character {
         switch self {
         case .newline:
-            return .lf
+            .lf
         case _ where !Set<Character>.isAsciiValue.contains(self):
-            return .printableInvalid
+            .printableInvalid
         default:
-            return self
+            self
         }
     }
 

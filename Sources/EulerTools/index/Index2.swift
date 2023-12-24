@@ -49,7 +49,7 @@ public extension Indexable2 {
     }
 
     static func * (lhs: Self, multiple: Int) -> Self {
-        (0 ..< multiple).reduce(Self.zero) { result, _ in
+        (0 ..< multiple).reduce(zero) { result, _ in
             result + lhs
         }
     }

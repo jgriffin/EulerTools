@@ -90,7 +90,7 @@ public struct _BigInt<Word: FixedWidthInteger>:
     ///
     /// - `_data` has no trailing zero elements
     /// - If `self == 0`, then `isNegative == false` and `_data == []`
-    internal var _data: [Word] = []
+    var _data: [Word] = []
 
     /// A Boolean value indicating whether this instance is negative.
     public private(set) var isNegative = false
@@ -923,13 +923,13 @@ public struct _BigInt<Word: FixedWidthInteger>:
         func valueForCodeUnit(_ unit: Unicode.UTF16.CodeUnit) -> Word? {
             switch unit {
             // "0"..."9"
-            case 48 ... 57: return Word(unit - 48)
+            case 48 ... 57: Word(unit - 48)
             // "a"..."z"
-            case 97 ... 122: return Word(unit - 87)
+            case 97 ... 122: Word(unit - 87)
             // "A"..."Z"
-            case 65 ... 90: return Word(unit - 55)
+            case 65 ... 90: Word(unit - 55)
             // invalid character
-            default: return nil
+            default: nil
             }
         }
 

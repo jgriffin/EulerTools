@@ -1,5 +1,5 @@
 //
-//  SuDokuGridTile.swift
+//  DigitMask.swift
 //  ProjectEuler
 //
 //  Created by John Griffin on 5/10/19.

@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  DigitsTests.swift
 //  ProjectEulerTests
 //
 //  Created by John Griffin on 3/13/19.
