@@ -12,11 +12,11 @@ class BinarySearchTests: XCTestCase {
     func testBinarySearch() {
         let primes = Primes.primesUpto(30)
 
-        (UInt(0) ... 30).forEach { n in
+        for n in UInt(0) ... 30 {
             let index = primes.binarySearchIndex(for: n)
             guard primes.indices.contains(index) else {
                 XCTAssert(primes.last! < n)
-                return
+                continue
             }
 
             if index > 0 {
@@ -29,10 +29,10 @@ class BinarySearchTests: XCTestCase {
     func testBinarySearchElement() {
         let evens = stride(from: 0, through: 30, by: 2).asArray
 
-        (0 ... 31).forEach { n in
+        for n in 0 ... 31 {
             guard let index = evens.binarySearchValidIndex(forOrBefore: n) else {
                 XCTAssert(evens.last! < n)
-                return
+                continue
             }
             XCTAssertEqual(evens[index], (n / 2) * 2)
         }

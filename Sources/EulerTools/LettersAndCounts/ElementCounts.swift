@@ -4,7 +4,7 @@
 
 import Foundation
 
-public struct ElementCounts<Element: Hashable>: CustomStringConvertible {
+public struct ElementCounts<Element: Hashable & Sendable>: CustomStringConvertible, Sendable {
     public let countOf: [Element: Int]
 
     // pre-computed
@@ -99,7 +99,7 @@ public extension ElementCounts where Element: Comparable {
     static var decreasingPercentageByLetter: SortsBeforePercentage { { $0.value > $1.value } }
 }
 
-public extension Array where Element: Hashable {
+public extension Array where Element: Hashable & Sendable {
     var elementCounts: ElementCounts<Element> {
         ElementCounts(self)
     }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Factorial {
+public actor Factorial {
     public static let instance = Factorial()
 
     public func factorial(_ n: UInt) -> UInt { factorialMemoized(n) }

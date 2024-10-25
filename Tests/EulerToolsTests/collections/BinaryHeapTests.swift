@@ -12,7 +12,7 @@ class BinaryHeapTests: XCTestCase {
         let shuffled = numbers.shuffled()
 
         var heap = BinaryHeap<Int>(minHeap: true)
-        shuffled.forEach { i in
+        for i in shuffled {
             heap.insert(i)
         }
 

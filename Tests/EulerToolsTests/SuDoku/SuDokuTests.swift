@@ -36,7 +36,7 @@ class SuDokuTests: XCTestCase {
         XCTAssertEqual(emptyGrid.colMasks.count, 9)
         XCTAssertEqual(emptyGrid.squareMasks.count, 9)
 
-        (0 ..< 9 * 9).forEach { index in
+        for index in 0 ..< 9 * 9 {
             var grid = SuDoku.BoardMasks()
             grid.updateMasks(index: index, subtracting: DigitMask(number: 1))
 

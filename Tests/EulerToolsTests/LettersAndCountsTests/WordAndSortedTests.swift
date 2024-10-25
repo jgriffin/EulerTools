@@ -10,7 +10,7 @@ final class WordListSortedTests: XCTestCase {
             ("dcba", "abcd"),
         ]
 
-        tests.forEach { test in
+        for test in tests {
             XCTAssertEqual(test.string.wordAndSorted().sorted,
                            Array(test.check))
         }
@@ -22,7 +22,7 @@ final class WordListSortedTests: XCTestCase {
             ("aBcD", "BDac"),
         ]
 
-        tests.forEach { test in
+        for test in tests {
             XCTAssertEqual(test.string.wordAndSorted().sorted,
                            Array(test.check))
         }
@@ -41,7 +41,7 @@ final class WordListSortedTests: XCTestCase {
             ("aab", "ab", ("a", "")),
         ]
 
-        tests.forEach { test in
+        for test in tests {
             let testWas = test.test.wordAndSorted()
 
             let result = testWas.diffSorted(Array(test.other))

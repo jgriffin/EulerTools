@@ -11,7 +11,7 @@ import Algorithms
 // sometimes we think in terms of rows and columns
 // but there's a lot in common between IndexXY and IndexRC, so we have Indexable2
 
-public protocol Indexable2: Hashable, Comparable, Neighborly, CustomStringConvertible {
+public protocol Indexable2: Hashable, Comparable, Neighborly, CustomStringConvertible, Sendable {
     associatedtype IndexRanges: Indexable2Ranges
     typealias Direction = Direction2
 

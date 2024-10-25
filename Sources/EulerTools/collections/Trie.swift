@@ -13,7 +13,7 @@ import Foundation
 
  Each level of the tree may or may itself be a leaf node, as indicated by the isLeaf property
  */
-public struct Trie<Element: Hashable> {
+public struct Trie<Element: Hashable & Sendable>: Sendable {
     private(set) var isLeaf: Bool = false
     private var subTries = [Element: Trie]()
 

@@ -9,7 +9,7 @@
 import Foundation
 
 public extension SuDoku {
-    struct DigitMask: OptionSet {
+    struct DigitMask: OptionSet, Sendable {
         public var rawValue: UInt16
 
         public init(rawValue: UInt16) { self.rawValue = rawValue }

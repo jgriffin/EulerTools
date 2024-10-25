@@ -18,7 +18,7 @@ class RomanNumeralsTests: XCTestCase {
             ("MMMMDCLXXII", 4672),
         ]
 
-        intValueOfTests.forEach { test, check in
+        for (test, check) in intValueOfTests {
             let result = RomanNumerals.intValue(of: test)
             XCTAssertEqual(result, check, "roman numeral:\(test)")
         }
@@ -35,7 +35,7 @@ class RomanNumeralsTests: XCTestCase {
             ("MMMMDCLXXII", 4672),
         ]
 
-        romanValueOfTests.forEach { check, test in
+        for (check, test) in romanValueOfTests {
             let result = RomanNumerals.romanValue(of: test)
             XCTAssertEqual(result, check, "decimal : \(test)")
         }

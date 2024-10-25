@@ -5,7 +5,7 @@
 import Foundation
 
 public enum Rubiks {
-    public enum Color: CaseIterable, CustomStringConvertible {
+    public enum Color: CaseIterable, CustomStringConvertible, Sendable {
         case w, r, g, o, b, y // white, red, green, orange, blue, yellow
 
         public var description: String {
@@ -20,7 +20,7 @@ public enum Rubiks {
         }
     }
 
-    public enum Face: CaseIterable {
+    public enum Face: CaseIterable, Sendable {
         case u, f, l, b, r, d // up, front, left, back, right, down
 
         public var startingColor: Color {

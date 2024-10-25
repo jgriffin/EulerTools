@@ -14,7 +14,7 @@ class BitsTests: XCTestCase {
         let tests: [(test: Int, check: Int)] = [
             (0, 0), (1, 1), (2, 1), (3, 2),
         ]
-        tests.forEach { test, check in
+        for (test, check) in tests {
             let result = Bits.countBits(test)
             XCTAssertEqual(result, check, "countBits of \(test)")
         }
@@ -24,7 +24,7 @@ class BitsTests: XCTestCase {
         let tests: [(test: Int, check: [Int])] = [
             (0, []), (1, [0]), (2, [1]), (3, [1, 0]),
         ]
-        tests.forEach { test, check in
+        for (test, check) in tests {
             let result = Bits.indicesOfSetBits(test)
             XCTAssertEqual(result, check, "countBits of \(test)")
         }
@@ -34,7 +34,7 @@ class BitsTests: XCTestCase {
         let tests: [(test: _BigInt<UInt64>, check: [Int])] = [
             (0, []), (1, [0]), (2, [1]), (3, [1, 0]),
         ]
-        tests.forEach { test, check in
+        for (test, check) in tests {
             let result = test.indiciesForSetBits()
             XCTAssertEqual(result, check, "countBits of \(test)")
         }
@@ -44,7 +44,7 @@ class BitsTests: XCTestCase {
         let tests: [(test: _BigInt<UInt64>, check: [Int])] = [
             (0, []), (1, [64]), (2, [65]), (3, [65, 64]),
         ]
-        tests.forEach { test, check in
+        for (test, check) in tests {
             let test2 = test * (1 << 64)
             let result = test2.indiciesForSetBits()
             XCTAssertEqual(result, check, "countBits of \(test2)")
@@ -58,7 +58,7 @@ class BitsTests: XCTestCase {
             (13, [1, 4, 8]),
             (0, []),
         ]
-        tests.forEach { test in
+        for test in tests {
             let result = test.test.individualBits
             XCTAssertEqual(result, test.check)
         }

@@ -13,21 +13,19 @@ final class SquareBoardPositionsTests: XCTestCase {
     typealias PositionMask8 = SquareBoard.PositionMask8
 
     func testPositionRC() {
-        product(0 ..< 8, 0 ..< 8)
-            .forEach { r, c in
-                let p = PositionRC.make(.init(r, c))
-                XCTAssertEqual(p.r, r)
-                XCTAssertEqual(p.c, c)
-            }
+        for (r, c) in product(0 ..< 8, 0 ..< 8) {
+            let p = PositionRC.make(.init(r, c))
+            XCTAssertEqual(p.r, r)
+            XCTAssertEqual(p.c, c)
+        }
     }
 
     func testPositionMask8RC() {
-        product(0 ..< 8, 0 ..< 8)
-            .forEach { r, c in
-                let p = PositionMask8.make(.init(r, c))
-                XCTAssertEqual(p.r, r)
-                XCTAssertEqual(p.c, c)
-            }
+        for (r, c) in product(0 ..< 8, 0 ..< 8) {
+            let p = PositionMask8.make(.init(r, c))
+            XCTAssertEqual(p.r, r)
+            XCTAssertEqual(p.c, c)
+        }
     }
 
     func testForwardDiagonals() {

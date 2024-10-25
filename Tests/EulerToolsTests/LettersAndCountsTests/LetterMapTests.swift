@@ -9,7 +9,7 @@ final class LetterMapTests: XCTestCase {
             ("a", "b", "c", "a"),
         ]
 
-        tests.forEach { test in
+        for test in tests {
             let mapper = LetterMap.mapOrPass(zip(test.mapFrom, test.mapTo))
             let result = test.source.compactMap(mapper)
             XCTAssertEqual(result, test.check.asArray)

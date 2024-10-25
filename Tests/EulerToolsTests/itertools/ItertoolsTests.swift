@@ -15,7 +15,7 @@ class ItertoolsTests: XCTestCase {
             ([1], [[1]]),
             ([1, 2], [[1, 1], [1, 2], [2, 1], [2, 2]]),
         ]
-        tests.forEach { test, check in
+        for (test, check) in tests {
             let result = Array(product(test, repeated: test.count))
             XCTAssertEqual(result, check, "\(test)")
         }
@@ -26,7 +26,7 @@ class ItertoolsTests: XCTestCase {
             ([1], [[1]]),
             ([1, 2], [[1, 1], [1, 2], [2, 1], [2, 2]]),
         ]
-        tests.forEach { test, check in
+        for (test, check) in tests {
             let result = test.permutations(repeatingElements: true)
             XCTAssertEqual(Array(result), check, "\(test)")
         }
@@ -38,7 +38,7 @@ class ItertoolsTests: XCTestCase {
             ([1, 2], [[1, 2]]),
             ([1, 2, 3], [[1, 2, 3]]),
         ]
-        tests.forEach { test, check in
+        for (test, check) in tests {
             let result = test.combinations(length: test.count)
             XCTAssertEqual(result, check, "\(test)")
         }
@@ -49,7 +49,7 @@ class ItertoolsTests: XCTestCase {
             ([1], [[1]]),
             ([1, 2], [[1, 1], [1, 2], [2, 2]]),
         ]
-        tests.forEach { test, check in
+        for (test, check) in tests {
             let result = test.combinations(length: test.count, repeatingElements: true)
             XCTAssertEqual(result, check, "\(test)")
         }

@@ -7,7 +7,7 @@
 public enum SquareBoard {}
 
 public extension SquareBoard {
-    struct RC: Hashable {
+    struct RC: Hashable, Sendable {
         public let r, c: Int
 
         public init(r: Int, c: Int) {

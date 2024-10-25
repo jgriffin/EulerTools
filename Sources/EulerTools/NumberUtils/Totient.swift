@@ -8,8 +8,8 @@
 import Foundation
 
 public enum Totient {
-    public static func totient(_ n: UInt, primes: ArraySlice<UInt>) -> UInt {
-        let primeFactors = Factors.uint.primeFactors(of: n, from: primes)
+    public static func totient(_ n: UInt, primes: ArraySlice<UInt>) async -> UInt {
+        let primeFactors = await Factors.uint.primeFactors(of: n, from: primes)
         let result = primeFactors
             .reduce(n) { result, p in
                 result - result / p

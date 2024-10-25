@@ -9,7 +9,7 @@ import EulerTools
 import XCTest
 
 class FactorsTests: XCTestCase {
-    func testPrimeFactors() {
+    func testPrimeFactors() async {
         let check: [[UInt]] = [
             [],
             [], [2], [3], [2], [5],
@@ -20,13 +20,13 @@ class FactorsTests: XCTestCase {
         ]
 
         let primes = Primes.primesUpto(100)[...]
-        zip(UInt(0) ... 21, check).forEach { test in
-            let result = Factors.uint.primeFactors(of: test.0, from: primes)
+        await zip(UInt(0) ... 21, check).asArray.asyncForEach { test in
+            let result = await Factors.uint.primeFactors(of: test.0, from: primes)
             XCTAssertEqual(result, test.1, "n: \(test.0)")
         }
     }
 
-    func testDivisors() {
+    func testDivisors() async {
         let check: [[UInt]] = [
             [],
             [], [], [], [2], [],
@@ -36,7 +36,7 @@ class FactorsTests: XCTestCase {
             [3, 7],
         ]
 
-        let result = (0 ... 21).map { Factors.uint.divisors(of: $0) }
+        let result = await (0 ... 21).asyncMap { await Factors.uint.divisors(of: $0) }
         XCTAssertEqual(result, check)
     }
 }

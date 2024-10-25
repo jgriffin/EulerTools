@@ -11,7 +11,7 @@ public extension Array {
         let put = indexAt.rotated(toStartAt: -2 * count)
 
         var copy = self
-        zip(indexAt, put).forEach { at, put in
+        for (at, put) in zip(indexAt, put) {
             copy[at] = self[put]
         }
         return copy
@@ -20,7 +20,7 @@ public extension Array {
     func flipNineH() -> [Element] {
         assert(count == 9)
         var copy = self
-        zip([0, 3, 5, 2, 5, 8], [2, 5, 8, 0, 3, 6]).forEach { at, put in
+        for (at, put) in zip([0, 3, 5, 2, 5, 8], [2, 5, 8, 0, 3, 6]) {
             copy[at] = self[put]
         }
         return copy
@@ -29,7 +29,7 @@ public extension Array {
     func flipNineV() -> [Element] {
         assert(count == 9)
         var copy = self
-        zip([0, 1, 2, 6, 7, 8], [6, 7, 8, 0, 1, 2]).forEach { at, put in
+        for (at, put) in zip([0, 1, 2, 6, 7, 8], [6, 7, 8, 0, 1, 2]) {
             copy[at] = self[put]
         }
         return copy

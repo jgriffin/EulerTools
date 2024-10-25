@@ -2,7 +2,7 @@
 // Created by John Griffin on 12/30/21
 //
 
-public struct Index3: Hashable, CustomStringConvertible {
+public struct Index3: Hashable, CustomStringConvertible, Sendable {
     public let x, y, z: Int
 
     public var description: String { "(\(x),\(y),\(z))" }

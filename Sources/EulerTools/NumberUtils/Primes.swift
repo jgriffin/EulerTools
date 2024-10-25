@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Primes {
+public actor Primes {
     public static let instance = Primes()
 
     public static func isPrime(_ n: UInt) throws -> Bool {

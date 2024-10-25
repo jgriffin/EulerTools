@@ -9,7 +9,7 @@ final class WordleTests: XCTestCase {
         let wordAndSets = wordlelist.map { $0.wordAndSet() }
 
         let byCh = wordAndSets.reduce(into: [Character: [Substring]]()) { result, was in
-            was.letters.forEach { ch in
+            for ch in was.letters {
                 result[ch, default: []].append(was.word)
             }
         }

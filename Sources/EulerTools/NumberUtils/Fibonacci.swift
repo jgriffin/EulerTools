@@ -7,12 +7,12 @@
 
 import Foundation
 
-public enum Fibonacci {
+@MainActor public enum Fibonacci {
     public static var uint = FibonacciMemoized<UInt>()
     public static var uint64 = FibonacciMemoized<UInt64>()
 }
 
-public class FibonacciMemoized<I: FixedWidthInteger> {
+public actor FibonacciMemoized<I: FixedWidthInteger> {
     public func fib(of n: I) -> I { fibMemoized(n) }
 
     private let fibMemoized = Memoizer<I, I>.memoizedFnRecursive { n, fib in

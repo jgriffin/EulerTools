@@ -27,7 +27,7 @@ class BoardWalkTests: XCTestCase {
             (Sq(1, 2), [Sq(1, 1), Sq(0, 2), Sq(2, 2)]),
             (Sq(2, 2), [Sq(2, 1), Sq(1, 2)]),
         ]
-        tests.forEach { test in
+        for test in tests {
             let stepper = BoardWalk.Stepper(from: test.start, onBoard: boardWalk3x3Square)
             XCTAssertEqual(Array(stepper), test.check)
         }

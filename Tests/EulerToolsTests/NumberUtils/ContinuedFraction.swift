@@ -22,7 +22,7 @@ class ContinuedFractionTests: XCTestCase {
             (CF(whole: 1, [2, 2, 2]), check: F(17, 12)),
             (CF([1, 2, 2, 2]), check: F(17, 12)),
         ]
-        tests.forEach { test in
+        for test in tests {
             XCTAssertEqual(test.cf.expansion(), test.check)
         }
     }
@@ -33,7 +33,7 @@ class ContinuedFractionTests: XCTestCase {
             (CF(.join([1].any(), twos)), 4, check: F(17, 12)),
             (CF(whole: 1, twos), 4, check: F(17, 12)),
         ]
-        tests.forEach { test in
+        for test in tests {
             let result = test.cf.expansion(maxTerms: test.max)
             XCTAssertEqual(result, test.check)
         }

@@ -2,7 +2,7 @@
 // Created by John Griffin on 11/21/23
 //
 
-public struct Englishness: Comparable, CustomStringConvertible {
+public struct Englishness: Comparable, CustomStringConvertible, Sendable {
     public let textual: Float
     public let chi2: Float
 

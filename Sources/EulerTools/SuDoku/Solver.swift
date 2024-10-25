@@ -101,7 +101,7 @@ public extension SuDoku {
         }
 
         func dump() {
-            (0 ... 8).forEach { row in
+            for row in 0 ... 8 {
                 let line = (0 ... 8).map { col -> String in
                     let index = row * 9 + col
                     let digit = current.digits[index]

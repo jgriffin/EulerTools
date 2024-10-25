@@ -70,10 +70,10 @@ public struct IndexMap<Index: Hashable>: CustomStringConvertible {
         // the original starting Indices
         let indexAtMap = maps.map(\.indexAtMap).reduce([Index: Index]()) { pre, next in
             var result = [Index: Index]()
-            next.forEach { nk, nv in
+            for (nk, nv) in next {
                 result[nk] = pre[nv] ?? nv
             }
-            pre.forEach { pk, pv in
+            for (pk, pv) in pre {
                 if result[pk] == nil {
                     result[pk] = pv
                 }

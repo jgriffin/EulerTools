@@ -32,7 +32,7 @@ public extension IndexRCRanges {
                 .sorted()
         }
 
-        nonEdgeIndices.forEach { g in
+        for g in nonEdgeIndices {
             let colors = neighborColors(of: g)
             switch colors.count {
             case 0:
@@ -42,7 +42,7 @@ public extension IndexRCRanges {
             default:
                 let first = colors.first!
                 colorOfIndex[g] = first
-                colors.dropFirst().forEach { color in
+                for color in colors.dropFirst() {
                     mapColorToLower[color] = min(first, mapColorToLower[color, default: .max])
                 }
             }

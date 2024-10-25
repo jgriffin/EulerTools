@@ -7,12 +7,12 @@
 
 import Foundation
 
-public enum Factors {
-    public static var int = FixedWidthFactors<Int>()
-    public static var uint = FixedWidthFactors<UInt>()
+public actor Factors {
+    public static let int = FixedWidthFactors<Int>()
+    public static let uint = FixedWidthFactors<UInt>()
 }
 
-public class FixedWidthFactors<I: FixedWidthInteger> {
+public actor FixedWidthFactors<I: FixedWidthInteger> {
     // non-trivial divisors of n
     public func divisors(of n: I) -> [I] {
         divisorsMemoizer.memoized(n) { n in
@@ -33,7 +33,7 @@ public class FixedWidthFactors<I: FixedWidthInteger> {
 
     // prime factors excludes the number itself if it is prime
     public func primeFactors<A: RandomAccessCollection>(of n: I, from primes: A) -> [I]
-        where A.Element == I, A.Index: Strideable
+        where A.Element == I, A.Index: Strideable, I: Sendable
     {
         if n == 0 || n == 1 {
             return []

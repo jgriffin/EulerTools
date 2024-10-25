@@ -14,7 +14,7 @@ class DigitsTests: XCTestCase {
         let tests: [(test: UInt, check: UInt)] = [
             (1, 10), (9, 10), (10, 100), (11, 100), (99, 100), (100, 1000),
         ]
-        tests.forEach { test in
+        for test in tests {
             XCTAssertEqual(Digits.powerOfTenBigger(than: test.test), test.check)
         }
     }

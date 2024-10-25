@@ -7,7 +7,7 @@ public extension Rubiks {
 
      The idea is to have something easy to reason about and manipulate, and then convert to a more compact representation
      */
-    enum SimpleIndex: Int, Comparable, Strideable, CustomStringConvertible {
+    enum SimpleIndex: Int, Comparable, Strideable, CustomStringConvertible, Sendable {
         case u0 = 0, u1, u2, u3, u4, u5, u6, u7, u8
         case l0, l1, l2, l3, l4, l5, l6, l7, l8
         case f0, f1, f2, f3, f4, f5, f6, f7, f8
@@ -93,7 +93,6 @@ public extension Rubiks {
                 let f2u = focus(.f)
                 let combined = l2f.then(f2u)
                 return combined
-
             case .d:
                 let f2u = focus(.f)
                 let combined = f2u.then(f2u)

@@ -102,7 +102,7 @@ public struct Ranger<Index: Indexable2> {
     public init() {}
 
     public init(_ s: some Sequence<Index>) {
-        s.forEach { index in
+        for index in s {
             expand(toInclude: index)
         }
     }

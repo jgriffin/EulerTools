@@ -5,7 +5,7 @@ public extension Rubiks {
 
      The idea is to have something easy to reason about and manipulate, and then convert to a more compact representation
      */
-    struct SimpleCube {
+    struct SimpleCube: Sendable {
         public typealias Color = Rubiks.Color
         public typealias Face = Rubiks.Face
         public typealias Index = SimpleIndex
@@ -20,7 +20,7 @@ public extension Rubiks {
         }
     }
 
-    enum SimpleCubie: CaseIterable, CustomStringConvertible {
+    enum SimpleCubie: CaseIterable, CustomStringConvertible, Sendable {
         case W0, W1, W2, W3, W4, W5, W6, W7, W8
         case R0, R1, R2, R3, R4, R5, R6, R7, R8
         case G0, G1, G2, G3, G4, G5, G6, G7, G8

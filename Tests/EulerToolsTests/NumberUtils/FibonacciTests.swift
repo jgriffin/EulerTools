@@ -9,11 +9,11 @@ import EulerTools
 import XCTest
 
 class FibonacciTests: XCTestCase {
-    func testFibonacci() {
+    func testFibonacci() async {
         let fibs: [UInt] = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
 
-        fibs.enumerated().forEach { test in
-            let result = Fibonacci.uint.fib(of: UInt(test.offset))
+        for test in fibs.enumerated() {
+            let result = await Fibonacci.uint.fib(of: UInt(test.offset))
             XCTAssertEqual(result, test.element)
         }
     }

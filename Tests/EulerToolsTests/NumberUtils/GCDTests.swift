@@ -15,7 +15,7 @@ final class GCDTests: XCTestCase {
             (46, 240, 2, 47, -9),
         ]
 
-        tests.forEach { test in
+        for test in tests {
             let result = Int.extendedGCD(test.a, test.b)
             XCTAssertEqual(result.gcd, test.gcd)
             XCTAssertEqual(result.x, test.x)
@@ -32,7 +32,7 @@ final class GCDTests: XCTestCase {
             (7, 4, 3),
         ]
 
-        tests.forEach { test in
+        for test in tests {
             let result = Int.modularMultiplicativeInverse(test.a, test.m)
             XCTAssertEqual(result, test.check)
         }

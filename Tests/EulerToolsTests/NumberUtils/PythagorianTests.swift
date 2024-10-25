@@ -19,7 +19,7 @@ class PythagorianTests: XCTestCase {
         XCTAssertEqual(tripples.count, 16 + 31)
 
         // a,b,c are in increasing order
-        tripples.forEach { tripple in
+        for tripple in tripples {
             XCTAssertTrue(tripple.a < tripple.b && tripple.b < tripple.c)
         }
 
@@ -28,10 +28,10 @@ class PythagorianTests: XCTestCase {
 
         // might be out of order
         var outOfOrderCount = 0
-        zip(tripples, tripples.dropFirst()).forEach { first, second in
+        for (first, second) in zip(tripples, tripples.dropFirst()) {
             guard first.c < second.c else {
                 outOfOrderCount += 1
-                return
+                continue
             }
         }
         XCTAssertEqual(outOfOrderCount, 7)
@@ -46,7 +46,7 @@ class PythagorianTests: XCTestCase {
         XCTAssertEqual(tripples.count, 209)
 
         // a,b,c are in increasing order
-        tripples.forEach { tripple in
+        for tripple in tripples {
             XCTAssertTrue(tripple.a < tripple.b && tripple.b < tripple.c)
         }
 

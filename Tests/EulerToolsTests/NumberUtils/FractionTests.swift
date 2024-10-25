@@ -24,7 +24,7 @@ class FractionTests: XCTestCase {
             (-1, -2, Frac(1, 2)),
         ]
 
-        tests.forEach { test in
+        for test in tests {
             let result = Fraction(test.num, test.den)
             XCTAssertEqual(result, test.check)
         }
@@ -37,7 +37,7 @@ class FractionTests: XCTestCase {
             (-2, Frac(-2, 1)),
         ]
 
-        tests.forEach { test in
+        for test in tests {
             let result = Fraction(test.int)
             XCTAssertEqual(result, test.check)
         }
@@ -54,7 +54,7 @@ class FractionTests: XCTestCase {
             (Frac(-1, 2), Frac(-2, 1)),
         ]
 
-        tests.forEach { test in
+        for test in tests {
             let result = test.frac.reciprocal
             XCTAssertEqual(result, test.check)
         }
@@ -66,7 +66,7 @@ class FractionTests: XCTestCase {
             (Frac(-1, 2), Frac(1, 2)),
         ]
 
-        tests.forEach { test in
+        for test in tests {
             let result = test.frac.negate
             XCTAssertEqual(result, test.check)
         }
@@ -91,7 +91,7 @@ class FractionTests: XCTestCase {
             (Frac(-1, 2), Frac(1, 6), Frac(-2, 6)),
         ]
 
-        tests.forEach { test in
+        for test in tests {
             let result = test.lhs + test.rhs
             XCTAssertEqual(result, test.check)
         }
@@ -112,7 +112,7 @@ class FractionTests: XCTestCase {
             (Frac(-1, 2), Frac(1, 6), Frac(-4, 6)),
         ]
 
-        tests.forEach { test in
+        for test in tests {
             let result = test.lhs - test.rhs
             XCTAssertEqual(result, test.check)
         }
@@ -127,7 +127,7 @@ class FractionTests: XCTestCase {
             (Frac(1, 6), Frac(1, 12), Frac(1, 72)),
         ]
 
-        tests.forEach { test in
+        for test in tests {
             let result = test.lhs * test.rhs
             XCTAssertEqual(result, test.check)
         }
@@ -141,7 +141,7 @@ class FractionTests: XCTestCase {
             (Frac(1) + 1 / (2 + Frac(1, 2)), check: Frac(7, 5)),
             (Frac(1) + 1 / (2 + 1 / (2 + Frac(1, 2))), check: Frac(17, 12)),
         ]
-        tests.forEach { test in
+        for test in tests {
             XCTAssertEqual(test.expression, test.check)
         }
     }
